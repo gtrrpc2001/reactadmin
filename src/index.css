@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'Bungee Spice Regular';
+  src: url('./assets/font/BungeeSpice-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Dongle';
+  src: url('./assets/font/Dongle-Regular.ttf');
+}
+
+:root {
+  --font-dongle: 'dongle';
+  --font-bungee: 'Bungee Spice Regular';
+  --menus-height: 17rem;
+}
+
+* {
+  font-family: var(--font-dongle);
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  background-color: whitesmoke;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+}
+
+ul {
+  list-style: none;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
