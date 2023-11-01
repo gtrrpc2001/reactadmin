@@ -5,7 +5,7 @@ import { profileModal } from '../interface/profileModal';
 
 
 const client: Axios = axios.create({
-    baseURL: 'http://121.152.22.85:40080', //https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app/
+    baseURL: 'https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app',
     headers: {
       'Content-Type': 'application/json',
     }
