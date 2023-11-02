@@ -51,7 +51,8 @@ interface ModalDefaultType {
 
   const footerClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
     const innerHTML = e?.currentTarget?.innerHTML
-    let iconClick:footerIcon = getClickFooter(innerHTML)  
+    let iconClick:footerIcon = getClickFooter(innerHTML)
+    console.log(innerHTML)
     setFooterBtn(iconClick)
   }
 
