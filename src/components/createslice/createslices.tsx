@@ -1,4 +1,5 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
+import { profileModal } from '../../axios/interface/profileModal';
 
 
 export const cellSlice = createSlice({
@@ -54,7 +55,7 @@ export const listActions = listSlice.actions;
 
 export const profileSlice = createSlice({
     name:'getProfile',
-    initialState:[],
+    initialState:Object,
     reducers:{
         profile:(state:any,action: PayloadAction<any>) => state = action.payload,
     }
