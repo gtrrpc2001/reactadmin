@@ -26,8 +26,7 @@ interface ModalDefaultType {
     const [footerBtn , setFooterBtn] = useState<footerIcon>({home:true,graph:false,pulse:false,profile:false})
     const modalList = getValues(data,values.eq)    
     const bpm = modalList.bpm
-    const arrCnt = modalList.arrCnt
-    console.log(`${getProfile.arrCnt}`)
+    const arrCnt = modalList.arrCnt    
     const closeModal = () => {      
         setModalOpen(false);
     }; 
@@ -50,9 +49,8 @@ interface ModalDefaultType {
   };    
 
   const footerClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
-    const innerHTML = e?.currentTarget?.innerHTML
-    let iconClick:footerIcon = getClickFooter(innerHTML)
-    console.log(innerHTML)
+    const id = e?.currentTarget?.id
+    let iconClick:footerIcon = getClickFooter(id)  
     setFooterBtn(iconClick)
   }
 
