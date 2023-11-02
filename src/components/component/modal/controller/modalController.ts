@@ -49,10 +49,10 @@ export const getHeartText = (arrCnt:number):string => {
   }
 
   export const getClickFooter = (innerHTML:string):footerIcon => {
-    const home = '1n603a'
-    const graph = '1s1pzv5'
-    const pulse = '11wp3nn'
-    const profile = '1bonciu'    
+    const home = 'home'
+    const graph = 'graph'
+    const pulse = 'pulse'
+    const profile = 'profile'    
     let iconClick:footerIcon = {home:true,graph:false,pulse:false,profile:false}
     switch(true){
       case innerHTML.includes(graph) :
