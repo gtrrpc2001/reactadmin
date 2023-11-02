@@ -22,12 +22,12 @@ interface ModalDefaultType {
   export const Modal = ({open,setModalOpen,children}:PropsWithChildren<ModalDefaultType>) =>{   
     const values = useSelector<RootState,any>(state => state.cellValues)
     const data:historyLast[] = useSelector<RootState,any>(state => state.historylast) 
-    const getProfile:profileModal = useSelector<RootState,any>(state => state.profile)[0]
+    const getProfile:profileModal = useSelector<RootState,profileModal>(state => state.profile)
     const [footerBtn , setFooterBtn] = useState<footerIcon>({home:true,graph:false,pulse:false,profile:false})
     const modalList = getValues(data,values.eq)    
     const bpm = modalList.bpm
     const arrCnt = modalList.arrCnt
-    console.log(`${getProfile}`)
+    console.log(`${getProfile.arrCnt}`)
     const closeModal = () => {      
         setModalOpen(false);
     }; 
