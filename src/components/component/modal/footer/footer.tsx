@@ -24,25 +24,42 @@ export const Footer = ({onClick,footerClick}:Props) => {
 
     return (       
         <Box sx={{width:330,height:70,display:'flex',bottom:0,alignItems:'center',":hover":{cursor:'default'}}}>
+<<<<<<< HEAD
             <Box id="home" onClick={(e) =>onClick(e)} sx={{width:50,marginLeft:2,":hover":hover}}>
+=======
+            <Box id="home" onClick={(e) =>onClick(e)} sx={{width:50,marginLeft:2}}>
+>>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
                 <HouseOutlinedIcon sx={{color:home,marginLeft:1}}  fontSize="large"/>                  
                 <Typography sx={{fontWeight:'bold', color:home,position:'absolute',bottom:buttom,left:33}}>
                     {home == "#ef507b" ? "홈" : ""}
                 </Typography>
             </Box>
+<<<<<<< HEAD
             <Box id="graph" onClick={(e) =>onClick(e)} sx={{width:60,marginLeft:2,":hover":hover}}>
+=======
+            <Box id="graph" onClick={(e) =>onClick(e)} sx={{width:60,marginLeft:2}}>
+>>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
                 <InsertChartOutlinedIcon sx={{color:graph,marginLeft:3}}  fontSize="large"/>                  
                 <Typography sx={{fontWeight:'bold', color:graph,position:'absolute',bottom:buttom,left:107}}>
                     {graph == "#ef507b" ? "요약" : ""}
                 </Typography>
             </Box>
+<<<<<<< HEAD
             <Box id="pulse" onClick={(e) =>onClick(e)} sx={{width:120,":hover":hover}}>
                 <HeartBrokenOutlinedIcon sx={{color:pulse,marginLeft:7.5}}  fontSize="large"/>                  
+=======
+            <Box id="pulse" onClick={(e) =>onClick(e)} sx={{width:120}}>
+                <MonitorHeartOutlinedIcon sx={{color:pulse,marginLeft:7.5}}  fontSize="large"/>                  
+>>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
                 <Typography sx={{fontWeight:'bold', color:pulse,position:'absolute',bottom:buttom,right:90}}>
                     {pulse == "#ef507b" ? "비정상맥박" : ""}
                 </Typography>
             </Box>
+<<<<<<< HEAD
             <Box id="profile" onClick={(e) =>onClick(e)} sx={{width:60,":hover":hover}}>
+=======
+            <Box id="profile" onClick={(e) =>onClick(e)} sx={{width:60,}}>
+>>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
                 <AccountBoxOutlinedIcon sx={{color:profile,marginLeft:3}}  fontSize="large"/>                  
                 <Typography sx={{fontWeight:'bold', color:profile,position:'absolute',bottom:buttom,right:22}}>
                     {profile == "#ef507b" ? "프로필" : ""}

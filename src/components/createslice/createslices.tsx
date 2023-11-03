@@ -1,4 +1,5 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
+import { profileModal } from '../../axios/interface/profileModal';
 
 
 export const cellSlice = createSlice({
@@ -54,13 +55,14 @@ export const listActions = listSlice.actions;
 
 export const profileSlice = createSlice({
     name:'getProfile',
-    initialState:[],
+    initialState:Object,
     reducers:{
         profile:(state:any,action: PayloadAction<any>) => state = action.payload,
     }
 
 });
 export const profileActions = profileSlice.actions;
+<<<<<<< HEAD
 
 export const bpmGraphSlice = createSlice({
     name:'bpmGraph',
@@ -71,3 +73,5 @@ export const bpmGraphSlice = createSlice({
 
 });
 export const bpmGraphActions = bpmGraphSlice.actions;
+=======
+>>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
