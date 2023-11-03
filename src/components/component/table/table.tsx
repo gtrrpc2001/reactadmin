@@ -64,14 +64,8 @@ export const Table = ({stopCheck,stopHandleCheckbox}:Props) =>{
         const {eq,eqname,timezone} = values
         const cellVlaue = {eq,eqname,timezone}
         if(column?.id != 'selection'){
-<<<<<<< HEAD
             if(!row?.isSelected)  {                
                 const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${getTime(false,true,1)}&endDate=${getTime(false)}`)
-=======
-            if(!row?.isSelected)  { 
-                const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${getTime(false,true,1)}&endDate=${getTime(false)}`)      
-                console.log(Profile[0])                         
->>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
                 profileDispach(profileActions.profile(Profile))
                 setValues(cell?.row?.values)
                 cellDispatch(cellActions.cellValues(cellVlaue))

@@ -25,20 +25,11 @@ interface ModalDefaultType {
   export const Modal = ({open,setModalOpen,children}:PropsWithChildren<ModalDefaultType>) =>{   
     const values = useSelector<RootState,any>(state => state.cellValues)
     const data:historyLast[] = useSelector<RootState,any>(state => state.historylast) 
-<<<<<<< HEAD
     const getProfile:profileModal = useSelector<RootState,any>(state => state.profile)   
-=======
-    const getProfile:profileModal = useSelector<RootState,profileModal>(state => state.profile)
->>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
     const [footerBtn , setFooterBtn] = useState<footerIcon>({home:true,graph:false,pulse:false,profile:false})
     const bpmGraphValue = useDispatch()
     const modalList = getValues(data,values.eq)    
-<<<<<<< HEAD
     const eq = values.eq   
-=======
-    const bpm = modalList.bpm
-    const arrCnt = modalList.arrCnt    
->>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
     const closeModal = () => {      
         setModalOpen(false);
     }; 
@@ -60,18 +51,12 @@ interface ModalDefaultType {
     display:'absolute',
   };    
 
-<<<<<<< HEAD
   const footerClick = async (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
     const id = e?.currentTarget?.id
     let iconClick:footerIcon = getClickFooter(id)  
     if(iconClick.graph){
       bpmGraphValue(bpmGraphActions.value(await getBpm(eq)))
     }
-=======
-  const footerClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
-    const id = e?.currentTarget?.id
-    let iconClick:footerIcon = getClickFooter(id)  
->>>>>>> d0516a432e869e3f844b0417a19622bf468e735d
     setFooterBtn(iconClick)
   }
 
