@@ -1,13 +1,10 @@
 import { Box } from "@mui/material";
-import { ModalHeader } from "./header/modalHeader";
-import { ModalTopBody } from "./topbody/modalTopbody";
-import { MiddleBody } from "./middlebody/middleBody";
+import { ModalTopBody } from "./body/bodyhome/topbody/modalTopbody";
+import { MiddleBody } from "./body/bodyhome/middlebody/middleBody";
 import { ModalRealTimeGraph } from "../../../page/graph/modalGraph";
 import { BottomBody } from "./component/bottomBody";
-import { Footer } from "./footer/footer";
 import { getDecimal, getHeartText } from "./controller/modalController";
 import { modalValues } from "../../../axios/interface/modalvalues";
-import { getProfile } from "../../../axios/api/serverApi";
 import { profileModal } from "../../../axios/interface/profileModal";
 
 type Props = {
@@ -17,11 +14,8 @@ type Props = {
 }
 
 export const ModalHome = ({modalList,values,getProfile}:Props) => {
-    
     return (
-            <>
-              
-
+            <>   
               <ModalTopBody bpm={modalList.bpm} arrCnt={0} prevArrCnt={getProfile.arrCnt} HeartText={getHeartText(0)} />
               
               <MiddleBody 
@@ -33,7 +27,7 @@ export const ModalHome = ({modalList,values,getProfile}:Props) => {
               />              
               
               <Box>                
-                <ModalRealTimeGraph bpm={modalList.bpm} eq={values.eq} time={modalList.writetime} height={280} />
+                <ModalRealTimeGraph bpm={modalList.bpm} eq={values.eq} time={modalList.writetime}/>
               </Box>
 
               <BottomBody actCal={modalList.actCal} step={modalList.step} temp={modalList.temp} distance={getDecimal(modalList.distance)}/>

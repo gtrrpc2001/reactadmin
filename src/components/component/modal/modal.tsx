@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState} from "react";
 import UiModal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { historyLast } from "../../../axios/interface/history_last";
 import './modal.scss'
@@ -12,6 +12,9 @@ import { profileModal } from "../../../axios/interface/profileModal";
 import { Footer } from "./footer/footer";
 import { ModalHome } from "./modalHome";
 import { footerIcon } from "../../../axios/interface/footerIcon";
+import { bpmGraphActions } from "../../createslice/createslices";
+import { getBpm } from "./data/data";
+import { BodyGraph } from "./body/bodygraph/bodygraph";
 
 
 interface ModalDefaultType {
@@ -22,12 +25,11 @@ interface ModalDefaultType {
   export const Modal = ({open,setModalOpen,children}:PropsWithChildren<ModalDefaultType>) =>{   
     const values = useSelector<RootState,any>(state => state.cellValues)
     const data:historyLast[] = useSelector<RootState,any>(state => state.historylast) 
-    const getProfile:profileModal = useSelector<RootState,any>(state => state.profile)[0]
+    const getProfile:profileModal = useSelector<RootState,any>(state => state.profile)   
     const [footerBtn , setFooterBtn] = useState<footerIcon>({home:true,graph:false,pulse:false,profile:false})
+    const bpmGraphValue = useDispatch()
     const modalList = getValues(data,values.eq)    
-    const bpm = modalList.bpm
-    const arrCnt = modalList.arrCnt
-    console.log(`${getProfile}`)
+    const eq = values.eq   
     const closeModal = () => {      
         setModalOpen(false);
     }; 
@@ -49,9 +51,12 @@ interface ModalDefaultType {
     display:'absolute',
   };    
 
-  const footerClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
-    const innerHTML = e?.currentTarget?.innerHTML
-    let iconClick:footerIcon = getClickFooter(innerHTML)  
+  const footerClick = async (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
+    const id = e?.currentTarget?.id
+    let iconClick:footerIcon = getClickFooter(id)  
+    if(iconClick.graph){
+      bpmGraphValue(bpmGraphActions.value(await getBpm(eq)))
+    }
     setFooterBtn(iconClick)
   }
 
@@ -59,18 +64,17 @@ interface ModalDefaultType {
     switch(true){
       case footerSelect.graph:
           return (
-            <Box sx={{height:656}}>
-            </Box>
+            <BodyGraph eq={eq}/>
           );
       case footerSelect.profile:
         return (
-          <Box sx={{height:656}}>
+          <Box sx={{height:641}}>
           </Box>
         );
     
       case footerSelect.pulse:
         return (
-          <Box sx={{height:656}}>
+          <Box sx={{height:641}}>
           </Box>
         );
       default :

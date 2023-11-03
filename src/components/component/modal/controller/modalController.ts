@@ -1,5 +1,6 @@
 import { userBpmType } from "../../../../axios/interface/bpmType"
 import { footerIcon } from "../../../../axios/interface/footerIcon"
+import { graphModal } from "../../../../axios/interface/graphModal"
 import { historyLast } from "../../../../axios/interface/history_last"
 import { modalValues } from "../../../../axios/interface/modalvalues"
 import { getHour } from "../../../../func/func"
@@ -49,10 +50,10 @@ export const getHeartText = (arrCnt:number):string => {
   }
 
   export const getClickFooter = (innerHTML:string):footerIcon => {
-    const home = '1n603a'
-    const graph = '1s1pzv5'
-    const pulse = '11wp3nn'
-    const profile = '1bonciu'    
+    const home = 'home'
+    const graph = 'graph'
+    const pulse = 'pulse'
+    const profile = 'profile'    
     let iconClick:footerIcon = {home:true,graph:false,pulse:false,profile:false}
     switch(true){
       case innerHTML.includes(graph) :
@@ -61,6 +62,27 @@ export const getHeartText = (arrCnt:number):string => {
         return {home:false,graph:false,pulse:true,profile:false}
       case innerHTML.includes(profile) :
         return {home:false,graph:false,pulse:false,profile:true}
+      default :
+        return iconClick
+    }
+  }
+
+  export const getClickGraph = (id:string):graphModal => {
+    const bpm = 'bpm'
+    const pulse = 'pulse'
+    const hrv = 'hrv'
+    const cal = 'cal'    
+    const step = 'step'  
+    let iconClick:graphModal = {bpm:true,pulse:false,hrv:false,cal:false,step:false}
+    switch(true){
+      case id.includes(pulse) :
+        return {bpm:false,pulse:true,hrv:false,cal:false,step:false}
+      case id.includes(hrv) :
+        return {bpm:false,pulse:false,hrv:true,cal:false,step:false}
+      case id.includes(cal) :
+        return {bpm:false,pulse:false,hrv:false,cal:true,step:false}
+      case id.includes(step) :
+        return {bpm:false,pulse:false,hrv:false,cal:false,step:true}
       default :
         return iconClick
     }

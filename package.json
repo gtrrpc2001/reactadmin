@@ -35,6 +35,7 @@
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "react-table": "^7.8.0",
+    "recharts": "^2.9.2",
     "redux": "^4.2.1",
     "timers-browserify": "^2.0.12",
     "timers-browserify-full": "^0.0.1",

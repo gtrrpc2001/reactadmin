@@ -8,8 +8,8 @@ type Props = {
     distance?:number
 }
 const borderColor = "#c3c1c1"
-const First = {bottom1:245 ,bottom2:215}
-const left = {left1:30,left2:65}
+const First = {bottom1:260 ,bottom2:230}
+const left = {left1:30,left2:70}
 const right = {right1:35,right2: 92,right3:77}
 const second = {bottom1:First.bottom1 - 100 ,bottom2:First.bottom2 - 100}
 export const FirstLineTextBox = ({actCal,step}:Props) => {

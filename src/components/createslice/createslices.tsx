@@ -61,3 +61,13 @@ export const profileSlice = createSlice({
 
 });
 export const profileActions = profileSlice.actions;
+
+export const bpmGraphSlice = createSlice({
+    name:'bpmGraph',
+    initialState:[],
+    reducers:{
+        value:(state:any,action: PayloadAction<any>) => state = action.payload,
+    }
+
+});
+export const bpmGraphActions = bpmGraphSlice.actions;
