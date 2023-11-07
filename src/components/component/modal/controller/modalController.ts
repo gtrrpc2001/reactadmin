@@ -1,9 +1,9 @@
 import { userBpmType } from "../../../../axios/interface/bpmType"
 import { footerIcon } from "../../../../axios/interface/footerIcon"
-import { graphModal } from "../../../../axios/interface/graphModal"
+import { graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal"
 import { historyLast } from "../../../../axios/interface/history_last"
 import { modalValues } from "../../../../axios/interface/modalvalues"
-import { getHour } from "../../../../func/func"
+import { getChangeDate, getHour, getTime } from "../../../../func/func"
 
 export const getHeartText = (arrCnt:number):string => {
     let value:string = "양호"
@@ -49,18 +49,18 @@ export const getHeartText = (arrCnt:number):string => {
     return value / 1000    
   }
 
-  export const getClickFooter = (innerHTML:string):footerIcon => {
+  export const getClickFooter = (id:string):footerIcon => {
     const home = 'home'
     const graph = 'graph'
     const pulse = 'pulse'
     const profile = 'profile'    
     let iconClick:footerIcon = {home:true,graph:false,pulse:false,profile:false}
     switch(true){
-      case innerHTML.includes(graph) :
+      case id.includes(graph) :
         return {home:false,graph:true,pulse:false,profile:false}
-      case innerHTML.includes(pulse) :
+      case id.includes(pulse) :
         return {home:false,graph:false,pulse:true,profile:false}
-      case innerHTML.includes(profile) :
+      case id.includes(profile) :
         return {home:false,graph:false,pulse:false,profile:true}
       default :
         return iconClick
@@ -87,3 +87,84 @@ export const getHeartText = (arrCnt:number):string => {
         return iconClick
     }
   }
+
+  export const getClickWriteimteButton = (id:string):writetimeButtonModal => {    
+    const today = 'today'
+    const days2 = 'days2'    
+    const days3 = 'days3'  
+    let iconClick:writetimeButtonModal = {today:true,days2:false,days3:false}
+    switch(true){
+      case id.includes(days2) :
+        return {today:false,days2:true,days3:false}
+      case id.includes(days3) :
+        return {today:false,days2:false,days3:true}
+      default :
+        return iconClick
+    }
+  }
+
+  
+
+  export const checkNull = (value:number | undefined) => {
+    return value == null ? 0 : value
+  }
+
+  export const getWritetimeValue = (day:Date):string => {
+    const getYear = day.getFullYear() 
+    const getMonth = day.getMonth() + 1
+    const getDate = day.getDate()
+    var monthStr: string = getChangeDate(getMonth)
+    var dateStr: string = getChangeDate(getDate)
+   return `${getYear}-${monthStr}-${dateStr}`    
+}
+
+  export const getWritetimeButtomValue = (day:Date,writetime:string,num:number):string => {    
+      const writetimeArr = writetime.split('-')
+      const d = new Date(day.setDate(Number(writetimeArr[2]) - num))    
+      const getMonth = d.getMonth() + 1
+      const getDate = d.getDate()
+      var monthStr: string = getChangeDate(getMonth)
+      var dateStr: string = getChangeDate(getDate)
+     return `${monthStr}-${dateStr} ~ ${writetimeArr[1]}-${writetimeArr[2]}`    
+  }
+
+ export const compareToWritetime = (originalWritetime:string):boolean => {
+    const time1Arr = originalWritetime.split('-')
+    const time2Arr = getTime(false).split('-')
+    let bool = false        
+    if(Number(time1Arr[0]) == Number(time2Arr[0])){
+        if(Number(time1Arr[1]) == Number(time2Arr[1])){
+            if(Number(time1Arr[2]) == +time2Arr[2] - 1){
+                bool = true;
+            }
+        }
+    }
+    return bool;
+}
+
+export const calculTime = (writetime:string,num:number):string[] => {
+  const day = new Date(writetime)
+  const date = day.getDate()
+  const endDay = new Date(day.setDate(date + 1))
+  const startDay = num == 0 ? day : new Date(day.setDate(date - num))
+  const endDate = getWritetimeValue(endDay)
+  const startDate = getWritetimeValue(startDay)
+  return [startDate,endDate]
+}
+
+export const selectTime = (writetime:string,num:number):string[] => {
+  const day = new Date(writetime)
+  const date = day.getDate()
+  const startDay = num == 0 ? day : new Date(day.setDate(date - num))
+  const startDate = getWritetimeValue(startDay)
+  return [startDate,writetime]
+}
+
+export const replaceYear = (time:string):string => {
+  const times = time.split('-')
+  return `${times[1]}-${times[2]}`
+}
+
+  
+
+  

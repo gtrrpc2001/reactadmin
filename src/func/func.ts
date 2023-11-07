@@ -22,6 +22,10 @@ export const getTime = (includeTime:boolean,mius:boolean=false,num:number = 0):s
 
 }
 
+export const getChangeDate = (value:number):string => {
+  return  value < 10 ? `0${value}` : value.toString()
+}
+
 export const getLastMonth = (today:Date,date:number,num:number):number => {
   var yesterday = new Date(today.setDate(date - num));  
   return yesterday.getMonth() + 1
@@ -36,3 +40,4 @@ export const getHour = ():number => {
 const today = new Date()
 return today?.getHours()
 }
+

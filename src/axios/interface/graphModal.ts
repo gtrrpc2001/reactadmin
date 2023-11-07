@@ -9,5 +9,12 @@ export interface graphModal{
 
 export interface graphBpm{
     bpm:number
+    hrv:number
     writetime:string
+}
+
+export interface writetimeButtonModal{
+    today:boolean
+    days2:boolean
+    days3:boolean
 }

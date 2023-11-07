@@ -53,10 +53,7 @@ interface ModalDefaultType {
 
   const footerClick = async (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {    
     const id = e?.currentTarget?.id
-    let iconClick:footerIcon = getClickFooter(id)  
-    if(iconClick.graph){
-      bpmGraphValue(bpmGraphActions.value(await getBpm(eq)))
-    }
+    let iconClick:footerIcon = getClickFooter(id) 
     setFooterBtn(iconClick)
   }
 

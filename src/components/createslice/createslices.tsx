@@ -71,3 +71,13 @@ export const bpmGraphSlice = createSlice({
 
 });
 export const bpmGraphActions = bpmGraphSlice.actions;
+
+export const writetimeGraphSlice = createSlice({
+    name:'writetime',
+    initialState:'',
+    reducers:{
+        value:(state:any,action: PayloadAction<any>) => state = action.payload,
+    }
+
+});
+export const writetimeGraphActions = writetimeGraphSlice.actions;
