@@ -88,6 +88,7 @@ export const getHeartText = (arrCnt:number):string => {
     }
   }
 
+<<<<<<< HEAD
   export const getClickWriteimteButton = (id:string):writetimeButtonModal => {    
     const today = 'today'
     const days2 = 'days2'    
@@ -168,3 +169,8 @@ export const replaceYear = (time:string):string => {
   
 
   
+=======
+export const checkNull = (value:number | undefined) => {
+    return value == null ? 0 : value
+  }
+>>>>>>> a82d106d387b8df157f8a5cb2c8d5278df0830da
