@@ -8,6 +8,7 @@ import { Writetime } from "../../component/writetime";
 import { WritetimeButton } from "./writetimeButton";
 import { BodyGraphBottom } from "./bodygraphBottom";
 import { BarCharts } from "./barChart";
+import { footerIcon } from "../../../../../axios/interface/footerIcon";
 
 type Props = {
     eq:string

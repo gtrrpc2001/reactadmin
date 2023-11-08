@@ -1,8 +1,9 @@
 import {Box, Typography} from "@mui/material";
-import { graphBpm, writetimeButtonModal } from "../../../../../axios/interface/graphModal";
+import { graphBpm, graphModal, writetimeButtonModal } from "../../../../../axios/interface/graphModal";
 import { RootState } from "../../../../../store/store";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { footerIcon } from "../../../../../axios/interface/footerIcon";
 
 type Props = {
     clickWritetimeButton:writetimeButtonModal
@@ -28,8 +29,7 @@ useEffect(()=>{
             const value = bpm ? data?.map(d => d.bpm) : data?.map(d => d.hrv)            
             const max = Math?.max(...value)
             const min = Math?.min(...value)
-            const aver = Math.floor(value?.reduce((total,next) => total + next,0) / value.length)
-            console.log(`${max} -- ${min}`)
+            const aver = Math.floor(value?.reduce((total,next) => total + next,0) / value.length)            
             setMax(max)
             setMin(min)
             setAver(aver)
@@ -38,7 +38,7 @@ useEffect(()=>{
         }
     }
     getValue()
-},[clickWritetimeButton,writetime])
+},[data,clickWritetimeButton,writetime])
 
 const childrenBoxStyle = {
 position:'absolute',

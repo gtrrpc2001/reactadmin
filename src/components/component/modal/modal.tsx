@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState} from "react";
 import UiModal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { historyLast } from "../../../axios/interface/history_last";
 import './modal.scss'
@@ -12,8 +12,6 @@ import { profileModal } from "../../../axios/interface/profileModal";
 import { Footer } from "./footer/footer";
 import { ModalHome } from "./modalHome";
 import { footerIcon } from "../../../axios/interface/footerIcon";
-import { bpmGraphActions } from "../../createslice/createslices";
-import { getBpm } from "./data/data";
 import { BodyGraph } from "./body/bodygraph/bodygraph";
 
 
@@ -27,7 +25,6 @@ interface ModalDefaultType {
     const data:historyLast[] = useSelector<RootState,any>(state => state.historylast) 
     const getProfile:profileModal = useSelector<RootState,any>(state => state.profile)   
     const [footerBtn , setFooterBtn] = useState<footerIcon>({home:true,graph:false,pulse:false,profile:false})
-    const bpmGraphValue = useDispatch()
     const modalList = getValues(data,values.eq)    
     const eq = values.eq   
     const closeModal = () => {      
@@ -91,7 +88,7 @@ interface ModalDefaultType {
             >
             <Box sx={mainBoxstyle}>
             
-              <ModalHeader />        
+            <ModalHeader values={modalList}/>         
 
               {(getModalUI(footerBtn))}                           
             
