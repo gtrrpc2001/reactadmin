@@ -7,6 +7,7 @@ import { BpmChart } from "./bpmChart";
 import { Writetime } from "../../component/writetime";
 import { WritetimeButton } from "./writetimeButton";
 import { BodyGraphBottom } from "./bodygraphBottom";
+import { BarCharts } from "./barChart";
 
 type Props = {
     eq:string
@@ -32,9 +33,7 @@ export const BodyGraph = ({eq}:Props) => {
         switch(true){
           case iconSelect.pulse:
               return (
-                <Box>
-                
-                </Box>
+                <BarCharts clickWritetimeButton={clickWritetimeButton}/>
               );
           case iconSelect.hrv:
             return (
@@ -109,7 +108,7 @@ export const BodyGraph = ({eq}:Props) => {
               
             {(getGraphBodyUI(clickGraph))}  
 
-            <Writetime clickWritetimeButton={clickWritetimeButton} eq={eq}/>
+            <Writetime iconSelect={clickGraph} clickWritetimeButton={clickWritetimeButton} eq={eq}/>
 
             {getGraphBottomUI(clickGraph)}
 

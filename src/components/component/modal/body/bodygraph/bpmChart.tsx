@@ -29,46 +29,9 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
     const writetime:string = useSelector<RootState,any>(state => state.writetimeGraph)
     const [lineName1,setLineName1] = useState<string>('엊그제')    
     const [lineName2,setLineName2] = useState<string>('어제')    
-    const [lineName3,setLineName3] = useState<string>('오늘')    
-      
-    const compareLength = (value1:number,value2:number,value3:number):number => {
-       const compareValue1 = (value1 > value2) ? value1 :value2
-       const compareValue2 = (compareValue1 > value3) ? compareValue1 : value3
-       return compareValue2
-    }
+    const [lineName3,setLineName3] = useState<string>('오늘') 
 
-    const compareValue = (value1:graphBpm[],value2:graphBpm[],value3:graphBpm[]=[]):graphBpm[] => {
-        const compareValue1 = (value1.length > value2.length) ? value1 :value2
-        const compareValue2 = (compareValue1.length > value3.length) ? compareValue1 : value3
-        return compareValue2
-     }
-
-    const getLength = ():number => {       
-        switch(true){
-            case clickWritetimeButton.days2 :     
-                const times:string[] = selectTime(writetime,1)                                      
-                const Index = data.findIndex((el)=> {return el.writetime.includes(times[1])})
-                const yesterdayIndex = Index
-                const todayIndex = data.length - Index
-                return (todayIndex > yesterdayIndex)? todayIndex : yesterdayIndex
-            case clickWritetimeButton.days3 :
-                const time:string[] = selectTime(writetime,1)            
-                const idx = data?.findIndex((el)=> {return el.writetime.includes(time[0])})
-                if(idx != -1){
-                    const todayidx = data?.findIndex((el)=> {return el.writetime.includes(time[1])})
-                    const daysago = idx
-                    const yesterIndex = todayidx - idx
-                    const todayIdx = data.length - todayidx 
-                    return compareLength(daysago,yesterIndex,todayIdx)
-                }else{
-                    return 0
-                }
-            default :            
-                return data.length
-        }
-    }
-
-    const length = getLength()
+    const length = data.length
 
     const endNum = 1000
     const graphShow = ():number[] => {        
@@ -87,12 +50,17 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
     let start = slice[0]
     let end = slice[1]        
 
-    const getValue = (data:graphBpm[],i:number) => {
+    const getValue = (prevValue:number,d: graphBpm,time:string):number => {
         if(bpm){
-        return (i < data?.length) ? data[i]?.bpm : 0
+            if(d.writetime.includes(time)){
+                return d.bpm
+            }        
         }else{
-        return (i < data?.length) ? data[i]?.hrv : 0
+            if(d.writetime.includes(time)){
+                return d.hrv
+            } 
         }
+        return prevValue
     }
 
     const onlyTodayDataGubun = (data:graphBpm) => {
@@ -106,43 +74,42 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
     const getData = () => {
         switch(true){
             case clickWritetimeButton.days2 :   
-                const times:string[] = selectTime(writetime,1)                          
-                const todayIndex = data.findIndex((el)=> {return el.writetime.includes(times[1])})
-                const todayData = data?.slice(todayIndex,data.length-1)                
-                const yesterdayData = data?.slice(0,todayIndex-1)
-                const bigValue = compareValue(todayData,yesterdayData)
-                const setData:any = []
-                for(var i = start ; i <= end ; i++){
-                    setData.push({usageLast1:getValue(yesterdayData,i),
-                                    usageLast2:getValue(todayData,i),
-                                    xAxis:bigValue[i]?.writetime.split(' ')[1]
-                                })                     
-                }
-                return setData
+                const times:string[] = selectTime(writetime,1)     
+                let first = 0
+                let second = 0
+                const v = data?.slice(start,end)?.map((d)=> { 
+
+                     first = getValue(first,d,times[0])                    
+                     second = getValue(second,d,times[1])                    
+                    
+                  return {
+                    usageLast1: first,
+                    usageLast2: second,
+                    xAxis:d.writetime?.split(' ')[1]
+                  }                     
+                })                
+                return v
             case clickWritetimeButton.days3 :
-                const time:string[] = selectTime(writetime,1)                             
-                const idx = data.findIndex((el)=> {return el.writetime.includes(time[0])})
-                if(idx != -1){
-                    const todayidx = data.findIndex((el)=> {return el.writetime.includes(time[1])})
-                    const daysago = idx - 1
-                    const yesterIndex = todayidx - 1
-                    const days2agoData = data?.slice(0,daysago)
-                    const yesderData = data?.slice(idx,yesterIndex)
-                    const toData =  data?.slice(todayidx,data.length-1)
-                    const bigValue = compareValue(toData,yesderData,days2agoData)
-                    var days3Data:any = []                    
-                    for(var i = start ; i <= end ; i++){                        
-                        days3Data.push({
-                                    usageLast3:getValue(days2agoData,i),
-                                    usageLast4:getValue(yesderData,i),
-                                    usageLast5:getValue(toData,i),
-                                    xAxis:bigValue[i]?.writetime.split(' ')[1]})                     
-                    }
-                    return days3Data
-                }else{
-                    return 0
-                }
+                const time1:string[] = selectTime(writetime,2)                             
+                const time2:string[] = selectTime(writetime,1) 
+                let _first = 0
+                let _second = 0
+                let third = 0
+                const v2 = data?.slice(start,end)?.map((d)=> {
+                _first = getValue(_first,d,time1[0])
+                _second = getValue(_second,d,time2[0])
+                third = getValue(third,d,time2[1])               
+                
+                return {
+                    usageLast3: _first,
+                    usageLast4: _second,
+                    usageLast5: third,
+                    xAxis:d.writetime?.split(' ')[1]
+                    }                     
+                })                    
+                return v2
             default :
+            
            return data?.slice(start,end)?.map(d=>{
                     return  {usageLast:onlyTodayDataGubun(d),xAxis:d.writetime?.split(' ')[1]}  
                   });
@@ -155,7 +122,7 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
        if(e.currentTarget.id == "plus"){        
                 setCount(Count+1)
                 setBackBtn(false)
-            if(((Count-1) * endNum) + 1 > length || length < ((Count + 1) * endNum)){
+            if((Math.ceil(length / 1000) == Count+1)){               
                 setNextBtn(true)
             }
         }
@@ -172,9 +139,9 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
         } 
     }    
 
-    useEffect(()=>{
+    useEffect(()=>{        
         setSlice(graphShow())
-    },[Count])    
+    },[Count,clickWritetimeButton])    
 
     useEffect(()=>{
         const setLineName = () => {
@@ -198,6 +165,9 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
                     break;
             }
         }
+        setNextBtn(false)
+        setCount(1)            
+        setBackBtn(true)          
         setLineName()
     },[clickWritetimeButton,writetime])
 

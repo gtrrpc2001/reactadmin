@@ -88,7 +88,6 @@ export const getHeartText = (arrCnt:number):string => {
     }
   }
 
-<<<<<<< HEAD
   export const getClickWriteimteButton = (id:string):writetimeButtonModal => {    
     const today = 'today'
     const days2 = 'days2'    
@@ -119,7 +118,8 @@ export const getHeartText = (arrCnt:number):string => {
    return `${getYear}-${monthStr}-${dateStr}`    
 }
 
-  export const getWritetimeButtomValue = (day:Date,writetime:string,num:number):string => {    
+  export const getWritetimeButtomValue = (writetime:string,num:number):string => {    
+      const day = new Date(writetime)    
       const writetimeArr = writetime.split('-')
       const d = new Date(day.setDate(Number(writetimeArr[2]) - num))    
       const getMonth = d.getMonth() + 1
@@ -129,13 +129,13 @@ export const getHeartText = (arrCnt:number):string => {
      return `${monthStr}-${dateStr} ~ ${writetimeArr[1]}-${writetimeArr[2]}`    
   }
 
- export const compareToWritetime = (originalWritetime:string):boolean => {
+ export const compareToWritetime = (originalWritetime:string,fromEffect:boolean=false):boolean => {
     const time1Arr = originalWritetime.split('-')
-    const time2Arr = getTime(false).split('-')
+    const time2Arr = getTime(false).split('-')   
     let bool = false        
     if(Number(time1Arr[0]) == Number(time2Arr[0])){
         if(Number(time1Arr[1]) == Number(time2Arr[1])){
-            if(Number(time1Arr[2]) == +time2Arr[2] - 1){
+            if(fromEffect ? Number(time1Arr[2]) == +time2Arr[2]  : (Number(time1Arr[2]) == +time2Arr[2] - 1)){
                 bool = true;
             }
         }
@@ -153,6 +153,7 @@ export const calculTime = (writetime:string,num:number):string[] => {
   return [startDate,endDate]
 }
 
+
 export const selectTime = (writetime:string,num:number):string[] => {
   const day = new Date(writetime)
   const date = day.getDate()
@@ -169,8 +170,3 @@ export const replaceYear = (time:string):string => {
   
 
   
-=======
-export const checkNull = (value:number | undefined) => {
-    return value == null ? 0 : value
-  }
->>>>>>> a82d106d387b8df157f8a5cb2c8d5278df0830da

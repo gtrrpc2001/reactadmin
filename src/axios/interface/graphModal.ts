@@ -18,3 +18,14 @@ export interface writetimeButtonModal{
     days2:boolean
     days3:boolean
 }
+
+export interface graphValueReduce{
+    max:number
+    min:number
+    aver:number
+}
+
+export interface graphPulse{
+    count:number
+    writetime:string
+}
