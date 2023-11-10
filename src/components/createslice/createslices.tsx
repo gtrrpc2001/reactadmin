@@ -72,6 +72,16 @@ export const bpmGraphSlice = createSlice({
 });
 export const bpmGraphActions = bpmGraphSlice.actions;
 
+export const barGraphSlice = createSlice({
+    name:'barGraph',
+    initialState:[],
+    reducers:{
+        value:(state:any,action: PayloadAction<any>) => state = action.payload,
+    }
+
+});
+export const barGraphActions = barGraphSlice.actions;
+
 export const writetimeGraphSlice = createSlice({
     name:'writetime',
     initialState:'',

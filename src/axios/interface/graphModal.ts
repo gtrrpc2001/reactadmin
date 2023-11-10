@@ -19,6 +19,13 @@ export interface writetimeButtonModal{
     days3:boolean
 }
 
+export interface dayGubunButtonModal{
+    day:boolean
+    week:boolean
+    month:boolean
+    year:boolean    
+}
+
 export interface graphValueReduce{
     max:number
     min:number
@@ -27,5 +34,13 @@ export interface graphValueReduce{
 
 export interface graphPulse{
     count:number
+    writetime:string
+}
+
+export interface graphCalStep{
+    cal:number
+    calexe:number
+    step:number
+    distanceKM:number
     writetime:string
 }

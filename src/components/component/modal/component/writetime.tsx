@@ -2,37 +2,108 @@ import {Box, Typography} from "@mui/material";
 import { ButtonChartBpm } from "../body/bodygraph/ChartButton";
 import { useEffect, useState } from "react";
 import { getTime } from "../../../../func/func";
-import { graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal";
-import { calculTime, compareToWritetime, getWritetimeButtomValue, getWritetimeValue } from "../controller/modalController";
-import { bpmGraphActions, writetimeGraphActions } from "../../../createslice/createslices";
-import { getBpm } from "../data/data";
+import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal";
+import { calculTime, compareToWritetime, getYearMonth, getWritetimeButtomValue, getWritetimeValue, replaceYear, selectWeek, 
+    getYear, calculWeek, compareDay, calculMonth, compareMonth, compareYear, calculYear } from "../controller/modalController";
+import { bpmGraphActions, barGraphActions, writetimeGraphActions } from "../../../createslice/createslices";
+import { getArr, getBpm, getCalStep } from "../data/data";
 import { useDispatch } from "react-redux";
+
 
 type Props = {
     iconSelect:graphModal
     clickWritetimeButton:writetimeButtonModal
+    clickDayGubunButton: dayGubunButtonModal
     eq:string
 }
 
-export const Writetime = ({iconSelect,clickWritetimeButton,eq}:Props) => {
+export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,eq}:Props) => {
     const [text,setText] = useState(getTime(false))
     const [disabled,setDisabled] = useState(true)
     const [originalWritetime,setOriginalWritetime] = useState(getTime(false))
     const GraphValue = useDispatch()
 
-    const getWritetime = async(id:string) => {        
-        const plusDate = calculTime(originalWritetime,1)
+    const setValue = (id:string,plusDate:string[]) => {
         if(id == "plus"){            
             setOriginalWritetime(plusDate[1])      
         }else{    
             setOriginalWritetime(plusDate[0])          
         }
+    }
+
+    const writetimeButtonIconSelect = (id:string) => {
+        let plusDate:string[] = [] 
+        switch(true){
+            case clickDayGubunButton.week:
+                if(!compareDay(id,originalWritetime)){                    
+                    plusDate = calculWeek(originalWritetime)
+                    setDisabled(false)
+                    setValue(id,plusDate)
+                }else{
+                    setDisabled(true)
+                }                
+                break;
+            case clickDayGubunButton.month:
+                if(!compareMonth(id,originalWritetime)){
+                    plusDate = calculMonth(originalWritetime)
+                    setDisabled(false)                                
+                    setValue(id,plusDate)
+                }else{
+                    setDisabled(true)
+                }
+                break;
+            case clickDayGubunButton.year:
+                if(!compareYear(id,originalWritetime)){
+                    plusDate = calculYear(originalWritetime)
+                    setDisabled(false)                                
+                    setValue(id,plusDate)
+                }else{
+                    setDisabled(true)
+                }
+                break;
+            default :            
+                plusDate = calculTime(originalWritetime,1)
+                setValue(id,plusDate)
+                break;
+        } 
+    }
+
+    const getWritetime = async(id:string) => {
+        let plusDate:string[] = []        
+        switch(true){
+            case iconSelect.pulse :
+                writetimeButtonIconSelect(id)
+                break;
+            case iconSelect.cal :
+                writetimeButtonIconSelect(id)
+                break;
+            case iconSelect.step :
+                writetimeButtonIconSelect(id)
+                break;
+            default :
+                plusDate = calculTime(originalWritetime,1)
+                setValue(id,plusDate)
+                break;
+        }             
     }    
 
-    useEffect(()=>{
+    const setEffectFunc = () => {
         setDisabled(compareToWritetime(originalWritetime,true))
-        getTimeChangeFromButton(new Date(originalWritetime))
-    },[originalWritetime,clickWritetimeButton,iconSelect])    
+        getTimeChangeFromButton(new Date(originalWritetime)) 
+    }
+
+    useEffect(()=>{
+        const today = getTime(false)
+        if(originalWritetime == today){
+            setEffectFunc()   
+        }else{
+            setOriginalWritetime(today)
+        }
+    },[iconSelect])
+
+    useEffect(()=>{
+        setEffectFunc()
+    },[originalWritetime,clickWritetimeButton,clickDayGubunButton])    
 
 
     const bpm_hrv = async(writetime:string) => {
@@ -48,22 +119,72 @@ export const Writetime = ({iconSelect,clickWritetimeButton,eq}:Props) => {
                 setText(getWritetimeButtomValue(writetime,2))                                   
                 break;
             default :
-                const timeOne = calculTime(writetime,0)                     
+                const timeOne = calculTime(writetime,0)                 
                 GraphValue(bpmGraphActions.value(await getBpm(eq,writetime,timeOne[1])))
                 setText(writetime) 
                 break;
         }
     }
 
-    const gubunIconButton = async(writetime:string) => {
+    const getWeek = async(writetime:string) => {
+            const currentWeek = selectWeek(writetime)
+             const firstDay =  currentWeek[0]
+             const lastDay =   currentWeek[currentWeek.length - 1]
+             const endDate = calculTime(lastDay,0)[1]
+             await pulseCalStepSelectData(eq,firstDay,endDate,10)             
+             const setFirstDay = replaceYear(firstDay)           
+             const setLastDay = replaceYear(lastDay)
+             setText(`${setFirstDay} ~ ${setLastDay}`)
+    }
 
+    const pulseCalStepSelectData = async(eq:string,startDate:string,endDate:string,len:number) => {
         switch(true){
             case iconSelect.pulse :
+                return GraphValue(barGraphActions.value(await getArr(eq,startDate,endDate,len)))
+            default :
+                return GraphValue(barGraphActions.value(await getCalStep(eq,startDate,endDate,len)))
+        }
+    }
 
-            case iconSelect.cal,iconSelect.step :
+    const pulse = async(writetime:string) => {        
+        switch(true){
+            case clickDayGubunButton.week:
+               await getWeek(writetime)
+             break;
+            case clickDayGubunButton.month:
+               const getYM = getYearMonth(writetime,new Date())
+               const day = new Date(writetime)               
+               const getNextMonth = getYearMonth('',new Date(day.setMonth(day.getMonth() + 1)))
+               await pulseCalStepSelectData(eq,`${getYM}-01`,`${getNextMonth}-01`,10)
+               setText(getYM)   
+               break;
+            case clickDayGubunButton.year:
+                const Y = getYear(writetime)
+                await pulseCalStepSelectData(eq,`${Y}-01-01`,`${Y}-12-31`,7)
+                setText(Y)   
+                break;
+            default :
+            const time = calculTime(writetime,0)
+            await pulseCalStepSelectData(eq,writetime,time[1],13)
+            setText(writetime)
+            break;
+        }        
+    }
 
+    const gubunIconButton = async(writetime:string) => {
+        switch(true){
+            case iconSelect.pulse :
+                pulse(writetime)
+                break;
+            case iconSelect.cal :
+                pulse(writetime)
+                break;
+            case iconSelect.step :
+                pulse(writetime)
+                break;
             default :
                 await bpm_hrv(writetime)
+                break;
         }        
     }
 
@@ -100,7 +221,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,eq}:Props) => {
     return (
         <Box sx={{height:40 , display:'flex',alignItems:'center',justifyContent:'center'}}>
             <ButtonChartBpm id="minus"  bgColor="#a8a7a7" Handler={(e)=>writetimeHandler(e)} front={false}/>            
-            <Typography sx={{fontWeight:'bold',marginLeft:7,marginRight:7}}>
+            <Typography sx={{width:110,textAlign:'center',fontWeight:'bold',marginLeft:7,marginRight:7,":hover":{cursor:'default'}}}>
                 {text}
             </Typography>            
             <ButtonChartBpm id="plus" disabled={disabled} bgColor="#a8a7a7" Handler={(e)=>writetimeHandler(e)} front={true}/>            

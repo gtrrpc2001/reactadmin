@@ -1,14 +1,14 @@
 import { Box} from "@mui/material";
-import { getClickGraph, getClickWriteimteButton } from "../../controller/modalController";
-import { graphModal, writetimeButtonModal } from "../../../../../axios/interface/graphModal";
+import { getClickDayGubunButton, getClickGraph, getClickWriteimteButton } from "../../controller/modalController";
+import { graphModal, writetimeButtonModal,dayGubunButtonModal } from "../../../../../axios/interface/graphModal";
 import { useState } from "react";
 import { BodyGraphTopBody } from "./bodygraphtopbody";
 import { BpmChart } from "./bpmChart";
 import { Writetime } from "../../component/writetime";
 import { WritetimeButton } from "./writetimeButton";
-import { BodyGraphBottom } from "./bodygraphBottom";
+import { BodyGraphBpmBottom, BodyGraphPulseBottom } from "./bodygraphBottom";
 import { BarCharts } from "./barChart";
-import { footerIcon } from "../../../../../axios/interface/footerIcon";
+import { DayGubunButton } from "./dayGubunButton";
 
 type Props = {
     eq:string
@@ -17,6 +17,7 @@ type Props = {
 export const BodyGraph = ({eq}:Props) => {    
     const [clickGraph,setClickGraph] = useState<graphModal>({bpm:true,pulse:false,hrv:false,cal:false,step:false})
     const [clickWritetimeButton,setClickWritetimeButton] = useState<writetimeButtonModal>({today:true,days2:false,days3:false}) 
+    const [clickDayGubunButton,setClickDayGubunButton] = useState<dayGubunButtonModal>({day:true,week:false,month:false,year:false})
 
     const iconClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const id = e?.currentTarget?.id
@@ -30,40 +31,43 @@ export const BodyGraph = ({eq}:Props) => {
         setClickWritetimeButton(iconClick)
     }
 
+    const dayGubunButtonHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const id = e?.currentTarget?.id
+        let iconClick:dayGubunButtonModal = getClickDayGubunButton(id)
+        setClickDayGubunButton(iconClick)
+    }
+
+    const pulse_cal_step = () => {
+        return (
+            <>
+            <BarCharts iconSelect={clickGraph} dayGubunButtonModal={clickDayGubunButton}/>
+            <DayGubunButton onClick={(e) => dayGubunButtonHandler(e)} dayClick={clickDayGubunButton}/>
+            </>
+        );
+    }
+
+    const bpm_hrv = (bool:boolean) => {
+        return (
+        <>
+            <BpmChart clickWritetimeButton={clickWritetimeButton} bpm={bool}/>
+            <WritetimeButton  onClick={(e)=>writetimeButtonHandler(e)} clickWritetimeButton={clickWritetimeButton}/>
+        </>
+        );
+    }
+
     const getGraphBodyUI = (iconSelect:graphModal) => {
         switch(true){
           case iconSelect.pulse:
-              return (
-                <BarCharts clickWritetimeButton={clickWritetimeButton}/>
-              );
+              return pulse_cal_step()
           case iconSelect.hrv:
-            return (
-                <>
-                <BpmChart clickWritetimeButton={clickWritetimeButton} bpm={false}/>
-                <WritetimeButton  onClick={(e)=>writetimeButtonHandler(e)} clickWritetimeButton={clickWritetimeButton}/>
-                </>
-                    
-            );
+            return bpm_hrv(false)
         
           case iconSelect.cal:
-            return (
-                <Box>
-                
-                </Box>
-            );
+            return pulse_cal_step()
         case iconSelect.step:
-            return (
-                <Box>
-                
-                </Box>
-            );
+            return pulse_cal_step()
           default :          
-            return (
-                <>
-                    <BpmChart clickWritetimeButton={clickWritetimeButton} bpm={true}/>
-                    <WritetimeButton  onClick={(e)=>writetimeButtonHandler(e)} clickWritetimeButton={clickWritetimeButton}/>
-                </>
-            );
+            return bpm_hrv(true)
         }
       }
 
@@ -71,13 +75,11 @@ export const BodyGraph = ({eq}:Props) => {
         switch(true){
           case iconSelect.pulse:
               return (
-                <Box>
-                
-              </Box>
+              <BodyGraphPulseBottom clickDayGubunButton={clickDayGubunButton}/>
               );
           case iconSelect.hrv:
             return (
-                <BodyGraphBottom clickWritetimeButton={clickWritetimeButton} bpm={false}/>
+              <BodyGraphBpmBottom clickWritetimeButton={clickWritetimeButton} bpm={false}/>
             );
         
           case iconSelect.cal:
@@ -95,7 +97,7 @@ export const BodyGraph = ({eq}:Props) => {
           default :          
             return (
                 <>
-                    <BodyGraphBottom clickWritetimeButton={clickWritetimeButton} bpm={true}/>
+                    <BodyGraphBpmBottom clickWritetimeButton={clickWritetimeButton} bpm={true}/>
                 </>
             );
         }
@@ -109,7 +111,7 @@ export const BodyGraph = ({eq}:Props) => {
               
             {(getGraphBodyUI(clickGraph))}  
 
-            <Writetime iconSelect={clickGraph} clickWritetimeButton={clickWritetimeButton} eq={eq}/>
+            <Writetime iconSelect={clickGraph} clickWritetimeButton={clickWritetimeButton} clickDayGubunButton={clickDayGubunButton} eq={eq}/>
 
             {getGraphBottomUI(clickGraph)}
 

@@ -1,6 +1,6 @@
 import { userBpmType } from "../../../../axios/interface/bpmType"
 import { footerIcon } from "../../../../axios/interface/footerIcon"
-import { graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal"
+import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal"
 import { historyLast } from "../../../../axios/interface/history_last"
 import { modalValues } from "../../../../axios/interface/modalvalues"
 import { getChangeDate, getHour, getTime } from "../../../../func/func"
@@ -103,6 +103,24 @@ export const getHeartText = (arrCnt:number):string => {
     }
   }
 
+  export const getClickDayGubunButton = (id:string):dayGubunButtonModal => {    
+    const day = 'day'
+    const week = 'week'    
+    const month = 'month'  
+    const year = 'year'  
+    let iconClick:dayGubunButtonModal = {day:true,week:false,month:false,year:false}
+    switch(true){
+      case id.includes(year) :
+        return {day:false,week:false,month:false,year:true}
+      case id.includes(week) :
+        return {day:false,week:true,month:false,year:false}
+      case id.includes(month) :
+        return {day:false,week:false,month:true,year:false}      
+      default :
+        return iconClick
+    }
+  }
+
   
 
   export const checkNull = (value:number | undefined) => {
@@ -143,6 +161,29 @@ export const getHeartText = (arrCnt:number):string => {
     return bool;
 }
 
+export const compareYearMonth = (Writetime:string):boolean => {
+  const time1Arr = Writetime.split('-')
+  const time2Arr = getTime(false).split('-')   
+  let bool = false        
+  if(Number(time1Arr[0]) == Number(time2Arr[0])){
+      if(Number(time1Arr[1]) == Number(time2Arr[1])){          
+        bool = true;          
+      }
+  }
+  return bool;
+}
+
+export const compareFullYear = (Writetime:string):boolean => {
+  const time1Arr = Writetime.split('-')
+  const time2Arr = getTime(false).split('-')   
+  let bool = false        
+  if(Number(time1Arr[0]) == Number(time2Arr[0])){               
+     bool = true;  
+  }
+  return bool;
+}
+
+
 export const calculTime = (writetime:string,num:number):string[] => {
   const day = new Date(writetime)
   const date = day.getDate()
@@ -151,6 +192,53 @@ export const calculTime = (writetime:string,num:number):string[] => {
   const endDate = getWritetimeValue(endDay)
   const startDate = getWritetimeValue(startDay)
   return [startDate,endDate]
+}
+
+export const calculWeek = (writetime:string):string[] => {
+  const day = new Date(writetime)
+  const date = day.getDate()
+  const endDay = new Date(day.setDate(date + 7))
+  const startDay = new Date(day.setDate(date - 7))
+  const endDate = getWritetimeValue(endDay)  
+  const startDate = getWritetimeValue(startDay)
+  return [startDate,endDate]
+}
+
+export const calculMonth = (writetime:string):string[] => {
+  const day = new Date(writetime)
+  const month = day.getMonth()
+  const endDay = new Date(day.setMonth(month + 1))
+  const startDay = new Date(day.setMonth(month - 1))
+  const endDate = getWritetimeValue(endDay)
+  const startDate = getWritetimeValue(startDay)  
+  return [startDate,endDate]
+}
+
+export const calculYear = (writetime:string):string[] => {
+  const day = new Date(writetime)
+  const year = day.getFullYear()
+  const endDay = new Date(day.setFullYear(year + 1))
+  const startDay = new Date(day.setFullYear(year - 1))
+  const endDate = getWritetimeValue(endDay)
+  const startDate = getWritetimeValue(startDay)  
+  return [startDate,endDate]
+}
+
+export const compareDay = (id:string,writetime:string):boolean => {
+  const currentWeek = selectWeek(writetime)
+  const lastDay =   currentWeek[currentWeek.length - 1]
+  const nowWeek = selectWeek(getTime(false))[currentWeek.length - 1]  
+  return id == 'minus'? false : (lastDay == nowWeek)
+}
+
+export const compareMonth = (id:string,writetime:string):boolean => {  
+  const bool = compareYearMonth(writetime)  
+  return id == 'minus'? false : bool
+}
+
+export const compareYear = (id:string,writetime:string):boolean => {  
+  const bool = compareFullYear(writetime)  
+  return id == 'minus'? false : bool
 }
 
 
@@ -166,6 +254,147 @@ export const replaceYear = (time:string):string => {
   const times = time.split('-')
   return `${times[1]}-${times[2]}`
 }
+
+export const getYearMonth = (time:string,day:Date):string => {
+  if(time != ''){
+    const times = time.split('-')
+    return `${times[0]}-${times[1]}`
+  }else{
+    const year = day.getFullYear()
+    const getMonth = day.getMonth() + 1
+    const month = `${getMonth}`.length > 1 ? `${getMonth}` : `0${getMonth}`
+    return `${year}-${month}`
+  }
+}
+
+export const getFullYear = (day:Date):string => {  
+    const year = day.getFullYear()
+    return `${year}`
+  
+}
+
+export const getYear = (time:string):string => {
+  const times = time.split('-')
+  return times[0]
+}
+
+export const selectWeek = (writetime:string):string[] => {
+  const currentDay = new Date(writetime)
+  var theYear = currentDay.getFullYear();
+  var theMonth = currentDay.getMonth();
+  var theDate  = currentDay.getDate();
+  var theDayOfWeek = currentDay.getDay();
+  var thisWeek = [];
+  var j = 0
+  for(var i=1; i<8; i++) {
+        var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
+        var yyyy = `${resultDay.getFullYear()}`;
+        var mm = `${Number(resultDay.getMonth()) + 1}`;
+        var dd = `${resultDay.getDate()}`;               
+        mm = String(mm).length === 1 ? '0' + mm : mm;
+        dd = String(dd).length === 1 ? '0' + dd : dd;
+        thisWeek[j] = yyyy + '-' + mm + '-' + dd;
+        j++
+  }
+  return thisWeek
+}
+
+export const selectWeekDate = (writetime:string):string[] => {
+  const currentDay = new Date(writetime)
+  var theYear = currentDay.getFullYear();
+  var theMonth = currentDay.getMonth();
+  var theDate  = currentDay.getDate();
+  var theDayOfWeek = currentDay.getDay();
+  var thisWeek = [];
+  var j = 0
+  for(var i=1; i<8; i++) {
+        var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
+        var dd = `${resultDay.getDate()}`;                       
+        dd = String(dd).length === 1 ? '0' + dd : dd;
+        thisWeek[j] = dd;
+        j++
+  }
+  return thisWeek
+}
+
+export const getPulse = (writetime:string,data: any[],dayGubunButtonModal:dayGubunButtonModal) => {   
+  const week = ['월','화','수','목','금','토','일']
+  if(dayGubunButtonModal.week){
+      let setData = []
+      const currentWeek = selectWeekDate(writetime)                  
+      let j = 0
+      for(var i = 0; i < week.length; i++){  
+          let bool = currentWeek[i] == data[j]?.writetime
+              setData.push({
+                  data: (bool) ? data[j]?.count : 0,
+                  xAxis: week[i]
+              })
+              if(bool)
+                  j++                          
+      }
+      return setData
+  }else{
+      try{
+          return data?.map((d)=>{                    
+              return {
+                  data:d.count,
+                  xAxis:d.writetime
+              }
+          })
+      }catch{
+
+      }
+  }                    
+
+}
+
+export const getCalStep = (writetime:string,data: any[],iconSelect: graphModal,dayGubunButtonModal:dayGubunButtonModal) => {
+  const week = ['월','화','수','목','금','토','일']                       
+  const cal = iconSelect.cal
+  if(dayGubunButtonModal.week){
+      let setData = []
+      const currentWeek = selectWeekDate(writetime)                  
+      let j = 0
+      for(var i = 0; i < week.length; i++){  
+          let bool = currentWeek[i] == data[j]?.writetime
+              setData.push({
+                  data1: (bool) ? (cal ? data[j]?.cal : data[j]?.step) : 0,
+                  data2:(bool) ? (cal ? data[j]?.calexe : data[j]?.distanceKM) : 0,
+                  xAxis: week[i]
+              })
+              if(bool)
+                  j++                          
+      }
+      return setData
+  }else{
+      try{
+          return data?.map((d)=>{                    
+              return {
+                  data1:cal ? d.cal : d.step,
+                  data2:cal ? d.calexe : d.distanceKM,
+                  xAxis:d.writetime
+              }
+          })
+      }catch{
+
+      }
+  }                
+}
+
+export const graphSliceShow = (Count:number,length:number):number[] => {                
+  const endNum = 1000
+  if(Count == 1){
+      return [0, endNum]         
+  } else {
+      if(Count * endNum > length){
+          return [((Count-1) * endNum) + 1, length]
+      }else{
+          return [((Count-1) * endNum) + 1, Count * endNum]
+      }
+  }        
+}
+
+
 
   
 
