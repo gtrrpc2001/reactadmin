@@ -13,7 +13,7 @@ import {
     Legend
 } from 'recharts';
 import { ButtonChartBpm } from "./ChartButton";
-import { replaceYear, selectTime } from "../../controller/modalController";
+import { graphSliceShow, replaceYear, selectTime } from "../../controller/modalController";
 
 
 type Props = {
@@ -32,20 +32,9 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
     const [lineName3,setLineName3] = useState<string>('오늘') 
 
     const length = data.length
-
-    const endNum = 1000
-    const graphShow = ():number[] => {        
-        if(Count == 1){
-            return [0, endNum]         
-        } else {
-            if(Count * endNum > length){
-                return [((Count-1) * endNum) + 1, length]
-            }else{
-                return [((Count-1) * endNum) + 1, Count * endNum]
-            }
-        }
-    }
-    const [slice,setSlice] = useState<number[]>(graphShow())
+    const pageLength = Math.ceil(length / 1000)   
+    
+    const [slice,setSlice] = useState<number[]>(graphSliceShow(Count,length))
        
     let start = slice[0]
     let end = slice[1]        
@@ -109,22 +98,28 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
                 })                    
                 return v2
             default :
-            
-           return data?.slice(start,end)?.map(d=>{
-                    return  {usageLast:onlyTodayDataGubun(d),xAxis:d.writetime?.split(' ')[1]}  
-                  });
+            try{                
+                return data?.slice(start,end)?.map(d=>{
+                         return  {usageLast:onlyTodayDataGubun(d),xAxis:d.writetime?.split(' ')[1]}  
+                       });
+            }catch{
+                return []
+            }
         }
     }
 
     const lineData = getData() 
     
-    function countHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-       if(e.currentTarget.id == "plus"){        
-                setCount(Count+1)
-                setBackBtn(false)
-            if((Math.ceil(length / 1000) == Count+1)){               
+    function countHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {        
+       if(e.currentTarget.id == "plus"){
+             if(pageLength != 1){
+                 setCount(Count+1)
+                 setBackBtn(false)
+             }                   
+            if((pageLength == Count+1)){                
                 setNextBtn(true)
-            }
+            }            
+            
         }
         else{            
             if(Count > 1){
@@ -140,7 +135,7 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
     }    
 
     useEffect(()=>{        
-        setSlice(graphShow())
+        setSlice(graphSliceShow(Count,length))        
     },[Count,clickWritetimeButton])    
 
     useEffect(()=>{

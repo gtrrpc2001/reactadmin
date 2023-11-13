@@ -6,7 +6,7 @@ import { graphBpm, graphCalStep, graphPulse } from '../interface/graphModal';
 
 
 const client: Axios = axios.create({
-    baseURL: 'https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app',
+    baseURL: 'http://121.152.22.85:40080', //https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app/
     headers: {
       'Content-Type': 'application/json',
     }
