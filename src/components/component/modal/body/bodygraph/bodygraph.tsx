@@ -6,15 +6,17 @@ import { BodyGraphTopBody } from "./bodygraphtopbody";
 import { BpmChart } from "./bpmChart";
 import { Writetime } from "../../component/writetime";
 import { WritetimeButton } from "./writetimeButton";
-import { BodyGraphBpmBottom, BodyGraphPulseBottom } from "./bodygraphBottom";
+import { BodyGraphBpmBottom, BodyGraphCalStepBottom, BodyGraphPulseBottom } from "./bodygraphBottom";
 import { BarCharts } from "./barChart";
 import { DayGubunButton } from "./dayGubunButton";
+import { profileModal } from "../../../../../axios/interface/profileModal";
 
 type Props = {
+    profile: profileModal
     eq:string
 }
 
-export const BodyGraph = ({eq}:Props) => {    
+export const BodyGraph = ({profile,eq}:Props) => {    
     const [clickGraph,setClickGraph] = useState<graphModal>({bpm:true,pulse:false,hrv:false,cal:false,step:false})
     const [clickWritetimeButton,setClickWritetimeButton] = useState<writetimeButtonModal>({today:true,days2:false,days3:false}) 
     const [clickDayGubunButton,setClickDayGubunButton] = useState<dayGubunButtonModal>({day:true,week:false,month:false,year:false})
@@ -84,15 +86,11 @@ export const BodyGraph = ({eq}:Props) => {
         
           case iconSelect.cal:
             return (
-                <Box>
-                
-                </Box>
+                <BodyGraphCalStepBottom profile={profile} step={false}/>
             );
         case iconSelect.step:
             return (
-                <Box>
-                
-                </Box>
+                <BodyGraphCalStepBottom profile={profile} step={true}/>
             );
           default :          
             return (

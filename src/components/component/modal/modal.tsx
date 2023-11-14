@@ -58,7 +58,7 @@ interface ModalDefaultType {
     switch(true){
       case footerSelect.graph:
           return (
-            <BodyGraph eq={eq}/>
+            <BodyGraph profile={getProfile} eq={eq}/>
           );
       case footerSelect.profile:
         return (

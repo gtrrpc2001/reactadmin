@@ -1,14 +1,18 @@
-import {Box, Typography} from "@mui/material";
-import { dayGubunButtonModal, graphBpm, graphPulse, writetimeButtonModal } from "../../../../../axios/interface/graphModal";
+import {Box, Divider, Typography} from "@mui/material";
+import { dayGubunButtonModal, graphBpm, graphCalStep, graphPulse, writetimeButtonModal } from "../../../../../axios/interface/graphModal";
 import { RootState } from "../../../../../store/store";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { profileModal } from "../../../../../axios/interface/profileModal";
+import { progressBarValue } from "../../controller/modalController";
+import { ProgressBar } from "./progressBar";
 
 type Props = {
     clickWritetimeButton?:writetimeButtonModal
     clickDayGubunButton?:dayGubunButtonModal
-    bpm?:boolean    
-    
+    bpm?:boolean        
+    profile?:profileModal
+    step?:boolean
 }
 
 export const BodyGraphBpmBottom = ({clickWritetimeButton,bpm}:Props) => {
@@ -123,3 +127,67 @@ export const BodyGraphPulseBottom = ({clickDayGubunButton}:Props) => {
         </Box>
     );
 }
+
+export const BodyGraphCalStepBottom = ({clickDayGubunButton,profile,step}:Props) => {    
+    const writetime:string = useSelector<RootState,any>(state => state.writetimeGraph)
+    const data:graphCalStep[] = useSelector<RootState,any>(state => state.barGraphValue)
+    const [values,setValues] = useState<number[]>([0,0])
+    const [barValues,setBarValues] = useState<number[]>([0,0])
+    
+    
+    const barWidth = 210
+    const textWidth = 124
+    const firstSettingNum = step ? Number(profile?.step) : Number(profile?.cal)
+    const secondSettingNum = step ? Number(profile?.distanceKM) : Number(profile?.calexe)
+    const firstSetting = step ? `${firstSettingNum} step` : `${firstSettingNum} kcal`
+const secondSetting = step ? `${secondSettingNum} km` : `${secondSettingNum} kcal`
+    
+    useEffect(()=>{
+        
+        try{        
+            const firstValueAdd = data.reduce(function add(sum,currValue){                        
+                return step ? +currValue.step + +sum : +currValue.cal + +sum;         
+            },0)
+    
+            const secondValueAdd = data.reduce(function add(sum,currValue){                        
+                return step ? +currValue.distanceKM + +sum : +currValue.calexe + +sum;         
+            },0)        
+            setValues([firstValueAdd,secondValueAdd])        
+        }catch{
+    
+        }
+    },[clickDayGubunButton,data,writetime])
+    
+    useEffect(()=>{
+        setBarValues([progressBarValue(firstSettingNum,values),
+            step ? progressBarValue(secondSettingNum,values,true) : progressBarValue(secondSettingNum,values)])
+    },values)    
+    
+        return (
+            <Box sx={{height:120,marginLeft:1,marginTop:2,marginRight:1}}>
+                <Box sx={{display:'flex'}}>
+                    <ProgressBar value={barValues[0]} barWidth={barWidth} color={'#ef507b'} text={'총 칼로리'}/>                
+                    <Box sx={{width:textWidth,textAlign:'center'}}>
+                        <Typography>
+                            {step ? `${values[0]} step` :`${values[0]} kcal`}
+                        </Typography>
+                        <Typography>
+                            {firstSetting}
+                        </Typography>
+                    </Box>
+                </Box>
+                <Divider />
+                <Box sx={{display:'flex'}}>
+                    <ProgressBar value={barValues[1]} barWidth={barWidth} color={'#5388F7'} text={'활동 칼로리'}/>                                
+                    <Box sx={{width:textWidth,textAlign:'center'}}>
+                        <Typography>
+                            {step ? `${values[1]/1000} km` :`${values[1]} kcal`}
+                        </Typography>
+                        <Typography>
+                            {secondSetting}
+                        </Typography>
+                    </Box>
+                </Box>
+            </Box>
+        )
+    }
