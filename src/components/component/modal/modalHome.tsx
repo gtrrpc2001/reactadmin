@@ -16,7 +16,7 @@ type Props = {
 export const ModalHome = ({modalList,values,getProfile}:Props) => {
     return (
             <>   
-              <ModalTopBody bpm={modalList.bpm} arrCnt={0} prevArrCnt={getProfile.arrCnt} HeartText={getHeartText(0)} />
+              <ModalTopBody bpm={modalList.bpm} arrCnt={modalList.arrCnt} prevArrCnt={getProfile.arrCnt} HeartText={getHeartText(0)} />
               
               <MiddleBody 
               bpm={modalList.bpm} 
