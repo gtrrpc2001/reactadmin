@@ -410,6 +410,25 @@ export const progressBarValue = (settingValue:number,values:number[],check = fal
   }
 }
 
+export const getPulseEcgDataConverter = (result:string[]) => {
+  let dataList:any[] = []
+  const getData = result?.map((value:any)=>{
+    const {ecgpacket} = value
+    if(ecgpacket?.length != 0){
+        const arr:string[] = ecgpacket?.split(',')
+       return arr?.filter((value,index)=>{
+            if(index > 3){
+                dataList.push({ecg:Number(value)})
+                return value
+            }
+        })                        
+    }else{
+        return dataList.push({ecg:0})
+    }                        
+})
+return dataList
+}
+
 
 
   

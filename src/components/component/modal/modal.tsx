@@ -13,6 +13,7 @@ import { Footer } from "./footer/footer";
 import { ModalHome } from "./modalHome";
 import { footerIcon } from "../../../axios/interface/footerIcon";
 import { BodyGraph } from "./body/bodygraph/bodygraph";
+import { BodyPulse } from "./body/bodypulse/bodypulse";
 
 
 interface ModalDefaultType {
@@ -68,8 +69,7 @@ interface ModalDefaultType {
     
       case footerSelect.pulse:
         return (
-          <Box sx={{height:641}}>
-          </Box>
+          <BodyPulse eq={eq}/>
         );
       default :
         return (

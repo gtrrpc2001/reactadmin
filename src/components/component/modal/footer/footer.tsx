@@ -30,14 +30,14 @@ export const Footer = ({onClick,footerClick}:Props) => {
                     {home == "#ef507b" ? "홈" : ""}
                 </Typography>
             </Box>
-            <Box id="graph" onClick={(e) =>onClick(e)} sx={{width:60,marginLeft:2,":hover":hover}}>
+            <Box id="graph" onClick={(e) =>onClick(e)} sx={{width:90,marginLeft:2,":hover":hover}}>
                 <InsertChartOutlinedIcon sx={{color:graph,marginLeft:3}}  fontSize="large"/>                  
                 <Typography sx={{fontWeight:'bold', color:graph,position:'absolute',bottom:buttom,left:107}}>
                     {graph == "#ef507b" ? "요약" : ""}
                 </Typography>
             </Box>
-            <Box id="pulse" onClick={(e) =>onClick(e)} sx={{width:120,":hover":hover}}>
-                <HeartBrokenOutlinedIcon sx={{color:pulse,marginLeft:7.5}}  fontSize="large"/>                  
+            <Box id="pulse" onClick={(e) =>onClick(e)} sx={{width:90,":hover":hover}}>
+                <HeartBrokenOutlinedIcon sx={{color:pulse,marginLeft:3.5}}  fontSize="large"/>                  
                 <Typography sx={{fontWeight:'bold', color:pulse,position:'absolute',bottom:buttom,right:90}}>
                     {pulse == "#ef507b" ? "비정상맥박" : ""}
                 </Typography>
