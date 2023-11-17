@@ -80,7 +80,7 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
                 getDayButtonDomain(800)
                 break;
             default :
-                getDayButtonDomain(100)
+                getDayButtonDomain(1)
                 break;
         }
     }
@@ -100,7 +100,7 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
             >
                 <CartesianGrid stroke="#f5f5f5"/>
                 <XAxis dataKey="xAxis" height={15}/>
-                <YAxis yAxisId="left" domain={[0,max]} width={30}/>
+                <YAxis yAxisId="left" domain={[0,max]} width={40}/>
                 {bar()}
                 <Legend formatter={(value, entry, index) => <span className="text-color-class">{value}</span>}/>
                 <Tooltip active={true}/>
