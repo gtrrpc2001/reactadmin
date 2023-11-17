@@ -1,19 +1,20 @@
 import { Box } from '@mui/material';
-import {
-    BarChart,
+import {    
 	Bar,
 	XAxis,
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-    Legend
+    Legend,
+    Rectangle,
+    ComposedChart
 } from 'recharts';
 import { dayGubunButtonModal,graphModal } from '../../../../../axios/interface/graphModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import './barChart.scss'
 import { useEffect, useState } from 'react';
-import { getCalStep, getPulse, selectWeekDate } from '../../controller/modalController';
+import { getCalStep, getPulse } from '../../controller/modalController';
 
 type Props = {
     dayGubunButtonModal:dayGubunButtonModal    
@@ -27,7 +28,7 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
     
     const useGetData = () => {        
         switch(true){            
-            case iconSelect.pulse :
+            case iconSelect.pulse :               
                 return getPulse(writetime,data,dayGubunButtonModal)
             default :
                 return getCalStep(writetime,data,iconSelect,dayGubunButtonModal)
@@ -37,8 +38,8 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
     const cal_stepBar = (bool:boolean) => {
         return (
             <>
-                <Bar name={bool ? '걸음수' :'총 칼로리 (kcal)'} yAxisId="left" type="monotone" dataKey="data1" fill='red' />
-                <Bar name={bool ? '거리 (m)' : '활동 칼로리 (kcal)'} yAxisId="left" type="monotone" dataKey="data2" fill='blue' />
+                <Bar name={bool ? '걸음수' :'총 칼로리 (kcal)'} yAxisId="left" type="monotone" dataKey="data1" fill='red' activeBar={<Rectangle fill="red" stroke="blue" />} />
+                <Bar name={bool ? '거리 (m)' : '활동 칼로리 (kcal)'} yAxisId="left" type="monotone" dataKey="data2" fill='blue'  activeBar={<Rectangle fill="blue" stroke="red" />}/>
             </>
         );
     }
@@ -50,61 +51,47 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
             case iconSelect.step :
                 return cal_stepBar(true)                
             default :
-             return <Bar name={'비정상맥박'} yAxisId="left" type="monotone" dataKey="data" fill='red' />
+             return <Bar name={'비정상맥박'} yAxisId="left" type="monotone" dataKey="data" fill='red' activeBar={<Rectangle fill="red" stroke="blue" />}/>
         }
     }
-
-    const getDayButtonDomain = (max:number) => {
-        switch(true){
-            case dayGubunButtonModal.week :
-                setMax(max * 4) 
-                break;
-            case dayGubunButtonModal.month :
-                setMax(max * 7) 
-                break;
-            case dayGubunButtonModal.year :
-                setMax(max * 11) 
-                break;
-            default :
-                setMax(max) 
-                break;
-        }
-    }
+   
 
     const getYAxisDomain = () => {
+        let getMax:number = 0
         switch(true){
             case iconSelect.cal :
-                getDayButtonDomain(400)
+            getMax = Math.max(...data?.map(o=>o.cal > o.calexe ? o.cal : o.calexe))
                 break;
             case iconSelect.step :  
-                getDayButtonDomain(800)
+            getMax = Math.max(...data?.map(o=>o.step > o.distanceKM ? o.step : o.distanceKM))
                 break;
             default :
-                getDayButtonDomain(1)
-                break;
+            getMax = Math.max(...data?.map(o=>o.count))
+            break;
         }
+        setMax(getMax)
     }
 
     useEffect(()=>{
         getYAxisDomain()
-    },[iconSelect,dayGubunButtonModal])
+    },[data])
     
     let barData = useGetData()    
     
     return (
         <Box sx={{width:350,height:320,marginTop:2}}>
-            <BarChart
+            <ComposedChart
             width={335}
             height={300}
-            data={barData}            
+            data={barData}                        
             >
-                <CartesianGrid stroke="#f5f5f5"/>
+                <CartesianGrid stroke="#f5f5f5" />
                 <XAxis dataKey="xAxis" height={15}/>
                 <YAxis yAxisId="left" domain={[0,max]} width={40}/>
                 {bar()}
                 <Legend formatter={(value, entry, index) => <span className="text-color-class">{value}</span>}/>
-                <Tooltip active={true}/>
-            </BarChart>
+                <Tooltip/>
+            </ComposedChart>
         </Box>
     );
 }
