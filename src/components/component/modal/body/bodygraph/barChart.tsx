@@ -57,6 +57,7 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
    
 
     const getYAxisDomain = () => {
+<<<<<<< HEAD
         if(`${typeof(data)}` ===  'object'){
             let getMax:number = 0
             switch(true){
@@ -71,7 +72,21 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
                     break;
                 }
                 setMax(getMax)
+=======
+        let getMax:number = 0
+        switch(true){
+            case iconSelect.cal :
+            getMax = Math.max(...data?.map(o=>o.cal > o.calexe ? o.cal : o.calexe))
+                break;
+            case iconSelect.step :  
+            getMax = Math.max(...data?.map(o=>o.step > o.distanceKM ? o.step : o.distanceKM))
+                break;
+            default :
+            getMax = Math.max(...data?.map(o=>o.count))
+            break;
+>>>>>>> 54a5c46904e5d2732df150ed422f938ceac7e2da
         }
+        setMax(getMax)
     }
 
     useEffect(()=>{
