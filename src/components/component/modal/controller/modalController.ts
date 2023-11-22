@@ -1,5 +1,6 @@
 import { userBpmType } from "../../../../axios/interface/bpmType"
 import { footerIcon } from "../../../../axios/interface/footerIcon"
+import { graphKindButton } from "../../../../axios/interface/graph"
 import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal"
 import { historyLast } from "../../../../axios/interface/history_last"
 import { modalValues } from "../../../../axios/interface/modalvalues"
@@ -121,7 +122,20 @@ export const getHeartText = (arrCnt:number):string => {
     }
   }
 
-  
+  export const getClickGraphKindButton = (id:string):graphKindButton => {    
+    const bpm_hrv_arr = 'bpm_hrv_arr'
+    const cal_step = 'cal_step'          
+    const ecg = 'ecg'  
+    let iconClick:graphKindButton = {bpm_hrv_arr:true,cal_step:false,ecg:false}
+    switch(true){
+      case id == ecg :
+       return {bpm_hrv_arr:false,cal_step:false,ecg:true}
+      case id == cal_step :
+        return {bpm_hrv_arr:false,cal_step:true,ecg:false}       
+      default :
+        return iconClick
+    }
+  }  
 
   export const checkNull = (value:number | undefined) => {
     return value == null ? 0 : value

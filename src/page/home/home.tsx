@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {  listActions, loginActions, } from "../../components/createslice/createslices";
+import {  listActions, loginActions, nameActions, } from "../../components/createslice/createslices";
 import  { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { saveLog } from "../../data/login";
@@ -31,7 +31,9 @@ export default function Home(){
                 setLoding(false)
                 setEditData(data)
                 if(data?.length != 0){
-                    InfoDispatch(listActions.listHistory(data))                                        
+                    InfoDispatch(listActions.listHistory(data))
+                    const names = data.map((d:any)=>{ return {eq:d.eq,eqname:d.eqname}})
+                    InfoDispatch(nameActions.value(names))                                         
                 }
                 return data;
             }catch(E){

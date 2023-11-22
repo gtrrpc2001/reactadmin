@@ -41,3 +41,10 @@ const today = new Date()
 return today?.getHours()
 }
 
+export const getCalendarTime = (value:any):string => {
+  const {$D,$M,$y} = value
+  const month = (($M+1) < 10) ? `0${$M+1}` : $M+1
+  const date = ($D < 10) ? `0${$D}` : $D
+  return `${$y}-${month}-${date}`
+}
+

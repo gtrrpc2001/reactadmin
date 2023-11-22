@@ -6,7 +6,7 @@ type Props = {
     compareArrChecked:boolean
 }
 
-export const ModalTopbodyRightText = ({ArrCnt,position,compareArrChecked}:Props) => {
+export const ModalTopbodyRightText = ({ArrCnt,position,compareArrChecked}:Props) => {    
     return (
         <Typography 
             sx={{fontFamily:'-moz-initial',fontSize:13,color:'black',

@@ -1,11 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import { ButtonChartBpm } from "../bodygraph/ChartButton";
-import { DateCalendar ,LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState } from "react";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { PickerSelectionState } from "@mui/x-date-pickers/internals";
 import { Calendar } from "../../component/calendar";
+import { getCalendarTime } from "../../../../../func/func";
 
 
 type Props = {
@@ -20,10 +19,7 @@ export const WritetimeButton = ({writetime,setTime,writetimeHandler,disabled}:Pr
 
     const calendarHandler = (value:any,cal:PickerSelectionState | undefined) => {
         setShowCalendar(false)
-        const {$D,$M,$y} = value
-        const month = (($M+1) < 10) ? `0${$M+1}` : $M+1
-        const date = ($D < 10) ? `0${$D}` : $D
-        const currentTime = `${$y}-${month}-${date}`        
+        const currentTime = getCalendarTime(value)        
         setTime(currentTime)
     }
 

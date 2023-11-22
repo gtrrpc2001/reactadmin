@@ -91,3 +91,13 @@ export const writetimeGraphSlice = createSlice({
 
 });
 export const writetimeGraphActions = writetimeGraphSlice.actions;
+
+export const nameSlice = createSlice({
+    name:'name',
+    initialState:[],
+    reducers:{
+        value:(state:any,action: PayloadAction<any>) => state = action.payload,
+    }
+
+});
+export const nameActions = nameSlice.actions;
