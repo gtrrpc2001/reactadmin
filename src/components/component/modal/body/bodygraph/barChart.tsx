@@ -72,21 +72,7 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
                     break;
                 }
                 setMax(getMax)
-
-        let getMax:number = 0
-        switch(true){
-            case iconSelect.cal :
-            getMax = Math.max(...data?.map(o=>o.cal > o.calexe ? o.cal : o.calexe))
-                break;
-            case iconSelect.step :  
-            getMax = Math.max(...data?.map(o=>o.step > o.distanceKM ? o.step : o.distanceKM))
-                break;
-            default :
-            getMax = Math.max(...data?.map(o=>o.count))
-            break;
-
         }
-        setMax(getMax)
     }
 
     useEffect(()=>{
