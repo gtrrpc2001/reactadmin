@@ -72,7 +72,7 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
                     break;
                 }
                 setMax(getMax)
-=======
+
         let getMax:number = 0
         switch(true){
             case iconSelect.cal :
