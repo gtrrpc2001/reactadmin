@@ -38,7 +38,7 @@ export const GraphBody = ({names,marginTop}:Props) => {
                         
                         break;
                     case kindButton.cal_step :
-                        result = await getCalStep(id,`${calTime[0]} 23:59:59`,calTime[1],13)
+                        result = await getCalStep(id,time,calTime[1],13)
                         v = result?.map((d)=>{
                             return {step:d.step,distanceKM:d.distanceKM,cal:d.cal,calexe:d.calexe,
                             time:d.writetime
@@ -46,7 +46,7 @@ export const GraphBody = ({names,marginTop}:Props) => {
                         })
                         break;
                     default :                                                
-                        result = await getGraphBpmHrvArrData(id,calTime)                        
+                        result = await getGraphBpmHrvArrData(id,time,calTime)                        
                         v = result?.map((d)=>{
                              return {bpm:d.bpm,hrv:d.hrv,arr:d.count,time:d.writetime?.split(' ')[1]}
                          })
