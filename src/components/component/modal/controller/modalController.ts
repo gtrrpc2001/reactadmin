@@ -197,6 +197,17 @@ export const compareFullYear = (Writetime:string):boolean => {
   return bool;
 }
 
+export const calculMin = (writetime:string,num:number):string => {
+  const day = new Date(writetime)
+  const min = day.getMinutes()  
+  const startDay = num == 0 ? day : new Date(day.setMinutes(min + num))  
+  const startDate = getWritetimeValue(startDay)
+  const _hour = startDay.getHours()
+  const hour = (_hour >= 10) ? _hour : `0${_hour}`
+  const _minute = startDay.getMinutes()
+  const minute = (_minute >= 10) ? _minute : `0${_minute}`
+  return `${startDate} ${hour}:${minute}`
+}
 
 export const calculTime = (writetime:string,num:number):string[] => {
   const day = new Date(writetime)

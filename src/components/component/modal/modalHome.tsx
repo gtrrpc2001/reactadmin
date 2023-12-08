@@ -8,12 +8,13 @@ import { modalValues } from "../../../axios/interface/modalvalues";
 import { profileModal } from "../../../axios/interface/profileModal";
 
 type Props = {
+    open:boolean
     modalList: modalValues
     values:any
     getProfile:profileModal
 }
 
-export const ModalHome = ({modalList,values,getProfile}:Props) => {
+export const ModalHome = ({open,modalList,values,getProfile}:Props) => {
     return (
             <>   
               <ModalTopBody bpm={modalList.bpm} arrCnt={modalList.arrCnt} prevArrCnt={getProfile.arrCnt} HeartText={getHeartText(0)} />
@@ -27,7 +28,7 @@ export const ModalHome = ({modalList,values,getProfile}:Props) => {
               />              
               
               <Box>                
-                <ModalRealTimeGraph bpm={modalList.bpm} eq={values.eq} time={modalList.writetime}/>
+                <ModalRealTimeGraph open_close={open} bpm={modalList.bpm} eq={values.eq} time={modalList.writetime}/>
               </Box>
 
               <BottomBody actCal={modalList.actCal} step={modalList.step} temp={modalList.temp} distance={getDecimal(modalList.distance)}/>

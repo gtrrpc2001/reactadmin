@@ -73,7 +73,7 @@ interface ModalDefaultType {
         );
       default :
         return (
-          <ModalHome modalList={modalList} values={values} getProfile={getProfile}/>
+          <ModalHome open={open} modalList={modalList} values={values} getProfile={getProfile}/>
         );
     }
   }

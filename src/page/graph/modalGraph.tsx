@@ -8,66 +8,69 @@ XAxis,
 YAxis,
 CartesianGrid,
 Tooltip,
+ResponsiveContainer,
 } from 'recharts';
 
 type Porps = {
-    bpm:number
-    eq:string
-    time:string
+  open_close:boolean
+  bpm:number
+  eq:string
+  time:string
 }
 
-export const ModalRealTimeGraph = ({bpm,eq,time}:Porps) => { 
+export const ModalRealTimeGraph = ({open_close,bpm,eq,time}:Porps) => { 
     const [open , setOpen] = useState<boolean>(true);
-    const dataRef = useRef<{ecg: number; xAxis: number;}[]>([]) 
-    
-    useEffect(() => {
-       
-        const getEcgData = async() =>  {
+    let [dataArr] = useState<{ecg: number;}[]>([])
 
-            try{
-              let setData:number[] = []
-                const result =  await getEcg(`/mslecg/Ecg?eq=${eq}&startDate=${time}`)
-                if(open){
-                  result.map(d=>{setData.push(d)})
-                  if(setData?.length > 420){
-                    setOpen(false)
-                    dataRef.current = setData.map(d=>{return {ecg:d,xAxis:d}})
-                  }
-                }else{
-                  result.map(d=>{
-                    dataRef.current.shift()
-                    dataRef.current.push({ecg:d,xAxis:d})
-                  })
-                }  
-            }catch(E){
-                console.log(E)
-            }                      
-        }
-        
-        const timer = setInterval(async()=>{          
-           await getEcgData()          
-           
-        },100)
-        
-        return (() => clearTimeout(timer));
-        
-    },[bpm])    
+    const getEcgData = async() =>  {        
+      try{                        
+          const result =  await getEcg(`/mslecg/Ecg?eq=${eq}&startDate=${time}`)
+          console.log(dataArr?.length)
+          if(open && (dataArr?.length < 500)){                          
+            result.map(d=>{dataArr?.push({ecg:d})})
+            if(dataArr?.length > 420){
+              setOpen(false)
+              // setSpreadData(dataArr)         
+            }
+          }else{
+            result.map(d=>{
+              dataArr.shift()
+              dataArr.push({ecg:d})
+            })
+            // setSpreadData(dataArr)
+          }
+          console.log('실행중')
+      }catch(E){
+          console.log(E)
+      }                      
+  }
+    
+    useEffect(() => {     
+      if(open_close)
+          getEcgData();
+      else
+        dataArr.length = 0
+          
+      },[bpm])      
      
       
     return (
       <>
       {open == false ? (
-      <LineChart
-            width={335}
-            height={280}
-            data={dataRef.current}  
+    <ResponsiveContainer
+        width={335}
+        height={280}
+    >
+      <LineChart            
+            data={dataArr}  
          >
         <CartesianGrid stroke="#f5f5f5" />
-        <XAxis dataKey="xAxis" allowDataOverflow={true} domain={[0,1000]} width={0} height={0} /> 
+        <XAxis dataKey="xAxis" allowDataOverflow={true} domain={[0,700]} width={0} height={0} /> 
         <YAxis yAxisId="left" domain={[0,1000]} width={30}/>
         <Tooltip active={true}/>               
         <Line yAxisId="left" type="monotone" dataKey="ecg" stroke="#8884d8" dot={false} />
       </LineChart>
+    </ResponsiveContainer>
       ) : (
         <Box sx={{width:335,height:280,display:'flex',justifyContent:'center',alignItems:'center'}}>
           <CircularProgress color="primary"/>

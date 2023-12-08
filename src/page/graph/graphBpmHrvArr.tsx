@@ -1,5 +1,6 @@
-import { Bar, CartesianGrid, ComposedChart, Legend, Line, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { graphKindButton } from "../../axios/interface/graph";
+import { useEffect, useState } from "react";
 
 type Props = {
     data:any[]
@@ -9,6 +10,39 @@ type Props = {
 }
 
 export const Graphs = ({data,width,height,kind}:Props) => {
+    const [graphWidth,setGraphWidth] = useState<number>(width)
+    const [scroll,setScroll] = useState<boolean>(false) 
+
+    const getCalculWidth = (length:number,setNumber:number) => {
+        const num =  length / setNumber
+        const setWidth = ((width * num) < width) ? width : (width * num)         
+        setGraphWidth(setWidth)        
+     } 
+
+    useEffect(()=>{
+        const getChangeWidth = () => {
+            switch(true){
+                case kind.ecg :
+                    console.log(data?.length)
+                    getCalculWidth(data?.length,2800);
+                    break;
+                case kind.cal_step :
+                    getCalculWidth(1,1);
+                    break;
+                default :                    
+                    getCalculWidth(data?.length,1500); 
+            }            
+        }
+        getChangeWidth();
+    },[data])
+
+    useEffect(()=>{
+        if(graphWidth > width){
+            setScroll(true)
+        }else{
+            setScroll(false)
+        }
+    },[graphWidth])
 
     const changeGraph = () => {
         switch(true){
@@ -41,17 +75,23 @@ export const Graphs = ({data,width,height,kind}:Props) => {
     }
 
     return (
-        <ComposedChart
-                        width={width}
-                        height={height}
-                        data={data} 
-                        >
-            <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="time" />
-            <Tooltip />
-            <Legend />
-            <YAxis yAxisId="left" />
-            {changeGraph()}
-        </ComposedChart>
+        <div style={{display:'flex',flexDirection:'row',overflowX:scroll ? 'scroll' : 'hidden',overflowY:'hidden',width:width,height:height+10}}>
+        <ResponsiveContainer
+        width={graphWidth}
+        height={height}                
+        >          
+            <ComposedChart                                
+            data={data}                                                 
+            >
+                <CartesianGrid stroke="#f5f5f5" />
+                {/* //label={{value:"Pages",position: "insideBottomLeft", dy: 0}} */}
+                <XAxis dataKey="time" />
+                <Tooltip />
+                <Legend align="left" wrapperStyle={{marginLeft:50}}/>
+                <YAxis yAxisId="left"/>
+                {changeGraph()}
+            </ComposedChart>   
+        </ResponsiveContainer>
+        </div>
     );
 }
