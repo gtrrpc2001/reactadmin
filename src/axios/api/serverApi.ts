@@ -22,6 +22,15 @@ const client: Axios = axios.create({
       throw new Error(error.message);
     }
    };
+
+export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
+    try {
+        const response = await client.get<string[]>(url, config);
+        return response.data;
+    } catch (error:any) {
+      throw new Error(error.message);
+    }
+   };
    
    export const getDataResponse = async <T>(url:string, config?: AxiosRequestConfig): Promise<T> => {
     try {
