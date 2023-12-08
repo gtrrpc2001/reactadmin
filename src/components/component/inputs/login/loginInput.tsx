@@ -1,6 +1,7 @@
 
 
 type Props = {
+    id:string
     className:string
     inputClassName:string
     placeholder:string
@@ -8,14 +9,15 @@ type Props = {
     type:string
     ref:React.RefObject<HTMLInputElement>
     value:string
-    onKeypress:(e: any) => void
+    onKeypress:(e: React.KeyboardEvent<HTMLInputElement>) => void
     onHandler:(e: any) => void
 }
 
-export const LoginInput = ({className,inputClassName,placeholder,onClick,type,ref,value,onKeypress,onHandler}:Props) => {
+export const LoginInput = ({id,className,inputClassName,placeholder,onClick,type,ref,value,onKeypress,onHandler}:Props) => {
     return (
         <div className={className} onClick={onClick}>
-            <input 
+            <input
+                id={id}
                 className={inputClassName}
                 type={type}
                 ref={ref}
