@@ -48,3 +48,10 @@ export const getCalendarTime = (value:any):string => {
   return `${$y}-${month}-${date}`
 }
 
+export const getWritetimeSelectHour_Min = (writetime:string) => {
+  const removeDate = writetime?.split(' ')[1]
+  const getHourMin = removeDate?.split(':')
+  const value = `${getHourMin[0]}:${getHourMin[1]}`
+  return value
+}
+
