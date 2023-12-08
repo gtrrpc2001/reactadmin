@@ -47,12 +47,8 @@ export const GraphBody = ({names,marginTop}:Props) => {
                             }
                         })
                         break;
-                    default :                                                
-<<<<<<< HEAD
+                    default : 
                         result = await getGraphBpmHrvArrData(id,time,calTime)
-=======
-                        result = await getGraphBpmHrvArrData(id,time,calTime)                        
->>>>>>> 19e03978f99a043af360fc2d49f6e83cc31efc4e
                         v = result?.map((d)=>{
                              return {bpm:d.bpm,hrv:d.hrv,arr:d.count,time:getWritetimeSelectHour_Min(d.writetime)}
                          })
