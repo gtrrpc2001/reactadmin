@@ -5,7 +5,6 @@ export const getGraphBpmHrvArrData = async (eq:string,nowTime:string,time:string
         const data:graphBpmHrvArr[] = await getGraphBpmHrvArr(`/mslbpm/webGraphBpmHrvArr?eq=${eq}&startDate=${nowTime}&endDate=${time[1]}`)   
         return data;   
  }  
-<<<<<<< HEAD
 
  export const getGraphEcgTime = async (eq:string,nowTime:string,time:string[]):Promise<any[]> => {         
         const data:any[] = await getEcgTime(`/mslecg/EcgTime?eq=${eq}&startDate=${nowTime}&endDate=${time[1]}`)   
@@ -21,5 +20,3 @@ export const getGraphBpmHrvArrData = async (eq:string,nowTime:string,time:string
        const data:any[] = await getEcgTime(`/mslecg/ecgTest?eq=${eq}&startDate=${startTime}&endDate=${endTime}`)
        return data;
  }
-=======
->>>>>>> 19e03978f99a043af360fc2d49f6e83cc31efc4e
