@@ -59,17 +59,27 @@ const LoginPage = () =>{
   
       const onPasswordHandler = (e:any) => {
           setPw(e.target.value);
-      }       
-  
-      const HandleLogin = async() => {
-        if(notAllow){
-            errorCode('아이디 & 비밀번호를 체크 중 입니다.');
+      }
+
+    const setHandleLogin = async()=>{
+        errorCode('아이디 & 비밀번호를 체크 중 입니다.');
             setLastEmail(email)
             setLastpw(pw)
             const loginBool = await tryLogin(email,pw)
             await SuccessLogin(loginBool) 
             if(!loginBool)            
               errorCode('이메일,비밀번호가 틀렸습니다.'); 
+      }
+  
+      const HandleLogin = async(e?:React.KeyboardEvent<HTMLInputElement>) => {        
+        if(notAllow){
+            if(e?.currentTarget.id == "password"){
+                if(e?.key === 'Enter' )
+                    setHandleLogin();
+                
+            }else{
+                setHandleLogin();
+            }
         }         
       }    
 
@@ -101,7 +111,8 @@ const LoginPage = () =>{
                         <div className="contentWrap">
                             <div className='inputTitle'>이메일 주소</div>
 
-                            <LoginInput 
+                            <LoginInput
+                            id='email'
                             className='inputWrapEmail'
                             onClick={emailClick}
                             inputClassName='inputEmail'
@@ -123,7 +134,8 @@ const LoginPage = () =>{
                                 비밀번호
                             </div>
 
-                            <LoginInput 
+                            <LoginInput
+                            id='password'
                             className='inputWrap'
                             onClick={emailEnter}
                             inputClassName='inputPw'
@@ -131,7 +143,7 @@ const LoginPage = () =>{
                             ref={pwdRef}
                             placeholder='영문, 숫자, 특수문자 포함 8자 이상'
                             value={pw}
-                            onKeypress={HandleLogin}
+                            onKeypress={(e) => HandleLogin(e)}
                             onHandler={onPasswordHandler}
                             />                            
                                 
