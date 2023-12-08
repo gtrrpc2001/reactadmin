@@ -14,6 +14,7 @@ import {
 } from 'recharts';
 import { ButtonChartBpm } from "./ChartButton";
 import { graphSliceShow, replaceYear, selectTime } from "../../controller/modalController";
+import { getWritetimeSelectHour_Min } from "../../../../../func/func";
 
 
 type Props = {
