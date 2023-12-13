@@ -14,8 +14,7 @@ import { Tbody } from "./tbody";
 import { Modal } from "../modal/modal";
 import { cellActions, profileActions } from "../../createslice/createslices";
 import { getProfile } from "../../../axios/api/serverApi";
-import { getTime } from "../../../func/func";
-import { profileModal } from "../../../axios/interface/profileModal";
+import { calculTime } from "../modal/controller/modalController";
 
 type Props = {
     stopCheck:boolean
@@ -61,11 +60,13 @@ export const Table = ({stopCheck,stopHandleCheckbox}:Props) =>{
         const row = cell?.row
         const column = cell?.column
         const values = cell?.row?.values
-        const {eq,eqname,timezone} = values
-        const cellVlaue = {eq,eqname,timezone}
+        const {eq,eqname,timezone,writetime} = values
+        const startDate = writetime?.split(" ")[0]
+        const cellVlaue = {eq,eqname,timezone,startDate}
+        const times = calculTime(writetime,1)
         if(column?.id != 'selection'){
             if(!row?.isSelected)  {                
-                const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${getTime(false,true,1)}&endDate=${getTime(false)}`)
+                const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`)
                 profileDispach(profileActions.profile(Profile))
                 setValues(cell?.row?.values)
                 cellDispatch(cellActions.cellValues(cellVlaue))
