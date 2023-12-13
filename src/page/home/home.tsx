@@ -20,16 +20,14 @@ export default function Home(){
     const InfoDispatch = useDispatch<AppDispatch>();
     const [check,setCheck] = useState(false)
     const [loading, setLoding] = useState(true); 
-    const [editData, setEditData] = useState([])
 
     useEffect(()=> {
         async function getInfoList():Promise<any> {
             if(!loginSelector)
                 navigate('/')
             try{
-                const data:any = await getHistory(`/mslLast/webTable?writetime=${getTime(false)}`)                            
+                const data:any = await getHistory(`/mslLast/webTable`)                            
                 setLoding(false)
-                setEditData(data)
                 if(data?.length != 0){
                     InfoDispatch(listActions.listHistory(data))
                     const names = data.map((d:any)=>{ return {eq:d.eq,eqname:d.eqname}})
