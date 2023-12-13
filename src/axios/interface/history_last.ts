@@ -3,6 +3,7 @@ export interface historyLast{
     eq:string,
     eqname:string,
     writetime:string,
+    changeTime:string,
     bpm:number,
     hrv:number,
     temp:number,
