@@ -60,7 +60,7 @@ interface ModalDefaultType {
     switch(true){
       case footerSelect.graph:
           return (
-            <BodyGraph profile={getProfile} eq={eq}/>
+            <BodyGraph profile={getProfile} eq={eq} startTime={values.startDate}/>
           );
       case footerSelect.profile:
         return (
@@ -69,7 +69,7 @@ interface ModalDefaultType {
     
       case footerSelect.pulse:
         return (
-          <BodyPulse eq={eq}/>
+          <BodyPulse eq={eq} startTime={values.startDate}/>
         );
       default :
         return (
