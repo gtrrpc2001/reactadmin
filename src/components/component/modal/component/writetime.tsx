@@ -1,7 +1,6 @@
 import {Box, Typography} from "@mui/material";
 import { ButtonChartBpm } from "../body/bodygraph/ChartButton";
 import { useEffect, useState } from "react";
-import { getTime } from "../../../../func/func";
 import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal";
 import { calculTime, compareToWritetime, getYearMonth, getWritetimeButtomValue, getWritetimeValue, replaceYear, selectWeek, 
     getYear, calculWeek, compareDay, calculMonth, compareMonth, compareYear, calculYear } from "../controller/modalController";
@@ -15,12 +14,13 @@ type Props = {
     clickWritetimeButton:writetimeButtonModal
     clickDayGubunButton: dayGubunButtonModal
     eq:string
+    startTime:string
 }
 
-export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,eq}:Props) => {
-    const [text,setText] = useState(getTime(false))
+export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,eq,startTime}:Props) => {
+    const [text,setText] = useState(startTime)
     const [disabled,setDisabled] = useState(true)
-    const [originalWritetime,setOriginalWritetime] = useState(getTime(false))
+    const [originalWritetime,setOriginalWritetime] = useState(startTime)
     const GraphValue = useDispatch()
 
     const setValue = (id:string,plusDate:string[]) => {
@@ -93,7 +93,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
     }
 
     useEffect(()=>{
-        const today = getTime(false)
+        const today = startTime
         if(originalWritetime == today){
             setEffectFunc()   
         }else{
