@@ -101,11 +101,7 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
             default :
             try{                
                 return data?.slice(start,end)?.map(d=>{
-<<<<<<< HEAD
                     const value = onlyTodayDataGubun(d)
-=======
-			const value = onlyTodayDataGubun(d)
->>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f
                          return  {usageLast:(value > 180) ? 180 : value,xAxis:getWritetimeSelectHour_Min(d.writetime)}  
                        });
             }catch{
