@@ -11,7 +11,9 @@ type Props = {
 
 export const Graphs = ({data,width,height,kind}:Props) => {
     const [graphWidth,setGraphWidth] = useState<number>(width)
-    const [scroll,setScroll] = useState<boolean>(false) 
+    const [scroll,setScroll] = useState<boolean>(false)
+    const [calMax,setCalMax] = useState<number>(180)    
+    const [Max,setMax] = useState<number>(180) 
 
     const getCalculWidth = (length:number,setNumber:number) => {
         const num =  length / setNumber
@@ -23,13 +25,18 @@ export const Graphs = ({data,width,height,kind}:Props) => {
         const getChangeWidth = () => {
             switch(true){
                 case kind.ecg :
-                    console.log(data?.length)
+                    setMax(1000) 
                     getCalculWidth(data?.length,2800);
                     break;
                 case kind.cal_step :
+                    const calM = Math.max(...data?.map(o=>o.cal > o.calexe ? o.cal : o.calexe))
+                    const stepM = Math.max(...data?.map(o=>o.step > o.distanceKM ? o.step : o.distanceKM))
+                    setCalMax(calM)
+                    setMax(stepM)
                     getCalculWidth(1,1);
                     break;
-                default :                    
+                default : 
+                    setMax(180)                      
                     getCalculWidth(data?.length,1500); 
             }            
         }
@@ -59,7 +66,7 @@ export const Graphs = ({data,width,height,kind}:Props) => {
                         <Bar name='걸음거리' yAxisId="left" dataKey="distanceKM" fill="blue"/>
                         <Bar name='칼로리' yAxisId="right" dataKey="cal" fill="#8884d8"/>
                         <Bar name='활동칼로리'yAxisId="right" dataKey="calexe" fill="#ef507b"/>
-                        <YAxis yAxisId="right" orientation="right"/>
+                        <YAxis yAxisId="right" orientation="right" domain={[0,calMax]}/>
                     </>
                 );
             default :
@@ -88,7 +95,7 @@ export const Graphs = ({data,width,height,kind}:Props) => {
                 <XAxis dataKey="time" />
                 <Tooltip />
                 <Legend align="left" wrapperStyle={{marginLeft:50}}/>
-                <YAxis yAxisId="left"/>
+                <YAxis yAxisId="left" domain={[0,Max]}/>
                 {changeGraph()}
             </ComposedChart>   
         </ResponsiveContainer>

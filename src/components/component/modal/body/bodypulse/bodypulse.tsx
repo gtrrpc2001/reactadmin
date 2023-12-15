@@ -3,14 +3,14 @@ import { WritetimeList } from "./writetimeList";
 import { WritetimeButton } from "./writetimeButton";
 import { calculTime, compareToWritetime } from "../../controller/modalController";
 import { useState } from "react";
-import { getTime } from "../../../../../func/func";
 import { PulseChart } from "./pulseChart";
 
 type Props = {
     eq:string
+    startTime:string
 }
-export const BodyPulse = ({eq}:Props) => {
-    const [writetime,setWritetime] = useState(getTime(false))
+export const BodyPulse = ({eq,startTime}:Props) => {
+    const [writetime,setWritetime] = useState(startTime)
     const [currentTime,setCurrentTime] = useState('')
     const [disabled,setDisabled] = useState(true)
     const [writetimes,setWritetimes] = useState<any[]>([])

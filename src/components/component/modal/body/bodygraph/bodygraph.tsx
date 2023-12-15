@@ -14,9 +14,10 @@ import { profileModal } from "../../../../../axios/interface/profileModal";
 type Props = {
     profile: profileModal
     eq:string
+    startTime:string
 }
 
-export const BodyGraph = ({profile,eq}:Props) => {    
+export const BodyGraph = ({profile,eq,startTime}:Props) => {    
     const [clickGraph,setClickGraph] = useState<graphModal>({bpm:true,pulse:false,hrv:false,cal:false,step:false})
     const [clickWritetimeButton,setClickWritetimeButton] = useState<writetimeButtonModal>({today:true,days2:false,days3:false}) 
     const [clickDayGubunButton,setClickDayGubunButton] = useState<dayGubunButtonModal>({day:true,week:false,month:false,year:false})
@@ -62,8 +63,7 @@ export const BodyGraph = ({profile,eq}:Props) => {
           case iconSelect.pulse:
               return pulse_cal_step()
           case iconSelect.hrv:
-            return bpm_hrv(false)
-        
+            return bpm_hrv(false)        
           case iconSelect.cal:
             return pulse_cal_step()
         case iconSelect.step:
@@ -109,7 +109,7 @@ export const BodyGraph = ({profile,eq}:Props) => {
               
             {(getGraphBodyUI(clickGraph))}  
 
-            <Writetime iconSelect={clickGraph} clickWritetimeButton={clickWritetimeButton} clickDayGubunButton={clickDayGubunButton} eq={eq}/>
+            <Writetime iconSelect={clickGraph} clickWritetimeButton={clickWritetimeButton} clickDayGubunButton={clickDayGubunButton} eq={eq} startTime={startTime}/>
 
             {getGraphBottomUI(clickGraph)}
 

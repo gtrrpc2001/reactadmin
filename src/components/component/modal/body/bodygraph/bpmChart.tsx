@@ -14,6 +14,7 @@ import {
 } from 'recharts';
 import { ButtonChartBpm } from "./ChartButton";
 import { graphSliceShow, replaceYear, selectTime } from "../../controller/modalController";
+import { getWritetimeSelectHour_Min } from "../../../../../func/func";
 
 
 type Props = {
@@ -42,11 +43,11 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
     const getValue = (prevValue:number,d: graphBpm,time:string):number => {
         if(bpm){
             if(d.writetime.includes(time)){
-                return d.bpm
+                return (d.bpm > 180) ? 180 : d.bpm
             }        
         }else{
             if(d.writetime.includes(time)){
-                return d.hrv
+                return (d.hrv > 180) ? 180 : d.hrv
             } 
         }
         return prevValue
@@ -74,7 +75,7 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
                   return {
                     usageLast1: first,
                     usageLast2: second,
-                    xAxis:d.writetime?.split(' ')[1]
+                    xAxis:getWritetimeSelectHour_Min(d.writetime)
                   }                     
                 })                
                 return v
@@ -93,14 +94,15 @@ export const BpmChart = ({clickWritetimeButton,bpm}:Props) => {
                     usageLast3: _first,
                     usageLast4: _second,
                     usageLast5: third,
-                    xAxis:d.writetime?.split(' ')[1]
+                    xAxis:getWritetimeSelectHour_Min(d.writetime)
                     }                     
                 })                    
                 return v2
             default :
             try{                
                 return data?.slice(start,end)?.map(d=>{
-                         return  {usageLast:onlyTodayDataGubun(d),xAxis:d.writetime?.split(' ')[1]}  
+                    const value = onlyTodayDataGubun(d)
+                         return  {usageLast:(value > 180) ? 180 : value,xAxis:getWritetimeSelectHour_Min(d.writetime)}  
                        });
             }catch{
                 return []
