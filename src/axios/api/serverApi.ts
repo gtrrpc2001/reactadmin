@@ -23,11 +23,7 @@ const client: Axios = axios.create({
     }
    };
 
-<<<<<<< HEAD
    export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
-=======
-export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
->>>>>>> 47779989206e319e66599c8c8d399518c75ea680
     try {
         const response = await client.get<string[]>(url, config);
         return response.data;
