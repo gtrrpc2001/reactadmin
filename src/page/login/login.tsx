@@ -59,13 +59,9 @@ const LoginPage = () =>{
   
       const onPasswordHandler = (e:any) => {
           setPw(e.target.value);
-      }
-      
-<<<<<<< HEAD
+      }      
+
       const setHandleLogin = async()=>{
-=======
-    const setHandleLogin = async()=>{
->>>>>>> 47779989206e319e66599c8c8d399518c75ea680
         errorCode('아이디 & 비밀번호를 체크 중 입니다.');
             setLastEmail(email)
             setLastpw(pw)
