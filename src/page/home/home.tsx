@@ -50,17 +50,10 @@ export default function Home(){
         if(check == false)
             InfoDispatch(listActions.listHistory(data))
 
-        InfoDispatch(ModalActions.ModalHistory(data))        
-<<<<<<< HEAD
-    }
-
-    useEffect(()=> {
-        
-=======
+        InfoDispatch(ModalActions.ModalHistory(data))  
     }   
     
-    useEffect(()=> {        
->>>>>>> 47779989206e319e66599c8c8d399518c75ea680
+    useEffect(()=> {  
         const timer = setInterval(async() => {    
             if(loginSelector || isLoginSuv == "true")
                 await getInfoList()                                          
