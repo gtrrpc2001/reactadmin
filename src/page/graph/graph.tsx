@@ -20,7 +20,7 @@ export const Graph = () =>{
             navigate('/')
 
             setLoding(false)    
-    },[])
+    },[]);
     
     return (
       <div>

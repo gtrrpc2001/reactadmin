@@ -64,10 +64,7 @@ export const Table = ({stopCheck,stopHandleCheckbox}:Props) =>{
         const startDate = writetime?.split(" ")[0]
         const cellVlaue = {eq,eqname,timezone,startDate}
         const times = calculTime(writetime,1)
-<<<<<<< HEAD
         console.log(`${startDate} -- ${times[1]}`)
-=======
->>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f
         if(column?.id != 'selection'){
             if(!row?.isSelected)  {                
                 const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`)

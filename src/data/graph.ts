@@ -19,8 +19,4 @@ export const getGraphBpmHrvArrData = async (eq:string,nowTime:string,time:string
  export const getTest = async (eq:string,startTime:string,endTime:string):Promise<any[]> => {       
        const data:any[] = await getEcgTime(`/mslecg/ecgTest?eq=${eq}&startDate=${startTime}&endDate=${endTime}`)
        return data;
-<<<<<<< HEAD
  }
-=======
- }
->>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f

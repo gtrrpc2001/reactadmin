@@ -55,10 +55,7 @@ export const getWritetimeSelectHour_Min = (writetime:string) => {
   return value
 }
 
-<<<<<<< HEAD
 export const setWindowLoginItems = (loginCheck:string,userId:string) => {
   window.localStorage.setItem("isLoginSuv",loginCheck)
   window.localStorage.setItem("isUserId",userId)
 }
-=======
->>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f
