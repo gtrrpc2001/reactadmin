@@ -7,7 +7,7 @@ import { graphBpmHrvArr } from '../interface/graph';
 
 
 const client: Axios = axios.create({
-    baseURL: 'http://121.152.22.85:40080', //https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app/
+    baseURL: 'https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app',
     headers: {
       'Content-Type': 'application/json',
     }
@@ -23,11 +23,7 @@ const client: Axios = axios.create({
     }
    };
 
-<<<<<<< HEAD
-   export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
-=======
 export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
->>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f
     try {
         const response = await client.get<string[]>(url, config);
         return response.data;
