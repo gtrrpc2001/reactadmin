@@ -19,7 +19,7 @@ export const Graph = () =>{
             navigate('/')
             setLoding(false)    
     },[])
-    return (
+return (
       <div>
         {loading ? (
         <Loading loading={loading} />) : (
