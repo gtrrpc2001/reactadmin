@@ -8,15 +8,17 @@ import { Footer } from "../home/footer/footer";
 import '../home/home.scss'
 import { GraphList } from "./graphList";
 
+
+
 export const Graph = () =>{
     const navigate = useNavigate();
     const [loading, setLoding] = useState(true);
     const loginSelector = useSelector<RootState,boolean>(state => state.check)
     const names = useSelector<RootState,{eq:string,eqname:string}[]>(state => state.names)
-    
     useEffect(()=>{
         if(!loginSelector)
             navigate('/')
+
             setLoding(false)    
     },[])
     
