@@ -57,10 +57,6 @@ export const BarCharts = ({iconSelect,dayGubunButtonModal}:Props) => {
    
 
     const getYAxisDomain = () => {
-<<<<<<< HEAD
-=======
-
->>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f
         if(`${typeof(data)}` ===  'object'){
             let getMax:number = 0
             switch(true){
