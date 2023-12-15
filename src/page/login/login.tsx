@@ -113,11 +113,7 @@ const LoginPage = () =>{
                             <div className='inputTitle'>이메일 주소</div>
 
                             <LoginInput
-<<<<<<< HEAD
-                            id='email' 
-=======
                             id='email'
->>>>>>> 47779989206e319e66599c8c8d399518c75ea680
                             className='inputWrapEmail'
                             onClick={emailClick}
                             inputClassName='inputEmail'
