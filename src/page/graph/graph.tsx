@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -8,8 +7,6 @@ import { Header } from "../home/header/header";
 import { Footer } from "../home/footer/footer";
 import '../home/home.scss'
 import { GraphList } from "./graphList";
-
-
 
 export const Graph = () =>{
     const navigate = useNavigate();
