@@ -16,7 +16,8 @@ type Props = {
 export const LoginInput = ({id,className,inputClassName,placeholder,onClick,type,ref,value,onKeypress,onHandler}:Props) => {
     return (
         <div className={className} onClick={onClick}>
-            <input 
+            <input
+                id={id}
                 className={inputClassName}
                 type={type}
                 ref={ref}

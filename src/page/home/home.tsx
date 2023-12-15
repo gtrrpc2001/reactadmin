@@ -20,6 +20,7 @@ export default function Home(){
     const loginSelector = useSelector<RootState,boolean>(state => state.check)
     const InfoDispatch = useDispatch<AppDispatch>();
     const [check,setCheck] = useState(false)
+<<<<<<< HEAD
     const [loading, setLoding] = useState(true);  
     const [data,setData] = useState<historyLast[]>([])            
 
@@ -54,6 +55,34 @@ export default function Home(){
     }
 
     useEffect(()=> {
+=======
+    const [loading, setLoding] = useState(true); 
+
+    useEffect(()=> {
+        async function getInfoList():Promise<any> {
+            if(!loginSelector)
+                navigate('/')
+            try{
+                const data:any = await getHistory(`/mslLast/webTable`)                            
+                setLoding(false)
+                if(data?.length != 0){
+                    InfoDispatch(listActions.listHistory(data))
+                    const names = data.map((d:any)=>{ return {eq:d.eq,eqname:d.eqname}})
+                    InfoDispatch(nameActions.value(names))                                         
+                }
+                return data;
+            }catch(E){
+                console.log(E)
+                return [];
+            }
+        }
+            const timer = setInterval(async() => {    
+                if(!check)            
+                    await getInfoList()                                          
+            },1000)            
+            
+        return ()=>{clearTimeout(timer)}
+>>>>>>> 556675344c5aad5c3d04b0f0e989688d9990d98f
         
         const timer = setInterval(async() => {    
             if(loginSelector || isLoginSuv == "true")
