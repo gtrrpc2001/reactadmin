@@ -18,8 +18,7 @@ export const Graph = () =>{
         if(!loginSelector)
             navigate('/')
             setLoding(false)    
-    },[]);
-    
+    },[])
     return (
       <div>
         {loading ? (
