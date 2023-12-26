@@ -419,15 +419,15 @@ export const graphSliceShow = (Count:number,length:number):number[] => {
   }        
 }
 
-export const progressBarValue = (settingValue:number,values:number[],check = false):number=> {
+export const progressBarValue = (settingValue:number,value:number,check = false):number=> {
   try{        
       if(check){
          const km = settingValue * 1000
-         const calValue = values[1]
+         const calValue = value
          const percent = (calValue/km * 100) >= 100 ? 100 : calValue/km * 100                                                    
           return percent
       }else{
-          const percent = (values[0]/settingValue * 100) >= 100 ? 100 : values[0]/settingValue * 100
+          const percent = (value/settingValue * 100) >= 100 ? 100 : value/settingValue * 100
           return percent
       }
   }catch{
