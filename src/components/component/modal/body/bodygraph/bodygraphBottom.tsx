@@ -159,8 +159,8 @@ const secondSetting = step ? `${secondSettingNum} km` : `${secondSettingNum} kca
     },[clickDayGubunButton,data,writetime])
     
     useEffect(()=>{
-        setBarValues([progressBarValue(firstSettingNum,values),
-            step ? progressBarValue(secondSettingNum,values,true) : progressBarValue(secondSettingNum,values)])
+        setBarValues([progressBarValue(firstSettingNum,values[0]),
+            step ? progressBarValue(secondSettingNum,values[1],true) : progressBarValue(secondSettingNum,values[1])])
     },values)    
     
         return (
