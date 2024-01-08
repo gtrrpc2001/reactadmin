@@ -24,7 +24,6 @@ const client: Axios = axios.create({
     }
    };
 
-<<<<<<< HEAD
    export const getOnlyArr = async (url:string, config?: AxiosRequestConfig): Promise<yesterdayArr> => {
     try {
         const response = await client.get<yesterdayArr>(url, config);
@@ -34,8 +33,6 @@ const client: Axios = axios.create({
     }
    };
 
-=======
->>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
    export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
     try {
         const response = await client.get<string[]>(url, config);
