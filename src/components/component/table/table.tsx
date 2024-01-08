@@ -12,8 +12,8 @@ import { Theader } from "./theader";
 import { CellSelectHooks } from "../hooks/selectCheckboxHooks";
 import { Tbody } from "./tbody";
 import { Modal } from "../modal/modal";
-import { cellActions, profileActions } from "../../createslice/createslices";
-import { getProfile } from "../../../axios/api/serverApi";
+import { cellActions, profileActions, yesterdayArrActions } from "../../createslice/createslices";
+import { getOnlyArr, getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
 
 type Props = {
@@ -64,14 +64,13 @@ export const Table = ({stopCheck,stopHandleCheckbox}:Props) =>{
         const startDate = writetime?.split(" ")[0]
         const cellVlaue = {eq,eqname,timezone,startDate}
         const times = calculTime(writetime,1)
-<<<<<<< HEAD
+        const yesterday = times[0]
         console.log(`${startDate} -- ${times[1]}`)
-=======
-        
->>>>>>> 47779989206e319e66599c8c8d399518c75ea680
         if(column?.id != 'selection'){
             if(!row?.isSelected)  {                
                 const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`)
+                const yesterdayArr = await getOnlyArr(`mslecgarr/arrCount?eq=${eq}&startDate=${yesterday}&endDate=${startDate}`)
+                cellDispatch(yesterdayArrActions.count(yesterdayArr.arrCnt))
                 profileDispach(profileActions.profile(Profile))
                 setValues(cell?.row?.values)
                 cellDispatch(cellActions.cellValues(cellVlaue))

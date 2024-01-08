@@ -6,6 +6,8 @@ import { BottomBody } from "./component/bottomBody";
 import { getDecimal, getHeartText } from "./controller/modalController";
 import { modalValues } from "../../../axios/interface/modalvalues";
 import { profileModal } from "../../../axios/interface/profileModal";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 type Props = {
     open:boolean
@@ -15,13 +17,17 @@ type Props = {
 }
 
 export const ModalHome = ({open,modalList,values,getProfile}:Props) => {
+  const getYesterdayArrCount = useSelector<RootState,number>(state => state.yesterdayArrCount)
+  const todayArr = getProfile.arrCnt;
+  const yesterdayArr = getYesterdayArrCount;
+
     return (
             <>   
-              <ModalTopBody bpm={modalList.bpm} arrCnt={modalList.arrCnt} prevArrCnt={getProfile.arrCnt} HeartText={getHeartText(0)} />
+              <ModalTopBody bpm={modalList.bpm} arrCnt={todayArr} prevArrCnt={yesterdayArr} HeartText={getHeartText(0)} />
               
               <MiddleBody 
               bpm={modalList.bpm} 
-              arrCnt={modalList.arrCnt} 
+              arrCnt={todayArr} 
               sleepTime = {getProfile.sleeptime} 
               upTime={getProfile.uptime}
               settingBpm={getProfile.bpm}

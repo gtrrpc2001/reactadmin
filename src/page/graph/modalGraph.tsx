@@ -25,9 +25,18 @@ export const ModalRealTimeGraph = ({open_close,bpm,eq,time}:Porps) => {
     const getEcgData = async() =>  {        
       try{                        
           const result =  await getEcg(`/mslecg/Ecg?eq=${eq}&startDate=${time}`)
-          console.log(dataArr?.length)
+          console.log(result?.length)
           if(open && (dataArr?.length < 500)){                          
-            result.map(d=>{dataArr?.push({ecg:d})})
+            if(result.length > 560){
+              result.slice(0,559).map(d=>{              
+                dataArr?.push({ecg:d})
+              })
+            }else{
+              result.map(d=>{              
+                dataArr?.push({ecg:d})
+              })
+            }
+                        
             if(dataArr?.length > 420){
               setOpen(false)
               // setSpreadData(dataArr)         

@@ -4,10 +4,11 @@ import { historyLast } from '../interface/history_last';
 import { profileModal } from '../interface/profileModal';
 import { graphBpm, graphCalStep, graphPulse } from '../interface/graphModal';
 import { graphBpmHrvArr } from '../interface/graph';
+import { yesterdayArr } from '../interface/arr';
 
 
 const client: Axios = axios.create({
-    baseURL: 'https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app',
+    baseURL: 'http://121.152.22.85:40080', //https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app/
     headers: {
       'Content-Type': 'application/json',
     }
@@ -23,11 +24,16 @@ const client: Axios = axios.create({
     }
    };
 
-<<<<<<< HEAD
+   export const getOnlyArr = async (url:string, config?: AxiosRequestConfig): Promise<yesterdayArr> => {
+    try {
+        const response = await client.get<yesterdayArr>(url, config);
+        return response.data;
+    } catch (error:any) {
+      throw new Error(error.message);
+    }
+   };
+
    export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
-=======
-export const getEcgTime = async (url:string, config?: AxiosRequestConfig): Promise<string[]> => {
->>>>>>> 47779989206e319e66599c8c8d399518c75ea680
     try {
         const response = await client.get<string[]>(url, config);
         return response.data;

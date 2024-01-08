@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {eqSlice,listSlice,cellSlice,loginSlice, profileSlice, modalTimerSlice, bpmGraphSlice, writetimeGraphSlice, barGraphSlice,nameSlice, ModalSlice} from '../components/createslice/createslices';
+import {eqSlice,listSlice,cellSlice,loginSlice, profileSlice, modalTimerSlice, bpmGraphSlice, writetimeGraphSlice, barGraphSlice,nameSlice, ModalSlice, yesterdayArrSlice} from '../components/createslice/createslices';
 
 export const store = configureStore({
     reducer:{
@@ -14,6 +14,7 @@ export const store = configureStore({
         writetimeGraph: writetimeGraphSlice.reducer,
         names:nameSlice.reducer,
         modalData:ModalSlice.reducer,
+        yesterdayArrCount:yesterdayArrSlice.reducer,
     }
 });
 export type RootState = ReturnType<typeof store.getState>
