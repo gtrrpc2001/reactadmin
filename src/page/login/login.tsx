@@ -59,13 +59,8 @@ const LoginPage = () =>{
   
       const onPasswordHandler = (e:any) => {
           setPw(e.target.value);
-<<<<<<< HEAD
-      }
-      
-=======
       }      
 
->>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
       const setHandleLogin = async()=>{
         errorCode('아이디 & 비밀번호를 체크 중 입니다.');
             setLastEmail(email)
@@ -118,11 +113,7 @@ const LoginPage = () =>{
                             <div className='inputTitle'>이메일 주소</div>
 
                             <LoginInput
-<<<<<<< HEAD
                             id='email' 
-=======
-                            id='email'
->>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
                             className='inputWrapEmail'
                             onClick={emailClick}
                             inputClassName='inputEmail'
