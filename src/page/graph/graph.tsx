@@ -38,8 +38,4 @@ export const Graph = () =>{
         )}
     </div>
     );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
