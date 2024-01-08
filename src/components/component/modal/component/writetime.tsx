@@ -17,7 +17,11 @@ type Props = {
     startTime:string
 }
 
+<<<<<<< HEAD
 export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,eq,startTime}:Props) => {    
+=======
+export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,eq,startTime}:Props) => {   
+>>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
     const [text,setText] = useState(startTime)
     const [disabled,setDisabled] = useState(true)
     const [originalWritetime,setOriginalWritetime] = useState(startTime)

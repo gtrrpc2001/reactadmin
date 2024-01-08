@@ -13,7 +13,11 @@ export const Graphs = ({data,width,height,kind}:Props) => {
     const [graphWidth,setGraphWidth] = useState<number>(width)
     const [scroll,setScroll] = useState<boolean>(false)
     const [calMax,setCalMax] = useState<number>(180)    
+<<<<<<< HEAD
     const [Max,setMax] = useState<number>(180) 
+=======
+    const [Max,setMax] = useState<number>(180)
+>>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
 
     const getCalculWidth = (length:number,setNumber:number) => {
         const num =  length / setNumber
@@ -25,7 +29,11 @@ export const Graphs = ({data,width,height,kind}:Props) => {
         const getChangeWidth = () => {
             switch(true){
                 case kind.ecg :
+<<<<<<< HEAD
                     setMax(1000) 
+=======
+                    setMax(1000)
+>>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
                     getCalculWidth(data?.length,2800);
                     break;
                 case kind.cal_step :
