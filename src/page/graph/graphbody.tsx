@@ -26,12 +26,7 @@ export const GraphBody = ({names,marginTop}:Props) => {
 
     useEffect(()=>{
         setList(names)
-<<<<<<< HEAD
     },[names])   
-=======
-
-    },[names])
->>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
     
     const getCheckMaxValue = (value:number):number => {
         return (value > 180) ? 180 : value
@@ -56,17 +51,12 @@ export const GraphBody = ({names,marginTop}:Props) => {
                             }
                         })
                         break;
-<<<<<<< HEAD
-                    default :                                                
-=======
                     default :  
->>>>>>> b611fe0e3fe55b057c982fa9de09dbff4a9cfc10
                         result = await getGraphBpmHrvArrData(id,time,calTime)
                         v = result?.map((d)=>{
                              return {bpm:getCheckMaxValue(d.bpm),hrv:getCheckMaxValue(d.hrv),arr:d.count,writetime:getWritetimeSelectHour_Min(d.writetime)}
                          })
                         break;
-
                 }
                 setOpen(true)
                 setData(v)                
