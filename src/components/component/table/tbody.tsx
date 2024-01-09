@@ -8,6 +8,21 @@ type Props = {
 }
 
 export const Tbody = ({BodyProps,page,prepareRow,cellClick}:Props) =>{
+
+    const info = (cell:any) => {        
+        const header = cell.column.Header
+        let changeTimezone = ""
+        if(header == "국가"){
+            const value:string = cell.value
+            if(value.includes('-08:00')){
+                changeTimezone = value.replace('KR','US')
+                console.log(changeTimezone)
+                return changeTimezone
+            }            
+        }
+       return cell.render("Cell")
+    }
+    
     return (
         <tbody {...BodyProps()}>
             {page.map((row:Row) => {
@@ -17,7 +32,7 @@ export const Tbody = ({BodyProps,page,prepareRow,cellClick}:Props) =>{
                                 
                         {row.cells.map((cell:any)=>(
                             <td {...cell.getCellProps()} onClick={(e) => cellClick(e,cell)}>
-                                {cell.render("Cell")}
+                                {info(cell)}
                             </td>
                         ))} 
                                                         
