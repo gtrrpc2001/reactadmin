@@ -28,7 +28,7 @@ export const BodyPulse = ({eq,startTime}:Props) => {
     const writetimeHandler = async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const id = e?.currentTarget?.id 
         if(id == "plus"){
-            if(!compareToWritetime(writetime)){
+            if(!compareToWritetime(startTime,writetime)){
                 setValue('plus')   
                 setDisabled(false)              
             }else{

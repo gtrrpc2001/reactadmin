@@ -4,7 +4,7 @@ import { graphKindButton } from "../../../../axios/interface/graph"
 import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal"
 import { historyLast } from "../../../../axios/interface/history_last"
 import { modalValues } from "../../../../axios/interface/modalvalues"
-import { getChangeDate, getHour, getTime } from "../../../../func/func"
+import { getChangeDate, getHour } from "../../../../func/func"
 
 export const getHeartText = (arrCnt:number):string => {
     let value:string = "양호"
@@ -161,9 +161,9 @@ export const getHeartText = (arrCnt:number):string => {
      return `${monthStr}-${dateStr} ~ ${writetimeArr[1]}-${writetimeArr[2]}`    
   }
 
- export const compareToWritetime = (originalWritetime:string,fromEffect:boolean=false):boolean => {
+ export const compareToWritetime = (updateWritetime:string,originalWritetime:string,fromEffect:boolean=false):boolean => {
     const time1Arr = originalWritetime.split('-')
-    const time2Arr = getTime(false).split('-')   
+    const time2Arr = updateWritetime.split('-')   
     let bool = false        
     if(Number(time1Arr[0]) == Number(time2Arr[0])){
         if(Number(time1Arr[1]) == Number(time2Arr[1])){
@@ -175,9 +175,9 @@ export const getHeartText = (arrCnt:number):string => {
     return bool;
 }
 
-export const compareYearMonth = (Writetime:string):boolean => {
+export const compareYearMonth = (updateWritetime:string,Writetime:string):boolean => {
   const time1Arr = Writetime.split('-')
-  const time2Arr = getTime(false).split('-')   
+  const time2Arr = updateWritetime.split('-')   
   let bool = false        
   if(Number(time1Arr[0]) == Number(time2Arr[0])){
       if(Number(time1Arr[1]) == Number(time2Arr[1])){          
@@ -187,9 +187,9 @@ export const compareYearMonth = (Writetime:string):boolean => {
   return bool;
 }
 
-export const compareFullYear = (Writetime:string):boolean => {
+export const compareFullYear = (updateWritetime:string,Writetime:string):boolean => {
   const time1Arr = Writetime.split('-')
-  const time2Arr = getTime(false).split('-')   
+  const time2Arr = updateWritetime.split('-')   
   let bool = false        
   if(Number(time1Arr[0]) == Number(time2Arr[0])){               
      bool = true;  
@@ -269,20 +269,20 @@ export const calculYear = (writetime:string):string[] => {
   return [startDate,endDate]
 }
 
-export const compareDay = (id:string,writetime:string):boolean => {
+export const compareDay = (id:string,updateWritetime:string,writetime:string):boolean => {
   const currentWeek = selectWeek(writetime)
   const lastDay =   currentWeek[currentWeek.length - 1]
-  const nowWeek = selectWeek(getTime(false))[currentWeek.length - 1]  
+  const nowWeek = selectWeek(updateWritetime)[currentWeek.length - 1]  
   return id == 'minus'? false : (lastDay == nowWeek)
 }
 
-export const compareMonth = (id:string,writetime:string):boolean => {  
-  const bool = compareYearMonth(writetime)  
+export const compareMonth = (id:string,updateWritetime:string,writetime:string):boolean => {  
+  const bool = compareYearMonth(updateWritetime,writetime)  
   return id == 'minus'? false : bool
 }
 
-export const compareYear = (id:string,writetime:string):boolean => {  
-  const bool = compareFullYear(writetime)  
+export const compareYear = (id:string,updateWritetime:string,writetime:string):boolean => {  
+  const bool = compareFullYear(updateWritetime,writetime)  
   return id == 'minus'? false : bool
 }
 
