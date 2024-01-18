@@ -209,18 +209,67 @@ export const calculMin = (writetime:string,num:number):string => {
   return `${startDate} ${hour}:${minute}`
 }
 
+// export const calculTime = (writetime:string,num:number):string[] => {
+//   const day = new Date(writetime)
+//   const date = day.getDate()
+//   const endDay = new Date(day.setDate(date + 1))  
+//   const endDate = getWritetimeValue(endDay)
+//   const startDate = getMinusDateWritetime(writetime,num)
+//   return [startDate,endDate]
+// }
+
+// export const getMinusDateWritetime = (time:string,num:number):string => {
+//   const date = new Date(time)
+//   const minusDate = new Date(date.setDate(date.getDate() - num))
+//   const getYear = minusDate.getFullYear() 
+//   const getMonth = minusDate.getMonth() + 1
+//   const getDate = minusDate.getDate()
+//   var monthStr: string = getChangeDate(getMonth)
+//   var dateStr: string = getChangeDate(getDate)
+//  return `${getYear}-${monthStr}-${dateStr}`    
+// }
+
+// export const getMinusMonthWritetime = (time:string,num:number):string => {
+//   const date = new Date(time)
+//   const minusDate = new Date(date.setMonth(date.getMonth() - num))
+//   const getYear = minusDate.getFullYear() 
+//   const getMonth = minusDate.getMonth() + 1
+//   const getDate = minusDate.getDate()
+//   var monthStr: string = getChangeDate(getMonth)
+//   var dateStr: string = getChangeDate(getDate)
+//  return `${getYear}-${monthStr}-${dateStr}`    
+// }
+
+// export const calculWeek = (writetime:string):string[] => {
+//   const day = new Date(writetime)
+//   const date = day.getDate()
+//   const endDay = new Date(day.setDate(date + 7))  
+//   const endDate = getWritetimeValue(endDay)  
+//   const startDate = getMinusDateWritetime(writetime,7)
+//   return [startDate,endDate]
+// }
 export const calculTime = (writetime:string,num:number):string[] => {
+  const realDate = +writetime.split('-')[2]
   const day = new Date(writetime)
   const date = day.getDate()
-  const endDay = new Date(day.setDate(date + 1))  
+  let endDay = new Date(day.setDate(date + 1))  
+  if(realDate == endDay.getDate()){
+    endDay = new Date(day.setDate(date + 2))
+  }
   const endDate = getWritetimeValue(endDay)
   const startDate = getMinusDateWritetime(writetime,num)
   return [startDate,endDate]
 }
 
 export const getMinusDateWritetime = (time:string,num:number):string => {
-  const date = new Date(time)
-  const minusDate = new Date(date.setDate(date.getDate() - num))
+  const realDate = +time.split('-')[2]
+  const date = new Date(time)  
+  let minusDate
+  if(realDate == date.getDate()){
+    minusDate = new Date(date.setDate(date.getDate() - num))    
+  }else{
+    minusDate = num > 1 ? new Date(date.setDate(date.getDate() - num)) : date
+  }
   const getYear = minusDate.getFullYear() 
   const getMonth = minusDate.getMonth() + 1
   const getDate = minusDate.getDate()
@@ -241,9 +290,13 @@ export const getMinusMonthWritetime = (time:string,num:number):string => {
 }
 
 export const calculWeek = (writetime:string):string[] => {
+  const realDate = +writetime.split('-')[2]
   const day = new Date(writetime)
   const date = day.getDate()
-  const endDay = new Date(day.setDate(date + 7))  
+  let endDay = new Date(day.setDate(date + 7))  
+  if(realDate == date - 1){
+    endDay = new Date(day.setDate(date + 8))
+  }
   const endDate = getWritetimeValue(endDay)  
   const startDate = getMinusDateWritetime(writetime,7)
   return [startDate,endDate]

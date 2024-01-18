@@ -1,7 +1,7 @@
 import { Box} from "@mui/material";
 import { getClickDayGubunButton, getClickGraph, getClickWriteimteButton } from "../../controller/modalController";
 import { graphModal, writetimeButtonModal,dayGubunButtonModal } from "../../../../../axios/interface/graphModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BodyGraphTopBody } from "./bodygraphtopbody";
 import { BpmChart } from "./bpmChart";
 import { Writetime } from "../../component/writetime";
@@ -21,6 +21,7 @@ export const BodyGraph = ({profile,eq,startTime}:Props) => {
     const [clickGraph,setClickGraph] = useState<graphModal>({bpm:true,pulse:false,hrv:false,cal:false,step:false})
     const [clickWritetimeButton,setClickWritetimeButton] = useState<writetimeButtonModal>({today:true,days2:false,days3:false}) 
     const [clickDayGubunButton,setClickDayGubunButton] = useState<dayGubunButtonModal>({day:true,week:false,month:false,year:false})
+    const [gubunSettingNum,setSetting] = useState<number>(1)
 
     const iconClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const id = e?.currentTarget?.id
@@ -39,6 +40,28 @@ export const BodyGraph = ({profile,eq,startTime}:Props) => {
         let iconClick:dayGubunButtonModal = getClickDayGubunButton(id)
         setClickDayGubunButton(iconClick)
     }
+
+    const getSettingCal_StepPlusValue = () => {
+        let value = 1
+        switch(true){
+            case clickDayGubunButton.week :
+                value = 7
+                break;
+            case clickDayGubunButton.month :
+                value = 30
+                break;
+            case clickDayGubunButton.year :
+                value = 365
+                break;
+            default :
+            break;
+        }
+        setSetting(value)
+    }
+
+    useEffect(() => {
+        getSettingCal_StepPlusValue()
+    },[clickDayGubunButton])
 
     const pulse_cal_step = () => {
         return (
@@ -86,11 +109,11 @@ export const BodyGraph = ({profile,eq,startTime}:Props) => {
         
           case iconSelect.cal:
             return (
-                <BodyGraphCalStepBottom profile={profile} step={false}/>
+                <BodyGraphCalStepBottom profile={profile} step={false} setting = {gubunSettingNum}/>
             );
         case iconSelect.step:
             return (
-                <BodyGraphCalStepBottom profile={profile} step={true}/>
+                <BodyGraphCalStepBottom profile={profile} step={true} setting = {gubunSettingNum}/>
             );
           default :          
             return (

@@ -13,6 +13,7 @@ type Props = {
     bpm?:boolean        
     profile?:profileModal
     step?:boolean
+    setting?:number
 }
 
 export const BodyGraphBpmBottom = ({clickWritetimeButton,bpm}:Props) => {
@@ -128,7 +129,7 @@ export const BodyGraphPulseBottom = ({clickDayGubunButton}:Props) => {
     );
 }
 
-export const BodyGraphCalStepBottom = ({clickDayGubunButton,profile,step}:Props) => {    
+export const BodyGraphCalStepBottom = ({profile,step,setting}:Props) => {    
     const writetime:string = useSelector<RootState,any>(state => state.writetimeGraph)
     const data:graphCalStep[] = useSelector<RootState,any>(state => state.barGraphValue)
     const [values,setValues] = useState<number[]>([0,0])
@@ -137,10 +138,11 @@ export const BodyGraphCalStepBottom = ({clickDayGubunButton,profile,step}:Props)
     
     const barWidth = 210
     const textWidth = 124
-    const firstSettingNum = step ? Number(profile?.step) : Number(profile?.cal)
-    const secondSettingNum = step ? Number(profile?.distanceKM) : Number(profile?.calexe)
+
+    const firstSettingNum = (step ? Number(profile?.step) : Number(profile?.cal)) * Number(setting)
+    const secondSettingNum = (step ? Number(profile?.distanceKM) : Number(profile?.calexe)) * Number(setting)
     const firstSetting = step ? `${firstSettingNum} step` : `${firstSettingNum} kcal`
-const secondSetting = step ? `${secondSettingNum} km` : `${secondSettingNum} kcal`
+    const secondSetting = step ? `${secondSettingNum} km` : `${secondSettingNum} kcal`
     
     useEffect(()=>{
         
@@ -156,7 +158,7 @@ const secondSetting = step ? `${secondSettingNum} km` : `${secondSettingNum} kca
         }catch{
     
         }
-    },[clickDayGubunButton,data,writetime])
+    },[data,writetime])
     
     useEffect(()=>{
         setBarValues([progressBarValue(firstSettingNum,values[0]),

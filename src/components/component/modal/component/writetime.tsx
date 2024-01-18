@@ -7,7 +7,12 @@ import { calculTime, compareToWritetime, getYearMonth, getWritetimeButtomValue, 
 import { bpmGraphActions, barGraphActions, writetimeGraphActions } from "../../../createslice/createslices";
 import { getArr, getBpm, getCalStep } from "../data/data";
 import { useDispatch } from "react-redux";
+import dayjs from 'dayjs';
+import isLeapYear from 'dayjs/plugin/isLeapYear'; // 윤년 판단 플러그인
+import 'dayjs/locale/ko'; // 한국어 가져오기
 
+dayjs.extend(isLeapYear); // 플러그인 등록
+dayjs.locale('ko'); // 언어 등록
 
 type Props = {
     iconSelect:graphModal
@@ -89,7 +94,8 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
 
     const setEffectFunc = () => {
         setDisabled(compareToWritetime(startTime,originalWritetime,true))
-        getTimeChangeFromButton(new Date(originalWritetime)) 
+        // getTimeChangeFromButton(new Date(originalWritetime)) 
+        getTimeChangeFromButton_test(originalWritetime)
     }
 
     useEffect(()=>{
@@ -109,31 +115,32 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
     const bpm_hrv = async(writetime:string) => {
         switch(true){
             case clickWritetimeButton?.days2 :
-                const time = calculTime(writetime,1)                                
+                const time = calculTime(writetime,2)                                
                 GraphValue(bpmGraphActions.value(await getBpm(eq,time[0],time[1])))
                 setText(getWritetimeButtomValue(writetime,1))               
                 break;
             case clickWritetimeButton?.days3 :   
-                const times = calculTime(writetime,2)
+                const times = calculTime(writetime,3)
                 GraphValue(bpmGraphActions.value(await getBpm(eq,times[0],times[1])))
                 setText(getWritetimeButtomValue(writetime,2))                                   
                 break;
             default :
-                const timeOne = calculTime(writetime,0)                 
+                const timeOne = calculTime(writetime,1)   
+                console.log(timeOne)              
                 GraphValue(bpmGraphActions.value(await getBpm(eq,writetime,timeOne[1])))
                 setText(writetime) 
                 break;
         }
     }
 
-    const getWeek = async(writetime:string) => {
+    const getWeek = async(writetime:string) => {        
             const currentWeek = selectWeek(writetime)
              const firstDay =  currentWeek[0]
              const lastDay =   currentWeek[currentWeek.length - 1]
              const endDate = calculTime(lastDay,0)[1]
              await pulseCalStepSelectData(eq,firstDay,endDate,10)             
              const setFirstDay = replaceYear(firstDay)           
-             const setLastDay = replaceYear(lastDay)
+             const setLastDay = replaceYear(lastDay)             
              setText(`${setFirstDay} ~ ${setLastDay}`)
     }
 
@@ -149,12 +156,13 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
     const pulse = async(writetime:string) => {        
         switch(true){
             case clickDayGubunButton.week:
+                console.log(writetime)
                await getWeek(writetime)
              break;
             case clickDayGubunButton.month:
                const getYM = getYearMonth(writetime,new Date())
                const day = new Date(writetime)               
-               const getNextMonth = getYearMonth('',new Date(day.setMonth(day.getMonth() + 1)))
+               const getNextMonth = getYearMonth('',new Date(day.setMonth(day.getMonth() + 1)))                
                await pulseCalStepSelectData(eq,`${getYM}-01`,`${getNextMonth}-01`,10)
                setText(getYM)   
                break;
@@ -164,7 +172,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 setText(Y)   
                 break;
             default :
-            const time = calculTime(writetime,0)
+            const time = calculTime(writetime,1)
             await pulseCalStepSelectData(eq,writetime,time[1],13)
             setText(writetime)
             break;
@@ -198,6 +206,12 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
             gubunIconButton(originalWritetime)            
         }
     }   
+
+    const getTimeChangeFromButton_test = async(time:string) => {                          
+        GraphValue(writetimeGraphActions.value(time))                        
+        gubunIconButton(time)           
+        setOriginalWritetime(time)        
+}
 
     const getHandler = async(id:string,bool:boolean) => {        
        await getWritetime(id)

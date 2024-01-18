@@ -57,10 +57,12 @@ interface ModalDefaultType {
   }
 
   const getModalUI = (footerSelect:footerIcon) => {
+    const startDate = values.startDate    
+        
     switch(true){
       case footerSelect.graph:
           return (
-            <BodyGraph profile={getProfile} eq={eq} startTime={values.startDate}/>
+            <BodyGraph profile={getProfile} eq={eq} startTime={startDate}/>
           );
       case footerSelect.profile:
         return (
@@ -69,7 +71,7 @@ interface ModalDefaultType {
     
       case footerSelect.pulse:
         return (
-          <BodyPulse eq={eq} startTime={values.startDate}/>
+          <BodyPulse eq={eq} startTime={startDate}/>
         );
       default :
         return (
