@@ -168,7 +168,7 @@ export const BodyGraphCalStepBottom = ({profile,step,setting}:Props) => {
         return (
             <Box sx={{height:120,marginLeft:1,marginTop:2,marginRight:1}}>
                 <Box sx={{display:'flex'}}>
-                    <ProgressBar value={barValues[0]} barWidth={barWidth} color={'#ef507b'} text={'총 칼로리'}/>                
+                    <ProgressBar value={barValues[0]} barWidth={barWidth} color={'#ef507b'} text={step ? '걸음' : '총 칼로리'}/>                
                     <Box sx={{width:textWidth,textAlign:'center'}}>
                         <Typography>
                             {step ? `${values[0]} step` :`${values[0]} kcal`}
@@ -180,7 +180,7 @@ export const BodyGraphCalStepBottom = ({profile,step,setting}:Props) => {
                 </Box>
                 <Divider />
                 <Box sx={{display:'flex'}}>
-                    <ProgressBar value={barValues[1]} barWidth={barWidth} color={'#5388F7'} text={'활동 칼로리'}/>                                
+                    <ProgressBar value={barValues[1]} barWidth={barWidth} color={'#5388F7'} text={step ? '걸음 거리' :'활동 칼로리'}/>                                
                     <Box sx={{width:textWidth,textAlign:'center'}}>
                         <Typography>
                             {step ? `${values[1]/1000} km` :`${values[1]} kcal`}
