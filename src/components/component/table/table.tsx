@@ -63,7 +63,7 @@ export const Table = ({stopCheck,stopHandleCheckbox}:Props) =>{
         const {eq,eqname,timezone,writetime} = values
         const startDate = writetime?.split(" ")[0]
         const cellVlaue = {eq,eqname,timezone,startDate}
-        const times = calculTime(writetime,1)
+        const times = calculTime(startDate,1)
         const yesterday = times[0]
         console.log(`${startDate} -- ${times[1]}`)    
         if(column?.id != 'selection'){
