@@ -36,7 +36,7 @@ const LoginPage = () =>{
         emailChecked()
         pwChecked()
         setNotAllow((emailValid && pw.length>7) || (email == 'admin' && pw =='admin'))
-    },)
+    },[email,pw])
 
     function emailChecked(){        
         setEmailValid(email.includes('@') && email.includes('.'))        
@@ -59,8 +59,8 @@ const LoginPage = () =>{
   
       const onPasswordHandler = (e:any) => {
           setPw(e.target.value);
-      }      
-
+      }
+      
       const setHandleLogin = async()=>{
         errorCode('아이디 & 비밀번호를 체크 중 입니다.');
             setLastEmail(email)
@@ -89,12 +89,12 @@ const LoginPage = () =>{
         let logBool = false
 
         if(loginBool)
-          logBool = await saveLog(email,'로그인')        
-       
+          logBool = await saveLog(email,'로그인')               
+
         if(logBool){            
             navigate('/home'); 
             setWindowLoginItems("true",email)    
-        }
+        }        
     }
 
     const logoClick = () => navigate('/')
