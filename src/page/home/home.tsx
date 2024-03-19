@@ -23,10 +23,10 @@ export default function Home(){
     const [loading, setLoding] = useState(true);  
     const [data,setData] = useState<historyLast[]>([])            
 
-    const isLoginSuv = window.localStorage.getItem("isLoginSuv")
-    const isUserId = window.localStorage.getItem("isUserId")
+    // const isLoginSuv = window.localStorage.getItem("isLoginSuv")
+    // const isUserId = window.localStorage.getItem("isUserId")
     
-    if(!loginSelector && isLoginSuv == "false"){        
+    if(!loginSelector){        
         navigate('/')
     }
     
@@ -34,7 +34,7 @@ export default function Home(){
         try{
             const getData:historyLast[] = await getHistory(`/mslLast/webTable`)                                                    
             setLoding(false)                
-            if(getData?.length != 0){
+            if(getData?.length != 0 && !String(getData).includes('result')){
                 setData(getData)                    
                 const names = getData.map((d:any)=>{ return {eq:d.eq,eqname:d.eqname}})
                 InfoDispatch(nameActions.value(names))                                         
@@ -49,14 +49,14 @@ export default function Home(){
     const table_modalData = () => {
         if(check == false)
             InfoDispatch(listActions.listHistory(data))
-        
+
         InfoDispatch(ModalActions.ModalHistory(data))        
     }
-    
-    useEffect(()=> {  
 
+    useEffect(()=> {
+        
         const timer = setInterval(async() => {    
-            if(loginSelector || isLoginSuv == "true")
+            if(loginSelector)
                 await getInfoList()                                          
         },1000)            
         

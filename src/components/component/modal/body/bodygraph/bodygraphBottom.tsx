@@ -25,18 +25,24 @@ const [aver,setAver] = useState<number>(0)
 const [minus,setMimus] = useState<number>(0)
 const [plus,setPlus] = useState<number>(0)
 
+const setTextValues = (max:number,min:number,aver:number) => {
+    setMax(max)
+    setMin(min)
+    setAver(aver)
+    setMimus(aver - min)
+    setPlus(max - aver)
+}
+
 useEffect(()=>{
     const getValue = () => {
-        if(data?.length != 0){
+        if(data?.length != 0 && !String(data).includes("result")){
             const value = bpm ? data?.map(d => d.bpm) : data?.map(d => d.hrv)
             const max = Math?.max(...value)
             const min = Math?.min(...value)
             const aver = Math.floor(value?.reduce((total,next) => total + next,0) / value.length)
-            setMax(max)
-            setMin(min)
-            setAver(aver)
-            setMimus(aver - min)
-            setPlus(max - aver)
+            setTextValues(max,min,aver)
+        }else{
+            setTextValues(0,0,0)
         }
     }
     getValue()
@@ -101,10 +107,14 @@ export const BodyGraphPulseBottom = ({clickDayGubunButton}:Props) => {
     const [count,setCount] = useState<number>(0)
     useEffect(()=>{
         try{
-            const dataValueAdd = data.reduce(function add(sum,currValue){            
-                return +currValue.count + +sum;
-            },0)
-            setCount(dataValueAdd)
+            if(data.length != 0 && !String(data).includes('result')){
+                const dataValueAdd = data.reduce(function add(sum,currValue){            
+                    return +currValue.count + +sum;
+                },0)
+                setCount(dataValueAdd)
+            }else{
+                setCount(0)
+            }
         }catch{
 
         }
@@ -144,17 +154,20 @@ export const BodyGraphCalStepBottom = ({profile,step,setting}:Props) => {
     const firstSetting = step ? `${firstSettingNum} step` : `${firstSettingNum} kcal`
     const secondSetting = step ? `${secondSettingNum} km` : `${secondSettingNum} kcal`
     
-    useEffect(()=>{
+    useEffect(()=>{        
+        try{       
+            if(data.length != 0 && !String(data).includes('result')){
+                const firstValueAdd = data.reduce(function add(sum,currValue){                        
+                    return step ? +currValue.step + +sum : +currValue.cal + +sum;         
+                },0)
         
-        try{        
-            const firstValueAdd = data.reduce(function add(sum,currValue){                        
-                return step ? +currValue.step + +sum : +currValue.cal + +sum;         
-            },0)
-    
-            const secondValueAdd = data.reduce(function add(sum,currValue){                        
-                return step ? +currValue.distanceKM + +sum : +currValue.calexe + +sum;         
-            },0)        
-            setValues([firstValueAdd,secondValueAdd])        
+                const secondValueAdd = data.reduce(function add(sum,currValue){                        
+                    return step ? +currValue.distanceKM + +sum : +currValue.calexe + +sum;         
+                },0)        
+                setValues([firstValueAdd,secondValueAdd])        
+            }else{
+                setValues([0,0])
+            }
         }catch{
     
         }
