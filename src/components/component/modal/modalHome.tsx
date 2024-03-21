@@ -8,6 +8,9 @@ import { modalValues } from "../../../axios/interface/modalvalues";
 import { profileModal } from "../../../axios/interface/profileModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { getOnlyArr } from "../../../axios/api/serverApi";
 
 type Props = {
     open:boolean
@@ -18,8 +21,20 @@ type Props = {
 
 export const ModalHome = ({open,modalList,values,getProfile}:Props) => {
   const getYesterdayArrCount = useSelector<RootState,number>(state => state.yesterdayArrCount)
-  const todayArr = getProfile.arrCnt;
+  const [todayArr,setTodayArr] = useState(getProfile.arrCnt)
   const yesterdayArr = getYesterdayArrCount;
+  const startDate = modalList.writetime?.split(' ')[0]
+  const endDate = dayjs(new Date(startDate)).add(1,'day').format('YYYY-MM-DD')
+
+  const getArr = async() => {
+    const arrCount = await getOnlyArr(`mslecgarr/arrCount?eq=${values.eq}&startDate=${startDate}&endDate=${endDate}`)
+    setTodayArr(arrCount.arrCnt)
+    console.log(arrCount.arrCnt)
+  }
+
+  useEffect(()=>{
+    getArr()
+  },[modalList.arrCnt])
 
     return (
             <>   
