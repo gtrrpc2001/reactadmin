@@ -12,9 +12,9 @@ type Props = {
 export const Graphs = ({data,width,height,kind}:Props) => {
     const [graphWidth,setGraphWidth] = useState<number>(width)
     const [scroll,setScroll] = useState<boolean>(false)
-    const [calMax,setCalMax] = useState<number>(180) 
+    const [calMax,setCalMax] = useState<number>(180)    
     const [Max,setMax] = useState<number>(180) 
-    
+
     const getCalculWidth = (length:number,setNumber:number) => {
         const num =  length / setNumber
         const setWidth = ((width * num) < width) ? width : (width * num)         

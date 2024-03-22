@@ -15,6 +15,7 @@ import { Modal } from "../modal/modal";
 import { cellActions, profileActions, yesterdayArrActions } from "../../createslice/createslices";
 import { getOnlyArr, getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
+import { historyLast } from "../../../axios/interface/history_last";
 
 type Props = {
     stopCheck:boolean
@@ -62,10 +63,13 @@ export const Table = ({stopCheck,stopHandleCheckbox}:Props) =>{
         const values = cell?.row?.values
         const {eq,eqname,timezone,writetime} = values
         const startDate = writetime?.split(" ")[0]
-        const cellVlaue = {eq,eqname,timezone,startDate}
-        const times = calculTime(startDate,1)
+        const getData:historyLast[] = data
+        const info = getData.filter(d => d.eq == eq)    
+        const changtime = info.map(d => d.changeTime)[0]?.split(' ')[0]
+        const cellVlaue = {eq,eqname,timezone,startDate,changtime}
+        const times = calculTime(startDate,-1,1,'YYYY-MM-DD','days')
         const yesterday = times[0]
-        console.log(`${startDate} -- ${times[1]}`)    
+        // console.log(`${startDate} -- ${times[1]}`)
         if(column?.id != 'selection'){
             if(!row?.isSelected)  {                
                 const Profile = await getProfile(`/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`)

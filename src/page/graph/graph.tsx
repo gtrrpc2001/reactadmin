@@ -8,6 +8,8 @@ import { Footer } from "../home/footer/footer";
 import '../home/home.scss'
 import { GraphList } from "./graphList";
 
+
+
 export const Graph = () =>{
     const navigate = useNavigate();
     const [loading, setLoding] = useState(true);

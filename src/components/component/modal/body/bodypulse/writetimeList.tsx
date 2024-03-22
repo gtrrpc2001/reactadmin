@@ -18,7 +18,7 @@ export const WritetimeList = ({writetime,id,list,setList,handler,eq}:Props) => {
     useEffect(()=>{
         const getList = async() => {
             const day = writetime
-            const calDate = calculTime(day,0)
+            const calDate = calculTime(writetime,0,1,'YYYY-MM-DD','days')
             const result = await getWritetimeList(eq,day,calDate[1])            
             setList(result)            
         }

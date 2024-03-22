@@ -2,8 +2,8 @@ import {Box, Typography} from "@mui/material";
 import { ButtonChartBpm } from "../body/bodygraph/ChartButton";
 import { useEffect, useState } from "react";
 import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../../axios/interface/graphModal";
-import { calculTime, compareToWritetime, getYearMonth, getWritetimeButtomValue, getWritetimeValue, replaceYear, selectWeek, 
-    getYear, calculWeek, compareDay, calculMonth, compareMonth, compareYear, calculYear } from "../controller/modalController";
+import { calculTime, compareToWritetime, getYearMonth, getWritetimeButtomValue, replaceYear, selectWeek, 
+    getYear, compareDay, compareMonth, compareYear } from "../controller/modalController";
 import { bpmGraphActions, barGraphActions, writetimeGraphActions } from "../../../createslice/createslices";
 import { getArr, getBpm, getCalStep } from "../data/data";
 import { useDispatch } from "react-redux";
@@ -41,7 +41,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
         switch(true){
             case clickDayGubunButton.week:
                 if(!compareDay(id,startTime,originalWritetime)){                    
-                    plusDate = calculWeek(originalWritetime)
+                    plusDate = calculTime(originalWritetime,-7,7,'YYYY-MM-DD','days')
                     setDisabled(false)
                     setValue(id,plusDate)
                 }else{
@@ -50,7 +50,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 break;
             case clickDayGubunButton.month:
                 if(!compareMonth(id,startTime,originalWritetime)){
-                    plusDate = calculMonth(originalWritetime)
+                    plusDate = calculTime(originalWritetime,-1,1,'YYYY-MM-DD','month')
                     setDisabled(false)                                
                     setValue(id,plusDate)
                 }else{
@@ -59,7 +59,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 break;
             case clickDayGubunButton.year:
                 if(!compareYear(id,startTime,originalWritetime)){
-                    plusDate = calculYear(originalWritetime)
+                    plusDate = calculTime(originalWritetime,-1,1,'YYYY-MM-DD','year')
                     setDisabled(false)                                
                     setValue(id,plusDate)
                 }else{
@@ -67,7 +67,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 }
                 break;
             default :            
-                plusDate = calculTime(originalWritetime,1)
+                plusDate = calculTime(originalWritetime,-1,1,'YYYY-MM-DD','day')
                 setValue(id,plusDate)
                 break;
         } 
@@ -86,7 +86,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 writetimeButtonIconSelect(id)
                 break;
             default :
-                plusDate = calculTime(originalWritetime,1)
+                plusDate = calculTime(originalWritetime,-1,1,'YYYY-MM-DD','day')
                 setValue(id,plusDate)
                 break;
         }             
@@ -115,17 +115,17 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
     const bpm_hrv = async(writetime:string) => {
         switch(true){
             case clickWritetimeButton?.days2 :
-                const time = calculTime(writetime,2)                                
+                const time = calculTime(writetime,-1,1,'YYYY-MM-DD','day')
                 GraphValue(bpmGraphActions.value(await getBpm(eq,time[0],time[1])))
                 setText(getWritetimeButtomValue(writetime,1))               
                 break;
             case clickWritetimeButton?.days3 :   
-                const times = calculTime(writetime,3)
+                const times = calculTime(writetime,-2,1,'YYYY-MM-DD','day')
                 GraphValue(bpmGraphActions.value(await getBpm(eq,times[0],times[1])))
                 setText(getWritetimeButtomValue(writetime,2))                                   
                 break;
             default :
-                const timeOne = calculTime(writetime,1)   
+                const timeOne = calculTime(writetime,0,1,'YYYY-MM-DD','day')   
                 console.log(timeOne)              
                 GraphValue(bpmGraphActions.value(await getBpm(eq,writetime,timeOne[1])))
                 setText(writetime) 
@@ -137,7 +137,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
             const currentWeek = selectWeek(writetime)
              const firstDay =  currentWeek[0]
              const lastDay =   currentWeek[currentWeek.length - 1]
-             const endDate = calculTime(lastDay,0)[1]
+             const endDate = calculTime(lastDay,0,1,'YYYY-MM-DD','day')[1]
              await pulseCalStepSelectData(eq,firstDay,endDate,10)             
              const setFirstDay = replaceYear(firstDay)           
              const setLastDay = replaceYear(lastDay)             
@@ -160,9 +160,8 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                await getWeek(writetime)
              break;
             case clickDayGubunButton.month:
-               const getYM = getYearMonth(writetime,new Date())
-               const day = new Date(writetime)               
-               const getNextMonth = getYearMonth('',new Date(day.setMonth(day.getMonth() + 1)))                
+               const getYM = getYearMonth(writetime,0)                      
+               const getNextMonth = getYearMonth(writetime,1)
                await pulseCalStepSelectData(eq,`${getYM}-01`,`${getNextMonth}-01`,10)
                setText(getYM)   
                break;
@@ -172,7 +171,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 setText(Y)   
                 break;
             default :
-            const time = calculTime(writetime,1)
+            const time = calculTime(writetime,0,1,'YYYY-MM-DD','day')
             await pulseCalStepSelectData(eq,writetime,time[1],13)
             setText(writetime)
             break;
@@ -194,18 +193,7 @@ export const Writetime = ({iconSelect,clickWritetimeButton,clickDayGubunButton,e
                 await bpm_hrv(writetime)
                 break;
         }        
-    }
-
-    const getTimeChangeFromButton = async(day:Date) => {
-        if(!Number.isNaN(day.getDate())){            
-            const writetime = getWritetimeValue(day)
-            GraphValue(writetimeGraphActions.value(writetime))
-            setOriginalWritetime(writetime)            
-            gubunIconButton(writetime)           
-        }else{
-            gubunIconButton(originalWritetime)            
-        }
-    }   
+    }      
 
     const getTimeChangeFromButton_test = async(time:string) => {                          
         GraphValue(writetimeGraphActions.value(time))                        

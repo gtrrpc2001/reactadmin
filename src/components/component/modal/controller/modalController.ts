@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { userBpmType } from "../../../../axios/interface/bpmType"
 import { footerIcon } from "../../../../axios/interface/footerIcon"
 import { graphKindButton } from "../../../../axios/interface/graph"
@@ -5,6 +6,8 @@ import { dayGubunButtonModal, graphModal, writetimeButtonModal } from "../../../
 import { historyLast } from "../../../../axios/interface/history_last"
 import { modalValues } from "../../../../axios/interface/modalvalues"
 import { getChangeDate, getHour } from "../../../../func/func"
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 export const getHeartText = (arrCnt:number):string => {
     let value:string = "양호"
@@ -141,25 +144,34 @@ export const getHeartText = (arrCnt:number):string => {
     return value == null ? 0 : value
   }
 
-  export const getWritetimeValue = (day:Date):string => {
-    const getYear = day.getFullYear() 
-    const getMonth = day.getMonth() + 1
-    const getDate = day.getDate()
-    var monthStr: string = getChangeDate(getMonth)
-    var dateStr: string = getChangeDate(getDate)
-   return `${getYear}-${monthStr}-${dateStr}`    
-}
-
-  export const getWritetimeButtomValue = (writetime:string,num:number):string => {    
-      const day = new Date(writetime)    
-      const writetimeArr = writetime.split('-')
-      const d = new Date(day.setDate(Number(writetimeArr[2]) - num))    
-      const getMonth = d.getMonth() + 1
-      const getDate = d.getDate()
-      var monthStr: string = getChangeDate(getMonth)
-      var dateStr: string = getChangeDate(getDate)
-     return `${monthStr}-${dateStr} ~ ${writetimeArr[1]}-${writetimeArr[2]}`    
+  const extendDayjs = () => {
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
   }
+
+  export const getDayjs = (date:string, value: number, formatStyle:string, unit?: dayjs.ManipulateType):string => {
+    const tz = 'Asia/Seoul'
+    extendDayjs()
+    var result = ''
+    if (value == 0){
+      result = dayjs(new Date(date)).tz(tz).format(formatStyle)
+    }else{      
+      result = dayjs(new Date(date)).add(value,unit).tz(tz).format(formatStyle)             
+    }
+    return result
+  }
+
+  export const getDayjsDay = (date:string):number => {
+    const tz = 'Asia/Seoul'
+    extendDayjs()
+    return dayjs(new Date(date)).tz(tz).day()
+  }
+
+  export const getWritetimeButtomValue = (writetime:string,num:number):string =>{
+    const first = getDayjs(writetime,-num,'MM-DD','days')
+    const second = getDayjs(writetime,0,'MM-DD')
+    return `${first} ~ ${second}`
+  }   
 
  export const compareToWritetime = (updateWritetime:string,originalWritetime:string,fromEffect:boolean=false):boolean => {
     const time1Arr = originalWritetime.split('-')
@@ -197,128 +209,9 @@ export const compareFullYear = (updateWritetime:string,Writetime:string):boolean
   return bool;
 }
 
-export const calculMin = (writetime:string,num:number):string => {
-  const day = new Date(writetime)
-  const min = day.getMinutes()  
-  const startDay = num == 0 ? day : new Date(day.setMinutes(min + num))  
-  const startDate = getWritetimeValue(startDay)
-  const _hour = startDay.getHours()
-  const hour = (_hour >= 10) ? _hour : `0${_hour}`
-  const _minute = startDay.getMinutes()
-  const minute = (_minute >= 10) ? _minute : `0${_minute}`
-  return `${startDate} ${hour}:${minute}`
-}
-
-// export const calculTime = (writetime:string,num:number):string[] => {
-//   const day = new Date(writetime)
-//   const date = day.getDate()
-//   const endDay = new Date(day.setDate(date + 1))  
-//   const endDate = getWritetimeValue(endDay)
-//   const startDate = getMinusDateWritetime(writetime,num)
-//   return [startDate,endDate]
-// }
-
-// export const getMinusDateWritetime = (time:string,num:number):string => {
-//   const date = new Date(time)
-//   const minusDate = new Date(date.setDate(date.getDate() - num))
-//   const getYear = minusDate.getFullYear() 
-//   const getMonth = minusDate.getMonth() + 1
-//   const getDate = minusDate.getDate()
-//   var monthStr: string = getChangeDate(getMonth)
-//   var dateStr: string = getChangeDate(getDate)
-//  return `${getYear}-${monthStr}-${dateStr}`    
-// }
-
-// export const getMinusMonthWritetime = (time:string,num:number):string => {
-//   const date = new Date(time)
-//   const minusDate = new Date(date.setMonth(date.getMonth() - num))
-//   const getYear = minusDate.getFullYear() 
-//   const getMonth = minusDate.getMonth() + 1
-//   const getDate = minusDate.getDate()
-//   var monthStr: string = getChangeDate(getMonth)
-//   var dateStr: string = getChangeDate(getDate)
-//  return `${getYear}-${monthStr}-${dateStr}`    
-// }
-
-// export const calculWeek = (writetime:string):string[] => {
-//   const day = new Date(writetime)
-//   const date = day.getDate()
-//   const endDay = new Date(day.setDate(date + 7))  
-//   const endDate = getWritetimeValue(endDay)  
-//   const startDate = getMinusDateWritetime(writetime,7)
-//   return [startDate,endDate]
-// }
-export const calculTime = (writetime:string,num:number):string[] => {
-  const realDate = +writetime.split('-')[2]
-  const day = new Date(writetime)
-  const date = day.getDate()
-  let endDay = new Date(day.setDate(date + 1))  
-  if(realDate == endDay.getDate()){
-    endDay = new Date(day.setDate(date + 2))
-  }
-  const endDate = getWritetimeValue(endDay)
-  const startDate = getMinusDateWritetime(writetime,num)
-  return [startDate,endDate]
-}
-
-export const getMinusDateWritetime = (time:string,num:number):string => {
-  const realDate = +time.split('-')[2]
-  const date = new Date(time)  
-  let minusDate
-  if(realDate == date.getDate()){
-    minusDate = new Date(date.setDate(date.getDate() - num))    
-  }else{
-    minusDate = num > 1 ? new Date(date.setDate(date.getDate() - num)) : date
-  }
-  const getYear = minusDate.getFullYear() 
-  const getMonth = minusDate.getMonth() + 1
-  const getDate = minusDate.getDate()
-  var monthStr: string = getChangeDate(getMonth)
-  var dateStr: string = getChangeDate(getDate)
- return `${getYear}-${monthStr}-${dateStr}`    
-}
-
-export const getMinusMonthWritetime = (time:string,num:number):string => {
-  const date = new Date(time)
-  const minusDate = new Date(date.setMonth(date.getMonth() - num))
-  const getYear = minusDate.getFullYear() 
-  const getMonth = minusDate.getMonth() + 1
-  const getDate = minusDate.getDate()
-  var monthStr: string = getChangeDate(getMonth)
-  var dateStr: string = getChangeDate(getDate)
- return `${getYear}-${monthStr}-${dateStr}`    
-}
-
-export const calculWeek = (writetime:string):string[] => {
-  const realDate = +writetime.split('-')[2]
-  const day = new Date(writetime)
-  const date = day.getDate()
-  let endDay = new Date(day.setDate(date + 7))  
-  if(realDate == date - 1){
-    endDay = new Date(day.setDate(date + 8))
-  }
-  const endDate = getWritetimeValue(endDay)  
-  const startDate = getMinusDateWritetime(writetime,7)
-  return [startDate,endDate]
-}
-
-export const calculMonth = (writetime:string):string[] => {
-  const day = new Date(writetime)
-  const month = day.getMonth()
-  const endDay = new Date(day.setMonth(month + 1))  
-  const endDate = getWritetimeValue(endDay)
-  const startDate = getMinusMonthWritetime(writetime,1)    
-  console.log(startDate)
-  return [startDate,endDate]
-}
-
-export const calculYear = (writetime:string):string[] => {
-  const day = new Date(writetime)
-  const year = day.getFullYear()
-  const endDay = new Date(day.setFullYear(year + 1))
-  const startDay = new Date(day.setFullYear(year - 1))
-  const endDate = getWritetimeValue(endDay)
-  const startDate = getWritetimeValue(startDay)  
+export const calculTime = (date: string,startValue:number, endValue: number, formatStyle: string, unit?: dayjs.ManipulateType):string[] =>{
+  const startDate = getDayjs(date,startValue,formatStyle,unit)
+  const endDate = getDayjs(date,endValue,formatStyle,unit)
   return [startDate,endDate]
 }
 
@@ -341,10 +234,7 @@ export const compareYear = (id:string,updateWritetime:string,writetime:string):b
 
 
 export const selectTime = (writetime:string,num:number):string[] => {
-  const day = new Date(writetime)
-  const date = day.getDate()
-  const startDay = num == 0 ? day : new Date(day.setDate(date - num))
-  const startDate = getWritetimeValue(startDay)
+  const startDate = getDayjs(writetime,-num,'YYYY-MM-DD','days')
   return [startDate,writetime]
 }
 
@@ -353,22 +243,8 @@ export const replaceYear = (time:string):string => {
   return `${times[1]}-${times[2]}`
 }
 
-export const getYearMonth = (time:string,day:Date):string => {
-  if(time != ''){
-    const times = time.split('-')
-    return `${times[0]}-${times[1]}`
-  }else{
-    const year = day.getFullYear()
-    const getMonth = day.getMonth() + 1
-    const month = `${getMonth}`.length > 1 ? `${getMonth}` : `0${getMonth}`
-    return `${year}-${month}`
-  }
-}
-
-export const getFullYear = (day:Date):string => {  
-    const year = day.getFullYear()
-    return `${year}`
-  
+export const getYearMonth = (time:string,num:number):string => {
+  return getDayjs(time,num,'YY-MM','month')
 }
 
 export const getYear = (time:string):string => {
@@ -377,39 +253,24 @@ export const getYear = (time:string):string => {
 }
 
 export const selectWeek = (writetime:string):string[] => {
-  const currentDay = new Date(writetime)
-  var theYear = currentDay.getFullYear();
-  var theMonth = currentDay.getMonth();
-  var theDate  = currentDay.getDate();
-  var theDayOfWeek = currentDay.getDay();
+  var theDayOfWeek = getDayjsDay(writetime);
   var thisWeek = [];
   var j = 0
   for(var i=1; i<8; i++) {
-        var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
-        var yyyy = `${resultDay.getFullYear()}`;
-        var mm = `${Number(resultDay.getMonth()) + 1}`;
-        var dd = `${resultDay.getDate()}`;               
-        mm = String(mm).length === 1 ? '0' + mm : mm;
-        dd = String(dd).length === 1 ? '0' + dd : dd;
-        thisWeek[j] = yyyy + '-' + mm + '-' + dd;
+        var resultDay = getDayjs(writetime,(i - theDayOfWeek),'YYYY-MM-DD','days');        
+        thisWeek[j] = resultDay;
         j++
   }
   return thisWeek
 }
 
 export const selectWeekDate = (writetime:string):string[] => {
-  const currentDay = new Date(writetime)
-  var theYear = currentDay.getFullYear();
-  var theMonth = currentDay.getMonth();
-  var theDate  = currentDay.getDate();
-  var theDayOfWeek = currentDay.getDay();
+  var theDayOfWeek = getDayjsDay(writetime);
   var thisWeek = [];
   var j = 0
   for(var i=1; i<8; i++) {
-        var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
-        var dd = `${resultDay.getDate()}`;                       
-        dd = String(dd).length === 1 ? '0' + dd : dd;
-        thisWeek[j] = dd;
+        var resultDay = getDayjs(writetime,(i - theDayOfWeek),'DD','days');        
+        thisWeek[j] = resultDay;
         j++
   }
   return thisWeek

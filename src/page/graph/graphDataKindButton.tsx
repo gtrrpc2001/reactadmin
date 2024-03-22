@@ -34,7 +34,7 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fr
 
     useEffect(()=>{        
         async function getData(){            
-            const times = calculTime(time,1);      
+            const times = calculTime(time,-1,1,'YYYY-MM-DD','days');    
             const result = await getGraphEcgTime(eq,time,times);            
             setData(result)
             setCheck(true)

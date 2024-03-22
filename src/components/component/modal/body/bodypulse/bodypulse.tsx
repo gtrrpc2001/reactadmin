@@ -17,7 +17,7 @@ export const BodyPulse = ({eq,startTime}:Props) => {
     const [id,setId] = useState<string>('')
 
     const setValue = (id:string) => {
-       const plusDate = calculTime(writetime,1)
+       const plusDate = calculTime(writetime,-1,1,'YYYY-MM-DD','days')
         if(id == "plus"){            
             setWritetime(plusDate[1])      
         }else{    

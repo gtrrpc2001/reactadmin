@@ -15,14 +15,13 @@ export const Tbody = ({BodyProps,page,prepareRow,cellClick}:Props) =>{
         if(header == "국가"){
             const value:string = cell.value
             if(value.includes('-08:00')){
-                changeTimezone = value.replace('KR','US')
-                console.log(changeTimezone)
+                changeTimezone = value.replace('KR','US')                
                 return changeTimezone
             }            
         }
        return cell.render("Cell")
     }
-    
+
     return (
         <tbody {...BodyProps()}>
             {page.map((row:Row) => {
