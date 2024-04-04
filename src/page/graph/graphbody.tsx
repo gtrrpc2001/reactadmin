@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { UserList } from "./userList";
 import { GraphDatePicker } from "./datepicker";
@@ -16,17 +16,13 @@ type Props = {
 }
 
 export const GraphBody = ({names,marginTop}:Props) => {
-    const [list,setList] = useState<{eq:string,eqname:string}[]>([])
+    const refList = useRef(names)
     const [id,setId] = useState<string>('')
     const [data,setData] = useState<any[]>([])
     const [kindButton,setKindButton] = useState<graphKindButton>({bpm_hrv_arr:true,cal_step:false,ecg:false})
     const [writetime,setWritetime] = useState<string>('')
     const [ecgTime,setEcgTime] = useState<string>('')    
-    const [open,setOpen] = useState<boolean>(true)
-
-    useEffect(()=>{
-        setList(names)
-    },[names])   
+    const [open,setOpen] = useState<boolean>(true)   
     
     const getCheckMaxValue = (value:number):number => {
         return (value > 180) ? 180 : value
@@ -113,7 +109,7 @@ export const GraphBody = ({names,marginTop}:Props) => {
 
     return (
         <Box sx={{display:'flex',alignItems:'center',marginTop:marginTop}}>
-            <UserList nameList={list} handler={handler} id={id} width={300} height={400}/>   
+            <UserList nameList={refList.current} handler={handler} id={id} width={300} height={400}/>   
             <Box>
                 <Box sx={{paddingLeft:5,paddingBottom:2,display:'flex',alignItems:'center'}}>                            
                     <GraphDatePicker onChange={pickerChange}  width={170} height={50} />

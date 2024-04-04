@@ -1,4 +1,4 @@
-import { Box,CircularProgress,Typography } from "@mui/material";
+import { Box,Button,CircularProgress,Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { graphKindButton } from "../../axios/interface/graph";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -82,25 +82,30 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fr
                 </Typography>
             </Box>
             {(kindButton.ecg) && (
-                <Box id="timeList"
-                sx={[sx,{borderColor:kindButton.ecg ? (listClick ? selectColor : defaultColor) :defaultColor}]} 
-                onClick={(e)=>{setListClick(!listClick)}}
-                >     
-                    <Box sx={{display:'flex' , justifyContent:'center'}}>
-                        <Typography>
-                            심전도 시간 리스트
-                        </Typography>
-                        {listClick && check ? (
-                            <ArrowDropUpIcon/>
-                        ) : (
-                           <ArrowDropDownIcon/>
-                        )}
-                        
-                    </Box>                           
-                    {(listClick) &&                        
-                       getTimeList()
-                    }                                        
-                </Box>
+                <>
+                    <Box id="timeList"
+                    sx={[sx,{borderColor:kindButton.ecg ? (listClick ? selectColor : defaultColor) :defaultColor}]} 
+                    onClick={(e)=>{setListClick(!listClick)}}
+                    >     
+                        <Box sx={{display:'flex' , justifyContent:'center'}}>
+                            <Typography>
+                                심전도 시간 리스트
+                            </Typography>
+                            {listClick && check ? (
+                                <ArrowDropUpIcon/>
+                            ) : (
+                            <ArrowDropDownIcon/>
+                            )}
+                            
+                        </Box>                           
+                        {(listClick) &&                        
+                        getTimeList()
+                        }                                        
+                    </Box>
+                    <Button>
+                        심전도 데이터 다운
+                    </Button>
+                </>
             )}
         </Box>
             

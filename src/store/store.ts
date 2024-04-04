@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['eq','check'] // 지속하고 싶은 상태의 key 목록
+    whitelist: ['eq','check','names'] // 지속하고 싶은 상태의 key 목록
     // blacklist: [] // 지속하지 않을 상태의 key 목록도 설정
 };
 
