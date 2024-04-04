@@ -60,6 +60,10 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fr
                 );
     }
 
+    const getEcgFileDownload = () => {
+
+    }
+
     return (
                       
         <Box sx={{display:'flex',alignItems:'center'}}>
@@ -102,9 +106,13 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fr
                         getTimeList()
                         }                                        
                     </Box>
-                    <Button>
-                        심전도 데이터 다운
-                    </Button>
+                    {
+                        data.length != 0 && (
+                            <Button onClick={getEcgFileDownload} >
+                                심전도 데이터 다운
+                            </Button>
+                        )
+                    }
                 </>
             )}
         </Box>
