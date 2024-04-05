@@ -53,14 +53,16 @@ export default function Home(){
     }
 
     useEffect(()=> {
-        
+        let isMounted = true;        
         const timer = setInterval(async() => {    
             if(loginSelector)
                 await getInfoList()                                          
         },1000)            
         
-        if(!loginSelector)
-            return ()=>{clearTimeout(timer)}
+        return () => {
+            isMounted = false;
+            clearInterval(timer); 
+        };
         
     },[loginSelector])
     
