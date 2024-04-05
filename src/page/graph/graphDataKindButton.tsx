@@ -56,8 +56,7 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
         setListClick(false);
     },[time,eq])
 
-    const getTimeList = () => {
-        console.log(`--- ${data} --- check`)
+    const getTimeList = () => {        
         return (
                 <Box sx={{position:'absolute',right:check ? 410 : 520,zIndex:1}}>
                     {check ? ( <TimeList timeList={data} handler={onEcgTimeClick} id={id} width={270} height={400}/> ) :(
