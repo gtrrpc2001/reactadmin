@@ -21,14 +21,13 @@ export default function Home(){
     const InfoDispatch = useDispatch<AppDispatch>();
     const [check,setCheck] = useState(false)
     const [loading, setLoding] = useState(true);  
-    const [data,setData] = useState<historyLast[]>([])            
-
-    // const isLoginSuv = window.localStorage.getItem("isLoginSuv")
-    // const isUserId = window.localStorage.getItem("isUserId")
+    const [data,setData] = useState<historyLast[]>([])  
     
-    if(!loginSelector){        
-        navigate('/')
-    }
+    useEffect(() => {        
+        if (!loginSelector) 
+            navigate('/');
+        
+    }, [loginSelector, navigate]);
     
     async function getInfoList():Promise<any> {
         try{
@@ -81,23 +80,23 @@ export default function Home(){
     }    
 
     return (
-        <>  
-    <div>
-        {loading ? (
-         <Loading loading={loading} />) : (
-            <div className="home">
-                <div className="header">
-                    <Header />
+    <>  
+        <div>
+            {loading ? (
+             <Loading loading={loading} />) : (
+                <div className="home">
+                    <div className="header">
+                        <Header />
+                    </div>
+                    <div className="body">
+                        <HomeBody HandleLogout={HandleLogout} check={check} HandleCheckbox={HandleCheckbox}/>
+                    </div>
+                    <div className="footer">                
+                        <Footer language={true}/> 
+                    </div>
                 </div>
-                <div className="body">
-                    <HomeBody HandleLogout={HandleLogout} check={check} HandleCheckbox={HandleCheckbox}/>
-                </div>
-                <div className="footer">                
-                    <Footer language={true}/> 
-                </div>
-            </div>
-        )}
-    </div>     
+            )}
+        </div>     
     </>
     );
 }
