@@ -1,11 +1,13 @@
 import { Box,Button,CircularProgress,Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { graphKindButton } from "../../axios/interface/graph";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { calculTime } from "../../components/component/modal/controller/modalController";
-import { getGraphEcgTime } from "../../data/graph";
+import { getGraphEcgTime, getManagerCheck } from "../../data/graph";
 import { TimeList } from "./userList";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 type Props = {
     onClick:(e: React.MouseEvent<HTMLDivElement, MouseEvent>)=>void
@@ -25,6 +27,9 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
     const [listClick,setListClick] = useState<boolean>(false)
     const [data,setData] = useState<any[]>([])
     const [check,setCheck] = useState<boolean>(true)
+    const [isManager,setIsManager] = useState<boolean>(false)
+    const refManager = useRef<boolean>(false)
+    const eqSelector = useSelector<RootState,string>(state => state.eq)
     const border = 2 
     const borderRadius = 3   
     const marginLeft = 1    
@@ -60,7 +65,23 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
                     )}
                 </Box>            
                 );
-    }
+    }    
+
+    useEffect(()=>{
+        const ManagerCheck = async() => {
+            try{
+                if (!refManager.current){
+                    const result = await getManagerCheck(eqSelector);
+                    refManager.current = result;
+                    setIsManager(result);                
+                }
+            }catch(E){
+                console.log(E)                
+            }
+        }
+
+        ManagerCheck();
+    },[])
 
     return (
                       
@@ -105,9 +126,8 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
                         }                                        
                     </Box>
                     {
-                        data.length != 0 && (
+                        (ecgData.length != 0 && isManager) && (
                             <Button onClick={excelButtonClick} >
-
                                 심전도 데이터 다운
                             </Button>
                         )
