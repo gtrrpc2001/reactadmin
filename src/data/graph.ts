@@ -17,6 +17,6 @@ export const getGraphBpmHrvArrData = async (eq:string,nowTime:string,time:string
  }
 
  export const getManagerCheck = async (email:string):Promise<boolean> => {    
-       const data:any = await getData(`/msl/managerCheck?empid=${email}`)    
-       return data.includes('true');
+       const data:any = await getData(`/msl/managerCheck?empid=${email}`)           
+       return data;
     }
