@@ -111,9 +111,9 @@ export const GraphBody = ({names,marginTop}:Props) => {
     }
 
     const getEcgFileDownload = () => {        
+        console.log(names.length)
         if(names.length != 0){
-            const eqname = names.filter(d => d.eq == id)[0].eqname
-            console.log(eqname)
+            const eqname = names.filter(d => d.eq == id)[0].eqname            
             exportToExcel(data,`${eqname}님의 ${writetime} ${ecgTime} 부터 10분간 ECG데이터`)
         }
     }
