@@ -124,7 +124,8 @@ export const GraphBody = ({names,marginTop}:Props) => {
             <Box>
                 <Box sx={{paddingLeft:5,paddingBottom:2,display:'flex',alignItems:'center'}}>                            
                     <GraphDatePicker onChange={pickerChange}  width={170} height={50} />
-                    <GraphKindButton onClick={ButtonHandler} onEcgTimeClick={ecgTimeListHandler} excelButtonClick={getEcgFileDownload} 
+                    <GraphKindButton onClick={ButtonHandler} onEcgTimeClick={ecgTimeListHandler} 
+                    excelButtonClick={getEcgFileDownload} ecgData={data}
                     id={ecgTime} eq={id} time={writetime} kindButton={kindButton} fristItemWidth={230}/>                            
                 </Box>
                 {open ? (

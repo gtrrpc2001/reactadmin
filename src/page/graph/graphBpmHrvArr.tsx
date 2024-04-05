@@ -56,7 +56,7 @@ export const Graphs = ({data,width,height,kind}:Props) => {
             case kind.ecg :
                 return (
                     <>
-                        <Line yAxisId="left" type="monotone" dataKey="ecg" stroke="#8884d8" dot={false}/>
+                        <Line yAxisId="left" type="monotone" dataKey="ecg" stroke="#8884d8" dot={false} isAnimationActive={false}/>
                     </>
                 );
             case kind.cal_step :
@@ -85,10 +85,10 @@ export const Graphs = ({data,width,height,kind}:Props) => {
         <div style={{display:'flex',flexDirection:'row',overflowX:scroll ? 'scroll' : 'hidden',overflowY:'hidden',width:width,height:height+10}}>
         <ResponsiveContainer
         width={graphWidth}
-        height={height}                
+        height={height}                        
         >          
             <ComposedChart                                
-            data={data}                                                 
+            data={data}                                                             
             >
                 <CartesianGrid stroke="#f5f5f5" />
                 {/* //label={{value:"Pages",position: "insideBottomLeft", dy: 0}} */}

@@ -11,6 +11,7 @@ type Props = {
     onClick:(e: React.MouseEvent<HTMLDivElement, MouseEvent>)=>void
     onEcgTimeClick:(e: React.MouseEvent<HTMLLIElement, MouseEvent>)=>void
     excelButtonClick:()=>void
+    ecgData:any[]
     fristItemWidth:number
     kindButton:graphKindButton
     eq:string
@@ -18,7 +19,7 @@ type Props = {
     id:string
 }
 
-export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fristItemWidth,excelButtonClick}:Props) => {
+export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindButton,fristItemWidth,excelButtonClick}:Props) => {
     const [defaultColor , setdefaultColor] = useState('gray') //#ef507b
     const [selectColor, setSelectColor] = useState('#5388F7')
     const [listClick,setListClick] = useState<boolean>(false)
@@ -108,7 +109,7 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fr
                         }                                        
                     </Box>
                     {
-                        data.length != 0 && (
+                        ecgData.length != 0 && (
                             <Button onClick={getEcgFileDownload} >
                                 심전도 데이터 다운
                             </Button>
