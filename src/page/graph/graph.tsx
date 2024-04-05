@@ -22,6 +22,8 @@ export const Graph = () =>{
         setLoding(false);
     }, [loginSelector, navigate]);
     
+    console.log('rendering test')
+
     return (
       <div>
         {loading ? (
