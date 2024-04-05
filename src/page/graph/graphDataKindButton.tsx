@@ -72,6 +72,7 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
             try{
                 if (!refManager.current){
                     const result = await getManagerCheck(eqSelector);
+                    console.log(`${result} ---- ${eqSelector}`)
                     refManager.current = result;
                     setIsManager(result);                
                 }
