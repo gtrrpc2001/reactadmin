@@ -62,10 +62,6 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
                 );
     }
 
-    const getEcgFileDownload = () => {
-
-    }
-
     return (
                       
         <Box sx={{display:'flex',alignItems:'center'}}>
@@ -109,8 +105,13 @@ export const GraphKindButton = ({onClick,onEcgTimeClick,ecgData,eq,id,time,kindB
                         }                                        
                     </Box>
                     {
+<<<<<<< HEAD
                         ecgData.length != 0 && (
                             <Button onClick={getEcgFileDownload} >
+=======
+                        data.length != 0 && (
+                            <Button onClick={excelButtonClick} >
+>>>>>>> 81b75bb78224729ef995d87b9cc06aa1c02a8ebb
                                 심전도 데이터 다운
                             </Button>
                         )
