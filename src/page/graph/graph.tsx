@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
@@ -15,12 +15,12 @@ export const Graph = () =>{
     const [loading, setLoding] = useState(true);
     const loginSelector = useSelector<RootState,boolean>(state => state.check)
     const names = useSelector<RootState,{eq:string,eqname:string}[]>(state => state.names)
-    useEffect(()=>{
-        if(!loginSelector)
-            navigate('/')
+    const memoizedNames = useMemo(() => names, [names]);
 
-            setLoding(false)    
-    },[]);
+    useEffect(() => {
+        if (!loginSelector) navigate('/');
+        setLoding(false);
+    }, [loginSelector, navigate]);
     
     return (
       <div>
@@ -31,7 +31,7 @@ export const Graph = () =>{
                     <Header />
                 </div>
                 <div className="body">
-                  <GraphList names={names}/>
+                  <GraphList names={memoizedNames}/>
                 </div>
                 <div className="footer">                
                     <Footer language={true}/> 

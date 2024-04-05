@@ -7,16 +7,16 @@ type Props = {
 }
 
 export const GraphList = ({names}:Props) => { 
-    const nameValues = useMemo(()=> names,[])   
+    
     return (
         <Box sx={{width:1652,height:850}}>
             <Box sx={{marginTop:5}}>
 
-                <GraphBody names={nameValues} marginTop={0}/>
+                <GraphBody names={names} marginTop={0}/>
 
                 <Divider sx={{marginTop:5}} />
 
-                <GraphBody names={nameValues} marginTop={5}/>
+                <GraphBody names={names} marginTop={5}/>
                                                                                                
             </Box>
         </Box>

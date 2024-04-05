@@ -10,6 +10,7 @@ import { TimeList } from "./userList";
 type Props = {
     onClick:(e: React.MouseEvent<HTMLDivElement, MouseEvent>)=>void
     onEcgTimeClick:(e: React.MouseEvent<HTMLLIElement, MouseEvent>)=>void
+    excelButtonClick:()=>void
     fristItemWidth:number
     kindButton:graphKindButton
     eq:string
@@ -17,7 +18,7 @@ type Props = {
     id:string
 }
 
-export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fristItemWidth}:Props) => {
+export const GraphKindButton = ({onClick,onEcgTimeClick,eq,id,time,kindButton,fristItemWidth,excelButtonClick}:Props) => {
     const [defaultColor , setdefaultColor] = useState('gray') //#ef507b
     const [selectColor, setSelectColor] = useState('#5388F7')
     const [listClick,setListClick] = useState<boolean>(false)
