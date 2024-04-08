@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { UserList } from "./userList";
 import { GraphDatePicker } from "./datepicker";
@@ -50,7 +50,7 @@ export const GraphBody = ({names,marginTop}:Props) => {
                     default :                                                
                         result = await getGraphBpmHrvArrData(id,time,calTime)
                         v = result?.map((d)=>{
-                             return {bpm:getCheckMaxValue(d.bpm),hrv:getCheckMaxValue(d.hrv),arr:d.count,writetime:getWritetimeSelectHour_Min(d.writetime)}
+                             return {bpm:getCheckMaxValue(d.bpm),hrv:getCheckMaxValue(d.hrv),arr:d.count,time:getWritetimeSelectHour_Min(d.writetime)}
                          })
                          setOpen(true)
                         break;
@@ -74,10 +74,14 @@ export const GraphBody = ({names,marginTop}:Props) => {
                 const startTime = `${writetime} ${ecgTime}`
                 const endTime = calculTime(startTime,0,10,'YYYY-MM-DD HH:mm','minute')[1] 
                 const result = await getGraphEcgValue(id,startTime,endTime)                
-                const v = result?.map((d)=>{
-                    return {ecg:d}
-                })             
-                setData(v)
+                const ecgList: SetStateAction<any[]> = []
+                result?.map((d)=>{
+                   d.ecg.map(e => 
+                    {
+                        ecgList.push({ecg:e,time:d.writetime})                    
+                    })                    
+                })            
+                setData(ecgList)
                 setOpen(true)
             } 
         }
