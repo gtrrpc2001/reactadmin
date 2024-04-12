@@ -12,5 +12,6 @@ export interface historyLast{
     cal:number,
     calexe:number,
     arrcnt:number,
-    timezone:string
+    timezone:string,
+    battery:number
 }
