@@ -13,8 +13,6 @@ import { LoginEmailError } from '../../components/component/inputs/login/loginEm
 import { LoginPwdError } from '../../components/component/inputs/login/loginPwdError';
 import { LoginButton } from '../../components/component/buttons/loginButton';
 import { LoginInput } from '../../components/component/inputs/login/loginInput';
-import { getTime, setWindowLoginItems } from '../../func/func';
-import { getData } from '../../axios/api/serverApi';
 
 const LoginPage = () =>{
     const AppDispatch = useDispatch<AppDispatch>();
@@ -62,9 +60,9 @@ const LoginPage = () =>{
       }
       
       const setHandleLogin = async()=>{
-        errorCode('아이디 & 비밀번호를 체크 중 입니다.');
+            errorCode('아이디 & 비밀번호를 체크 중 입니다.');
             setLastEmail(email)
-            setLastpw(pw)
+            setLastpw(pw)            
             const loginBool = await tryLogin(email,pw)
             await SuccessLogin(loginBool) 
             if(!loginBool)            
@@ -92,8 +90,7 @@ const LoginPage = () =>{
           logBool = await saveLog(email,'로그인')               
 
         if(logBool){            
-            navigate('/home'); 
-            setWindowLoginItems("true",email)    
+            navigate('/home');             
         }        
     }
 

@@ -11,7 +11,6 @@ import { HomeBody } from "./body/body";
 import { Footer } from "./footer/footer";
 import { Header } from "./header/header";
 import { historyLast } from "../../axios/interface/history_last";
-import { setWindowLoginItems } from "../../func/func";
 
 export default function Home(){
     const navigate = useNavigate();  
@@ -21,7 +20,7 @@ export default function Home(){
     const InfoDispatch = useDispatch<AppDispatch>();
     const [check,setCheck] = useState(false)
     const [loading, setLoding] = useState(true);  
-    const [data,setData] = useState<historyLast[]>([])  
+    const [data,setData] = useState<historyLast[]>([])         
     
     useEffect(() => {        
         if (!loginSelector) 
@@ -31,7 +30,7 @@ export default function Home(){
     
     async function getInfoList():Promise<any> {
         try{
-            const getData:historyLast[] = await getHistory(`/mslLast/webTable`)                                                    
+            const getData:historyLast[] = await getHistory(`/mslLast/webTable?eq=${eqSelector}`)                                                    
             setLoding(false)                
             if(getData?.length != 0 && !String(getData).includes('result')){
                 setData(getData)                    
@@ -73,8 +72,7 @@ export default function Home(){
     const HandleLogout = async() =>{
         const loginBool = await saveLog(eqSelector,'로그아웃')
         useCheckDispatch(loginActions.loginCheck(!loginBool))
-        navigate('/')
-        setWindowLoginItems("false","")
+        navigate('/')        
     }
 
     function HandleCheckbox(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -85,7 +83,7 @@ export default function Home(){
     <>  
         <div>
             {loading ? (
-             <Loading loading={loading} />) : (
+            <Loading loading={loading} />) : (
                 <div className="home">
                     <div className="header">
                         <Header />

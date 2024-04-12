@@ -20,7 +20,9 @@ export const Graph = () =>{
     useEffect(() => {
         if (!loginSelector) navigate('/');
         setLoding(false);
-    }, [loginSelector, navigate]);    
+    }, [loginSelector, navigate]);
+    
+    console.log('rendering test')
 
     return (
       <div>

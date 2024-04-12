@@ -32,7 +32,16 @@ export const ModalRealTimeGraph = ({open_close,bpm,eq,time}:Porps) => {
         result.map(d=>{              
           dataArr?.push({ecg:d})                
         })
-      }
+      }                         
+      // if(result.length > 560){
+      //   result.slice(0,559).map(d=>{              
+      //     dataArr?.push({ecg:d})
+      //   })
+      // }else{
+      //   result.map(d=>{              
+      //     dataArr?.push({ecg:d})
+      //   })
+      // }
                   
       if(dataArr?.length > 420){
         setOpen(false)
@@ -43,6 +52,7 @@ export const ModalRealTimeGraph = ({open_close,bpm,eq,time}:Porps) => {
         dataArr.shift()
         dataArr.push({ecg:d})
       })
+      // setSpreadData(dataArr)
     }
   }
 
