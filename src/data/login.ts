@@ -2,7 +2,7 @@ import { getData, postData } from "../axios/api/serverApi";
 import { getTime } from "../func/func";
 
 export const tryLogin = async (email:string,pw:string):Promise<boolean> => {    
-    const data:any = await getData(`/msl/CheckLogin?empid=${email}&pw=${pw}`)    
+    const data:any = await getData(`/msl/CheckLogin?empid=${email}&pw=${pw}&destroy=${true}`)    
     return data.includes('true');
  }  
  
