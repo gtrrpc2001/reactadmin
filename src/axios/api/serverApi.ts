@@ -8,11 +8,11 @@ import { yesterdayArr } from '../interface/arr';
 
 
 const client: Axios = axios.create({
-    baseURL: 'https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app',
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  })
+  baseURL: `${process.env.REACT_APP_BASEURL}`,
+  headers: {
+    'Content-Type': 'application/json',
+  }
+})
 
   //TODO: GET 메서드
    export const getData = async <T>(url:string, config?: AxiosRequestConfig): Promise<APIResponse<T>> => {
