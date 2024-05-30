@@ -1,28 +1,28 @@
-$font-size:20px;
-$bordercolor:#04AA6D;
-$borderRadius:10px;
+$font-size: 20px;
+$bordercolor: #04aa6d;
+$borderRadius: 10px;
 
-.formSearch{
-    margin-left: 20px;
-    width: 50%;
-    height: 100%;
+.formSearch {
+  margin-left: 20px;
+  width: 50%;
+  height: 100%;
 }
 
-.filterinput{
-    font-size: $font-size;
-    height: 12%;
-    width: 83%;
-    border-color: $bordercolor;
-    border-radius: $borderRadius;
+.filterinput {
+  font-size: $font-size;
+  height: 12%;
+  width: 83%;
+  border-color: $bordercolor;
+  border-radius: $borderRadius;
 }
 
-.filterbutton{
-    margin-left: 3px;
-    font-size: $font-size;
-    height: 35px;
-    border: none;
-    border-radius: $borderRadius;
-    background-color: $bordercolor;
-    width: 50px;
-    cursor:pointer;
+.filterbutton {
+  margin-left: 3px;
+  font-size: $font-size;
+  height: 35px;
+  border: none;
+  border-radius: $borderRadius;
+  background-color: $bordercolor;
+  width: 50px;
+  cursor: pointer;
 }

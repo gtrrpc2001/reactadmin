@@ -1,39 +1,38 @@
-$bgColor:#ef507b;
+$bgColor: #ef507b;
 
-.heart{
-    display:flex;    
-    position: absolute;    
-    top: 30px;
-    right: 45px;
-    margin: 0 auto;
-    width: 30px;
-    height: 30px;
-    background-color: $bgColor;
-    position: relative;
-    transform: rotate(45deg);     
+.heart {
+  display: flex;
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  margin: 0 auto;
+  width: 30px;
+  height: 30px;
+  background-color: $bgColor;
+  position: relative;
+  transform: rotate(45deg);
 }
 
-.heart:hover{
-    animation: bounce;
-    animation-duration:2s;
+.heart:hover {
+  animation: bounce;
+  animation-duration: 2s;
 }
 
 .heart:before,
 .heart:after {
-    content: "";
-    width: 28px;
-    height: 28px;
-    position: absolute;
-    border-radius: 50%;
-    background: $bgColor;
-    border: 1px solid $bgColor;
+  content: "";
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  border-radius: 50%;
+  background: $bgColor;
+  border: 1px solid $bgColor;
 }
 
-.heart:before{
-    left: -50%;
+.heart:before {
+  left: -50%;
 }
 
-.heart:after{
-    top: -50%;    
+.heart:after {
+  top: -50%;
 }
-

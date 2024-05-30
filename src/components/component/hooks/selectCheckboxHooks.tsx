@@ -1,22 +1,19 @@
-import { Hooks } from "react-table"
+import { Hooks } from "react-table";
 import { CellCheckbox } from "../checkbox/cellCheckbox";
 
-export const CellSelectHooks = (hooks:Hooks<object>) => {   
-
-   return hooks.visibleColumns.push((columns) =>[
+export const CellSelectHooks = (hooks: Hooks<object>) => {
+  return hooks.visibleColumns.push((columns) => [
     {
-        id:'selection',        
+      id: "selection",
 
-        Cell: ({row}) => {           
-            return (
-            <div>
-                <CellCheckbox                                                           
-                    {...row.getToggleRowSelectedProps()}                              
-                />
-            </div>
-        )
-    }
+      Cell: ({ row }) => {
+        return (
+          <div>
+            <CellCheckbox {...row.getToggleRowSelectedProps()} />
+          </div>
+        );
+      },
     },
-    ...columns
-]);
-}
+    ...columns,
+  ]);
+};

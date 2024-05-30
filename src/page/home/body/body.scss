@@ -1,17 +1,18 @@
-
-
-.clslogout{    
-
-    display: flex;
-    justify-content: flex-end;
-
+.mainBody {
+  width: 100%;
+  min-height: calc(100vh - 180px);
 }
 
-.logoutbutton{
-    margin-right: 45px;
-    font-size: 20px;
-    border: none;
-    border-radius: 12px;
-    background-color: #04AA6D;  
-    cursor: pointer;  
+.clslogout {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logoutbutton {
+  margin-right: 45px;
+  font-size: 20px;
+  border: none;
+  border-radius: 12px;
+  background-color: #04aa6d;
+  cursor: pointer;
 }

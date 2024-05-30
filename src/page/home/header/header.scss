@@ -1,65 +1,65 @@
-@mixin tool{
-    text-align: center;
-    width: 120px;
-    padding-left: 0;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 35px;
-    font-weight: 900;
-    color: #313d53;
-    text-transform: none;
-    letter-spacing: -.075rem;
+@mixin tool {
+  text-align: center;
+  width: 120px;
+  padding-left: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 35px;
+  font-weight: 900;
+  color: #313d53;
+  text-transform: none;
+  letter-spacing: -0.075rem;
 }
 
-@mixin toolHover{
-    background-color: #e9e6e6;
+@mixin toolHover {
+  background-color: #e9e6e6;
 }
-.headerwrap{
-    display: flex;    
-    width: 100%;      
-    padding: 0 3%;
-    position: relative;    
-}
-
-.toolbar{
-    justify-content: start;
-    margin-right: 5%;
-    @include tool
+.headerwrap {
+  display: flex;
+  width: 100%;
+  padding: 0 3%;
+  position: relative;
 }
 
-.toolbar:hover{
-    @include toolHover
+.toolbar {
+  justify-content: start;
+  margin-right: 5%;
+  @include tool;
 }
 
-.center{
-    width:70%;
-    display: flex; 
-    align-items: center;
-    justify-content: center;
+.toolbar:hover {
+  @include toolHover;
 }
 
-.graph{    
-    display: block;       
-    width: 80px;
-    cursor: pointer; 
+.center {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.youtube{
-    margin-top: 5px;    
-    text-align: center;
-    display: block;       
-    width: 100px;
-    cursor: pointer;    
+.graph {
+  display: block;
+  width: 80px;
+  cursor: pointer;
 }
 
-.youtube:hover{
-    transform: scaleY( 1.3 )
+.youtube {
+  margin-top: 5px;
+  text-align: center;
+  display: block;
+  width: 100px;
+  cursor: pointer;
 }
 
-.companyPage{
-    @include tool
+.youtube:hover {
+  transform: scaleY(1.3);
 }
 
-.companyPage:hover{
-    @include toolHover
+.companyPage {
+  @include tool;
+}
+
+.companyPage:hover {
+  @include toolHover;
 }
