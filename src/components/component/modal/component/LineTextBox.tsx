@@ -106,7 +106,7 @@ export const SecondLineTextBox = ({ temp, distance }: Props) => {
         <TypoRightText
           bottom={second.bottom1}
           right={right.right3}
-          value="걸음걸이"
+          value="걸음거리"
         />
         <TypoRightText
           bottom={second.bottom2}
