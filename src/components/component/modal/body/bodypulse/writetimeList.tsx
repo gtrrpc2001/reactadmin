@@ -53,9 +53,10 @@ export const WritetimeList = React.memo(function WritetimeList({
       if (lastItem) {
         const { writetime } = lastItem;
         const result = await getWritetimeList(eq, writetime, calDate[1]);
+        console.log(result)
         if (result) {
           if (!result.includes("result")) {
-            setList((prevList) => [...prevList, result[0]]);
+            setList((prevList) => [...prevList, ...result]);
           }
         }
       }
