@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import UiModal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +12,11 @@ import { historyLast } from "../../../axios/interface/history_last";
 import "./modal.scss";
 import "animate.css";
 import { ModalHeader } from "./header/modalHeader";
-import { getClickFooter, getValues } from "./controller/modalController";
+import {
+  getClickFooter,
+  getDate,
+  getValues,
+} from "./controller/modalController";
 import { profileModal } from "../../../axios/interface/profileModal";
 import { Footer } from "./footer/footer";
 import { ModalHome } from "./body/bodyhome/modalHome";
@@ -16,7 +25,6 @@ import { BodyGraph } from "./body/bodygraph/bodygraph";
 import { BodyPulse } from "./body/bodypulse/bodypulse";
 import { BodyProfile } from "./body/bodyprofile/bodyprofile";
 import { modalValues } from "../../../axios/interface/modalvalues";
-import { getOnlyArr } from "../../../axios/api/serverApi";
 import { todayArrCountAction } from "../../createslice/createslices";
 
 interface ModalDefaultType {
@@ -39,7 +47,12 @@ export const Modal = ({
   );
   const [modalList, setModalList] = useState<modalValues>(
     getValues(data, values.eq)
-  );
+  );  
+
+  const memoWritetime = useMemo(() => {
+    return getDate(modalList.writetime);
+  }, [getDate(modalList.writetime)]);    
+
   const [footerBtn, setFooterBtn] = useState<footerIcon>({
     home: true,
     graph: false,
@@ -107,12 +120,17 @@ export const Modal = ({
 
       case footerSelect.pulse:
         return (
-          <BodyPulse eq={eq} startTime={startDate} koreaTime={koreaTime} />
+          <BodyPulse
+            eq={eq}
+            startTime={memoWritetime}
+            koreaTime={koreaTime}
+          />
         );
       default:
         return (
           <ModalHome
             open={open}
+            checkTime={memoWritetime}
             modalList={modalList}
             values={values}
             getProfile={getProfile}

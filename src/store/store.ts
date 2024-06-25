@@ -11,7 +11,6 @@ import {
   barGraphSlice,
   nameSlice,
   ModalSlice,
-  yesterdayArrSlice,
   todayArrCountSlice,
 } from "../components/createslice/createslices";
 import { persistStore } from "redux-persist";
@@ -30,7 +29,6 @@ const rootReducer = combineReducers({
   writetimeGraph: writetimeGraphSlice.reducer,
   names: nameSlice.reducer,
   modalData: ModalSlice.reducer,
-  yesterdayArrCount: yesterdayArrSlice.reducer,
   todayArrCount: todayArrCountSlice.reducer,
 });
 

@@ -328,6 +328,11 @@ export const replaceYear = (time: string): string => {
   return `${times[1]}-${times[2]}`;
 };
 
+export const getDate = (time: string): string => {
+  const times = time.split(" ");
+  return times[0];
+};
+
 export const getYearMonth = (time: string, num: number): string => {
   return getDayjs(time, num, "YY-MM", "month");
 };

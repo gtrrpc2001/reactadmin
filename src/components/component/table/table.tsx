@@ -24,7 +24,6 @@ import { Modal } from "../modal/modal";
 import {
   cellActions,
   profileActions,
-  yesterdayArrActions,
 } from "../../createslice/createslices";
 import { getOnlyArr, getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
@@ -86,16 +85,11 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
     const startDate = writetime?.split(" ")[0];
     const cellVlaue = { eq, eqname, timezone, startDate, changtime, battery };
     const times = calculTime(startDate, -1, 1, "YYYY-MM-DD", "days");
-    const yesterday = times[0];
     if (column?.id != "selection") {
       if (!row?.isSelected) {
         const Profile = await getProfile(
           `/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`
-        );
-        const yesterdayArr = await getOnlyArr(
-          `mslecgarr/arrCount?eq=${eq}&startDate=${yesterday}&endDate=${startDate}`
-        );
-        cellDispatch(yesterdayArrActions.count(yesterdayArr.arrCnt));
+        );        
         profileDispach(profileActions.profile(Profile));
         cellDispatch(cellActions.cellValues(cellVlaue));
         setOpenModal(!isOpenModal);

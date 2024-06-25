@@ -5,7 +5,7 @@ import {
   calculTime,
   compareToWritetime,
 } from "../../controller/modalController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PulseChart } from "./pulseChart";
 
 type Props = {

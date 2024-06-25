@@ -106,16 +106,6 @@ export const nameSlice = createSlice({
 });
 export const nameActions = nameSlice.actions;
 
-export const yesterdayArrSlice = createSlice({
-  name: "yesterdayArr",
-  initialState: 0,
-  reducers: {
-    count: (state: number, action: PayloadAction<number>) =>
-      (state = action.payload),
-  },
-});
-export const yesterdayArrActions = yesterdayArrSlice.actions;
-
 export const todayArrCountSlice = createSlice({
   name: "todayArr",
   initialState: 0,

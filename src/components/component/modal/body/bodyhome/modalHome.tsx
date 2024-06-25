@@ -10,8 +10,6 @@ import {
 } from "../../controller/modalController";
 import { modalValues } from "../../../../../axios/interface/modalvalues";
 import { profileModal } from "../../../../../axios/interface/profileModal";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../../store/store";
 import { useEffect, useState } from "react";
 import { getOnlyArr } from "../../../../../axios/api/serverApi";
 
@@ -20,35 +18,43 @@ type Props = {
   modalList: modalValues;
   values: any;
   getProfile: profileModal;
+  checkTime:string;
 };
 
-export const ModalHome = ({ open, modalList, values, getProfile }: Props) => {
-  const getYesterdayArrCount = useSelector<RootState, number>(
-    (state) => state.yesterdayArrCount
-  );
+export const ModalHome = ({ open, modalList, values, getProfile ,checkTime}: Props) => {   
   const [todayArr, setTodayArr] = useState(getProfile.arrCnt);
-  const yesterdayArr = getYesterdayArrCount;
-  const startDate = modalList.writetime?.split(" ")[0];
-
-  const endDate = getDayjs(startDate, 1, "YYYY-MM-DD", "day");
+  const [yesterArr, setYesterArr] = useState(0);
+  const endDate = getDayjs(checkTime, 1, "YYYY-MM-DD", "day");
 
   const getArr = async () => {
     const arrCount = await getOnlyArr(
-      `mslecgarr/arrCount?eq=${values.eq}&startDate=${startDate}&endDate=${endDate}`
+      `mslecgarr/arrCount?eq=${values.eq}&startDate=${checkTime}&endDate=${endDate}`
     );
     setTodayArr(arrCount.arrCnt);
+  };  
+
+  const getYesterdayArr = async () => {
+    const yesterday = getDayjs(checkTime, -1, "YYYY-MM-DD", "day");
+    const arrCount = await getOnlyArr(
+      `mslecgarr/arrCount?eq=${values.eq}&startDate=${yesterday}&endDate=${checkTime}`
+    );   
+    setYesterArr(arrCount.arrCnt); 
   };  
 
   useEffect(() => {
     getArr();
   }, [modalList.arrCnt]);
 
+  useEffect(() => {
+    getYesterdayArr();
+  },[checkTime])
+
   return (
     <>
       <ModalTopBody
         bpm={modalList.bpm}
         arrCnt={todayArr}
-        prevArrCnt={yesterdayArr}
+        prevArrCnt={yesterArr}
         HeartText={getHeartText(modalList.arrCnt)}
       />
 
