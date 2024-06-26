@@ -2,6 +2,7 @@ import React, {
   PropsWithChildren,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import UiModal from "@mui/material/Modal";
@@ -47,11 +48,21 @@ export const Modal = ({
   );
   const [modalList, setModalList] = useState<modalValues>(
     getValues(data, values.eq)
-  );  
+  );
 
-  const memoWritetime = useMemo(() => {
-    return getDate(modalList.writetime);
-  }, [getDate(modalList.writetime)]);    
+  const useDateMemo = (writetime: string) => {
+    const [currentDate, setCurrentDate] = useState(getDate(writetime));
+    useEffect(() => {
+      const newDate = getDate(writetime);
+      if (newDate !== currentDate) {
+        setCurrentDate(newDate);
+      }
+    }, [writetime, currentDate]);
+    return currentDate;
+  };
+
+  const memoWritetime = useDateMemo(modalList.writetime);
+  
 
   const [footerBtn, setFooterBtn] = useState<footerIcon>({
     home: true,
