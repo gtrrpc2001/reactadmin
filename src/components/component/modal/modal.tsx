@@ -1,8 +1,6 @@
 import React, {
   PropsWithChildren,
   useEffect,
-  useMemo,
-  useRef,
   useState,
 } from "react";
 import UiModal from "@mui/material/Modal";
@@ -15,7 +13,6 @@ import "animate.css";
 import { ModalHeader } from "./header/modalHeader";
 import {
   getClickFooter,
-  getDate,
   getValues,
 } from "./controller/modalController";
 import { profileModal } from "../../../axios/interface/profileModal";
@@ -119,7 +116,7 @@ export const Modal = ({
         return (
           <BodyPulse
             eq={eq}
-            startTime={getDate(modalList.writetime)}
+            startTime={modalList.writetime}
             koreaTime={koreaTime}
           />
         );

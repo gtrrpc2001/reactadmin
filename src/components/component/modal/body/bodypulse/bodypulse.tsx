@@ -4,6 +4,7 @@ import { WritetimeButton } from "./writetimeButton";
 import {
   calculTime,
   compareToWritetime,
+  getDate,
 } from "../../controller/modalController";
 import { useEffect, useState } from "react";
 import { PulseChart } from "./pulseChart";
@@ -15,7 +16,7 @@ type Props = {
   koreaTime: string;
 };
 export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
-  const [writetime, setWritetime] = useState(startTime);//startTime  
+  const [writetime, setWritetime] = useState(getDate(startTime));//startTime  
   // const [gijunTime,setGijunTime] = useState(koreaTime)
   const [currentTime, setCurrentTime] = useState(startTime);
   const [disabled, setDisabled] = useState(true);

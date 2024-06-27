@@ -44,7 +44,7 @@ export const ModalHome = ({ open, modalList, values, getProfile }: Props) => {
 
   useEffect(() => {
     getArr();
-  }, [modalList.arrCnt]);
+  }, [modalList.arrCnt, checkTime]);
 
   useEffect(() => {
     getYesterdayArr();
