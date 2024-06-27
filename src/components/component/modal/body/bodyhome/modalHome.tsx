@@ -4,6 +4,7 @@ import { MiddleBody } from "./middlebody/middleBody";
 import { ModalRealTimeGraph } from "../../../../../page/graph/modalGraph";
 import { BottomBody } from "../../component/bottomBody";
 import {
+  getDate,
   getDayjs,
   getDecimal,
   getHeartText,
@@ -12,34 +13,34 @@ import { modalValues } from "../../../../../axios/interface/modalvalues";
 import { profileModal } from "../../../../../axios/interface/profileModal";
 import { useEffect, useState } from "react";
 import { getOnlyArr } from "../../../../../axios/api/serverApi";
+import { useDateMemo } from "../../../hooks/selectCheckboxHooks";
 
 type Props = {
   open: boolean;
   modalList: modalValues;
   values: any;
   getProfile: profileModal;
-  checkTime:string;
 };
 
-export const ModalHome = ({ open, modalList, values, getProfile ,checkTime}: Props) => {   
+export const ModalHome = ({ open, modalList, values, getProfile }: Props) => {
   const [todayArr, setTodayArr] = useState(getProfile.arrCnt);
   const [yesterArr, setYesterArr] = useState(0);
-  const endDate = getDayjs(checkTime, 1, "YYYY-MM-DD", "day");
-
+  const checkTime = useDateMemo(getDate(modalList.writetime));
   const getArr = async () => {
+    const endDate = getDayjs(checkTime, 1, "YYYY-MM-DD", "day");
     const arrCount = await getOnlyArr(
       `mslecgarr/arrCount?eq=${values.eq}&startDate=${checkTime}&endDate=${endDate}`
     );
     setTodayArr(arrCount.arrCnt);
-  };  
+  };
 
   const getYesterdayArr = async () => {
     const yesterday = getDayjs(checkTime, -1, "YYYY-MM-DD", "day");
     const arrCount = await getOnlyArr(
       `mslecgarr/arrCount?eq=${values.eq}&startDate=${yesterday}&endDate=${checkTime}`
-    );   
-    setYesterArr(arrCount.arrCnt); 
-  };  
+    );
+    setYesterArr(arrCount.arrCnt);
+  };
 
   useEffect(() => {
     getArr();
@@ -47,7 +48,7 @@ export const ModalHome = ({ open, modalList, values, getProfile ,checkTime}: Pro
 
   useEffect(() => {
     getYesterdayArr();
-  },[checkTime])
+  }, [checkTime]);
 
   return (
     <>

@@ -50,20 +50,6 @@ export const Modal = ({
     getValues(data, values.eq)
   );
 
-  const useDateMemo = (writetime: string) => {
-    const [currentDate, setCurrentDate] = useState(getDate(writetime));
-    useEffect(() => {
-      const newDate = getDate(writetime);
-      if (newDate !== currentDate) {
-        setCurrentDate(newDate);
-      }
-    }, [writetime, currentDate]);
-    return currentDate;
-  };
-
-  const memoWritetime = useDateMemo(modalList.writetime);
-  
-
   const [footerBtn, setFooterBtn] = useState<footerIcon>({
     home: true,
     graph: false,
@@ -133,7 +119,7 @@ export const Modal = ({
         return (
           <BodyPulse
             eq={eq}
-            startTime={memoWritetime}
+            startTime={getDate(modalList.writetime)}
             koreaTime={koreaTime}
           />
         );
@@ -141,7 +127,6 @@ export const Modal = ({
         return (
           <ModalHome
             open={open}
-            checkTime={memoWritetime}
             modalList={modalList}
             values={values}
             getProfile={getProfile}
