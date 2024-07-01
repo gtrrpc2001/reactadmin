@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { getWritetimeList } from "../../data/data";
-import { calculTime } from "../../controller/modalController";
+import { calculTime, getToday } from "../../controller/modalController";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store/store";
@@ -35,7 +35,8 @@ export const WritetimeList = React.memo(function WritetimeList({
   const todayArrCountSelector = useSelector<RootState, number>(
     (state) => state.todayArrCount
   );
-  const today = dayjs(new Date()).format("YYYY-MM-DD");
+  
+  const today = useRef<string>(getToday());
   const calDate = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days");
   const listEndRef = useRef<HTMLLIElement>(null);
   const [items, setItems] = useState<JSX.Element[] | undefined>();
@@ -45,6 +46,9 @@ export const WritetimeList = React.memo(function WritetimeList({
       setList(result);
     };
     getList();
+    if (today.current != writetime) {
+      today.current = writetime
+    }
   }, [writetime]);
 
   useEffect(() => {
@@ -52,8 +56,7 @@ export const WritetimeList = React.memo(function WritetimeList({
       const lastItem = list[list.length - 1];
       if (lastItem) {
         const { writetime } = lastItem;
-        const result = await getWritetimeList(eq, writetime, calDate[1]);
-        console.log(result)
+        const result = await getWritetimeList(eq, writetime, calDate[1]);        
         if (result) {
           if (!result.includes("result")) {
             setList((prevList) => [...prevList, ...result]);
@@ -61,7 +64,7 @@ export const WritetimeList = React.memo(function WritetimeList({
         }
       }
     };
-    if (today == writetime) {
+    if (today.current == writetime) {
       addNewArrWritetime();
     }
   }, [todayArrCountSelector]);

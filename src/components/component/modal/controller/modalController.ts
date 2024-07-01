@@ -212,6 +212,13 @@ export const getDayjs = (
   return result;
 };
 
+export const getToday = (): string => {
+  const tz = "Asia/Seoul";
+  extendDayjs();
+  const result = dayjs(new Date()).tz(tz).format("YYY-MM-DDTHH:mm:ss");
+  return result;
+};
+
 export const getDayjsDay = (date: string): number => {
   const tz = "Asia/Seoul";
   extendDayjs();
