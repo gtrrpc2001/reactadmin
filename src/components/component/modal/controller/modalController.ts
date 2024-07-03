@@ -242,12 +242,12 @@ export const compareToWritetime = (
   const time1Arr = originalWritetime?.split("-");
   const time2Arr = updateWritetime?.split("-");
   let bool = false;
-  if (Number(time1Arr[0]) == Number(time2Arr[0])) {
-    if (Number(time1Arr[1]) == Number(time2Arr[1])) {
+  if (Number(time1Arr[0]) === Number(time2Arr[0])) {
+    if (Number(time1Arr[1]) === Number(time2Arr[1])) {
       if (
         fromEffect
-          ? Number(time1Arr[2]) == +time2Arr[2]
-          : Number(time1Arr[2]) == +time2Arr[2] - 1
+          ? Number(time1Arr[2]) === Number(time2Arr[2])
+          : Number(time1Arr[2]) === (Number(time2Arr[2]) - 1)
       ) {
         bool = true;
       }

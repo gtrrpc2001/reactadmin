@@ -37,18 +37,22 @@ export const WritetimeList = React.memo(function WritetimeList({
   );
   
   const today = useRef<string>(getToday());
-  const calDate = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days");
+  const calDate = useRef<string[]>(calculTime(writetime, 0, 1, "YYYY-MM-DD", "days"))
   const listEndRef = useRef<HTMLLIElement>(null);
   const [items, setItems] = useState<JSX.Element[] | undefined>();
+  
   useEffect(() => {
     const getList = async () => {
-      const result = await getWritetimeList(eq, writetime, calDate[1]);
+      const result = await getWritetimeList(eq, writetime, calDate.current[1]);
       setList(result);
     };
-    getList();
+    
     if (today.current != writetime) {
       today.current = writetime
+      calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")
     }
+
+    getList();
   }, [writetime]);
 
   useEffect(() => {
@@ -56,7 +60,7 @@ export const WritetimeList = React.memo(function WritetimeList({
       const lastItem = list[list.length - 1];
       if (lastItem) {
         const { writetime } = lastItem;
-        const result = await getWritetimeList(eq, writetime, calDate[1]);        
+        const result = await getWritetimeList(eq, writetime, calDate.current[1]);        
         if (result) {
           if (!result.includes("result")) {
             setList((prevList) => [...prevList, ...result]);
@@ -70,7 +74,7 @@ export const WritetimeList = React.memo(function WritetimeList({
   }, [todayArrCountSelector]);
 
   const selectedColor = (index: number, box = false) =>
-    `${id == `${index + 1}` ? "#5388F7" : box ? "black" : "#c3c1c1"}`;
+    `${id == `${index + 1}` ? "#5388F7" : (box ? "black" : "#c3c1c1")}`;
 
   useEffect(() => {
     const itemes = () => {

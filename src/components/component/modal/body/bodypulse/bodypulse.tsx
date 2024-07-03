@@ -43,7 +43,7 @@ export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
   ) => {
     const id = e?.currentTarget?.id;
     if (id == "plus") {
-      if (!compareToWritetime(startTime, writetime)) {
+      if (!compareToWritetime(getDate(startTime), writetime)) {
         setValue("plus");
         setDisabled(false);
       } else {
