@@ -5,8 +5,9 @@ import {
   calculTime,
   compareToWritetime,
   getDate,
+  getDayjs,
 } from "../../controller/modalController";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PulseChart } from "./pulseChart";
 import { useDateMemo } from "../../../hooks/selectCheckboxHooks";
 
@@ -16,18 +17,17 @@ type Props = {
   koreaTime: string;
 };
 export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
-  const [writetime, setWritetime] = useState(getDate(startTime));//startTime  
+  const [writetime, setWritetime] = useState(getDate(startTime)); //startTime
   // const [gijunTime,setGijunTime] = useState(koreaTime)
   const [currentTime, setCurrentTime] = useState(startTime);
   const [disabled, setDisabled] = useState(true);
   const [writetimes, setWritetimes] = useState<any[]>([]);
   const [id, setId] = useState<string>("");
-  const memoWritetime = useDateMemo(startTime);
+  const memoWritetime = useDateMemo(startTime); 
 
-
-  useEffect(()=>{
-    setWritetime(memoWritetime)
-  },[memoWritetime])
+  useEffect(() => {
+    setWritetime(memoWritetime);
+  }, [memoWritetime]);
 
   const setValue = (id: string) => {
     const plusDate = calculTime(writetime, -1, 1, "YYYY-MM-DD", "days");
@@ -56,11 +56,11 @@ export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
     }
   };
 
-  const listItemHandler = (id:string) => {    
+  const listItemHandler = (id: string) => {
     const { writetime } = writetimes?.find((value, index) => index + 1 == +id);
     setCurrentTime(writetime);
     setId(id);
-  };  
+  };
 
   return (
     <Box sx={{ height: 625 }}>

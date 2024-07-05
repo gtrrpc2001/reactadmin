@@ -44,12 +44,13 @@ export const WritetimeList = React.memo(function WritetimeList({
   useEffect(() => {
     const getList = async () => {
       const result = await getWritetimeList(eq, writetime, calDate.current[1]);
+      console.log('calDate.current ',calDate.current)
       setList(result);
     };
     
     if (today.current != writetime) {
       today.current = writetime
-      calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")
+      calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")      
     }
 
     getList();
@@ -71,7 +72,7 @@ export const WritetimeList = React.memo(function WritetimeList({
     if (today.current == writetime) {
       addNewArrWritetime();
     }
-  }, [todayArrCountSelector]);
+  }, [todayArrCountSelector,list]);
 
   const selectedColor = (index: number, box = false) =>
     `${id == `${index + 1}` ? "#5388F7" : (box ? "black" : "#c3c1c1")}`;
