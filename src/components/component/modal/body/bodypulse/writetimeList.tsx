@@ -58,13 +58,20 @@ export const WritetimeList = React.memo(function WritetimeList({
 
   useEffect(() => {
     const addNewArrWritetime = async () => {
-      const lastItem = list[list.length - 1];
+      const lastItem = list.length > 0 ?  list[list.length - 1] : undefined;
       if (lastItem) {
         const { writetime } = lastItem;
         const result = await getWritetimeList(eq, writetime, calDate.current[1]);        
         if (result) {
           if (!result.includes("result")) {
             setList((prevList) => [...prevList, ...result]);
+          }
+        }
+      }else {
+        const result = await getWritetimeList(eq, writetime, calDate.current[1]);        
+        if (result) {
+          if (!result.includes("result")) {
+            setList(result);
           }
         }
       }
