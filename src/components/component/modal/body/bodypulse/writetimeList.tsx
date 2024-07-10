@@ -35,22 +35,23 @@ export const WritetimeList = React.memo(function WritetimeList({
   const todayArrCountSelector = useSelector<RootState, number>(
     (state) => state.todayArrCount
   );
-  
+
   const today = useRef<string>(getToday());
-  const calDate = useRef<string[]>(calculTime(writetime, 0, 1, "YYYY-MM-DD", "days"))
+  const calDate = useRef<string[]>(
+    calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")
+  );
   const listEndRef = useRef<HTMLLIElement>(null);
   const [items, setItems] = useState<JSX.Element[] | undefined>();
-  
+
   useEffect(() => {
     const getList = async () => {
       const result = await getWritetimeList(eq, writetime, calDate.current[1]);
-      console.log('calDate.current ',calDate.current)
       setList(result);
     };
-    
+
     if (today.current != writetime) {
-      today.current = writetime
-      calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")      
+      today.current = writetime;
+      calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days");
     }
 
     getList();
@@ -58,17 +59,31 @@ export const WritetimeList = React.memo(function WritetimeList({
 
   useEffect(() => {
     const addNewArrWritetime = async () => {
-      const lastItem = list.length > 0 ?  list[list.length - 1] : undefined;
+      let lastItem;
+      if (list.length > 0) {
+        lastItem = list[list.length - 1];
+      } else {
+        lastItem = undefined;
+      }
       if (lastItem) {
         const { writetime } = lastItem;
-        const result = await getWritetimeList(eq, writetime, calDate.current[1]);        
+        const result = await getWritetimeList(
+          eq,
+          writetime,
+          calDate.current[1]
+        );
         if (result) {
           if (!result.includes("result")) {
             setList((prevList) => [...prevList, ...result]);
           }
         }
-      }else {
-        const result = await getWritetimeList(eq, writetime, calDate.current[1]);        
+      } else {
+        const result = await getWritetimeList(
+          eq,
+          writetime,
+          calDate.current[1]
+        );
+        console.log(`writetime = ${writetime} , result : `, result);
         if (result) {
           if (!result.includes("result")) {
             setList(result);
@@ -79,10 +94,10 @@ export const WritetimeList = React.memo(function WritetimeList({
     if (today.current == writetime) {
       addNewArrWritetime();
     }
-  }, [todayArrCountSelector,list]);
+  }, [todayArrCountSelector, list]);
 
   const selectedColor = (index: number, box = false) =>
-    `${id == `${index + 1}` ? "#5388F7" : (box ? "black" : "#c3c1c1")}`;
+    `${id == `${index + 1}` ? "#5388F7" : box ? "black" : "#c3c1c1"}`;
 
   useEffect(() => {
     const itemes = () => {
@@ -157,5 +172,3 @@ export const WritetimeList = React.memo(function WritetimeList({
     </Box>
   );
 });
-
-
