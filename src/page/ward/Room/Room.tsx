@@ -54,12 +54,20 @@ export const Room = ({ setRoomVisible }: Props) => {
       }
     }
 
-    const timer = setInterval(async () => {
-      if (Object.values(bedStates).some((state) => state)) await getInfoList();
-    }, 1000);
+    let timer: NodeJS.Timeout | null = null;
+
+    if (Object.values(bedStates).some((state) => state)) {
+      timer = setInterval(async () => {
+        await getInfoList();
+      }, 1000);
+    } else if (timer) {
+      clearInterval(timer);
+    }
 
     return () => {
-      clearInterval(timer);
+      if (timer) {
+        clearInterval(timer);
+      }
     };
   }, [bedStates]);
 
