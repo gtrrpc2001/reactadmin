@@ -49,8 +49,8 @@ export const getWritetimeList = async (
   eq: string,
   startDate: string,
   endDate: string
-): Promise<string[]> => {
-  const result: string[] = await getDataResponse(
+): Promise<any[]> => {
+  const result: any[] = await getDataResponse(
     `/mslecgarr/arrWritetime?eq=${eq}&startDate=${startDate}&endDate=${endDate}`
   );
   return result;

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./header.scss";
 import graph from "../../../assets/image/graph2.png";
 import youtube from "../../../assets/image/youtube_logo2..png";
+import ward from "../../../assets/image/ward.png";
 
 export const Header = () => {
   const navigation = useNavigate();
@@ -20,6 +21,10 @@ export const Header = () => {
 
   const companyPage = () => {
     window.open("https://www.medsyslab.co.kr");
+  };
+
+  const wardClick = () => {
+    navigation("/home/ward");
   };
 
   return (
@@ -46,6 +51,12 @@ export const Header = () => {
           <a onClick={companyPage}>
             <span>MSLWEB</span>
           </a>
+        </div>
+
+        <div className="ward" onClick={wardClick}>
+          <span>
+            <img src={ward} />
+          </span>
         </div>
       </div>
     </div>

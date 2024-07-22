@@ -9,19 +9,24 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { ClockNumberClassKey } from "@mui/x-date-pickers";
 
 type Porps = {
   open_close: boolean;
   bpm: number;
   eq: string;
   time: string;
+  width:number;
+  height:number;
+  Ywidth:number 
 };
 
-export const ModalRealTimeGraph = ({ open_close, bpm, eq, time }: Porps) => {
+export const ModalRealTimeGraph = ({ open_close, bpm, eq, time ,width,height,Ywidth}: Porps) => {
   const [open, setOpen] = useState<boolean>(true);
   // let [dataArr] = useState<{ ecg: number }[]>([]);
-  const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
-  const EcgData = async (result: number[]) => {
+  const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]); 
+
+  const EcgData = async (result: number[]) => {    
     if (open && dataArr?.length < 500) {
       let newData: { ecg: number }[] = [];
       if (result.length > 1000) {
@@ -44,8 +49,8 @@ export const ModalRealTimeGraph = ({ open_close, bpm, eq, time }: Porps) => {
 
   const getEcgData = async () => {
     try {
-      const result = await getEcg(`/mslecgbyte/Ecg?eq=${eq}&startDate=${time}`);
-      if (result?.length != 1) {
+      const result = await getEcg(`/mslecgbyte/Ecg?eq=${eq}&startDate=${time}`);      
+      if (result?.length != 1 && result?.length < 500) {
         await EcgData(result);
       } else {
       }
@@ -57,13 +62,15 @@ export const ModalRealTimeGraph = ({ open_close, bpm, eq, time }: Porps) => {
   useEffect(() => {
     if (open_close) {
       getEcgData();
-    } else dataArr.length = 0;
+    } else {
+      setDataArr([])
+    };
   }, [time]);
 
   return (
     <>
       {open == false ? (
-        <LineChart data={dataArr} width={335} height={280}>
+        <LineChart data={dataArr} width={width} height={height}>
           <CartesianGrid stroke="#f5f5f5" />
           <XAxis
             dataKey="xAxis"
@@ -72,7 +79,7 @@ export const ModalRealTimeGraph = ({ open_close, bpm, eq, time }: Porps) => {
             width={0}
             height={0}
           />
-          <YAxis yAxisId="left" domain={[0, 1000]} width={30} />
+          <YAxis yAxisId="left" domain={[0, 1000]} width={Ywidth}/>
           <Tooltip active={true} />
           <Line
             yAxisId="left"

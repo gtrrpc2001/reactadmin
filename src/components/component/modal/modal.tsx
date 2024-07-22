@@ -22,13 +22,27 @@ import { footerIcon } from "../../../axios/interface/footerIcon";
 import { BodyGraph } from "./body/bodygraph/bodygraph";
 import { BodyPulse } from "./body/bodypulse/bodypulse";
 import { BodyProfile } from "./body/bodyprofile/bodyprofile";
-import { modalValues } from "../../../axios/interface/modalvalues";
+import { ModalDefaultType, modalValues } from "../../../axios/interface/modalvalues";
 import { todayArrCountAction } from "../../createslice/createslices";
 
-interface ModalDefaultType {
-  open: boolean;
-  setModalOpen: (value: React.SetStateAction<boolean>) => void;
-}
+export const mainBoxstyle = (top:string,left:string) => {
+  return {
+    position: "absolute" as "absolute",
+    top: top,
+    left: left,
+    transform: "translate(-50%, -50%)",
+    width: 350,
+    height: 800,
+    bgcolor: "background.paper",
+    border: 5,
+    spacing: 0,
+    borderRadius: 12,
+    boxShadow: 24,
+    paddingInline: 0,
+    paddingBlock: 0,
+    display: "absolute",
+  } 
+};
 
 export const Modal = ({
   open,
@@ -70,24 +84,7 @@ export const Modal = ({
 
   const closeModal = () => {
     setModalOpen(false);
-  };
-
-  const mainBoxstyle = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 350,
-    height: 800,
-    bgcolor: "background.paper",
-    border: 5,
-    spacing: 0,
-    borderRadius: 12,
-    boxShadow: 24,
-    paddingInline: 0,
-    paddingBlock: 0,
-    display: "absolute",
-  };
+  };  
 
   const footerClick = async (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -140,7 +137,7 @@ export const Modal = ({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={mainBoxstyle}>
+        <Box sx={mainBoxstyle("50%","50%")}>
           <ModalHeader values={modalList} battery={values.battery} />
 
           {getModalUI(footerBtn)}

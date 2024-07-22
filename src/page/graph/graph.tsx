@@ -3,10 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/component/loading/loading";
-import { Header } from "../home/header/header";
-import { Footer } from "../home/footer/footer";
-import "../home/home.scss";
 import { GraphList } from "./graphList";
+import { HeaderFooter } from "../Header_Footer/HeaderFooter";
 
 export const Graph = () => {
   const navigate = useNavigate();
@@ -27,17 +25,9 @@ export const Graph = () => {
       {loading ? (
         <Loading loading={loading} />
       ) : (
-        <div className="home">
-          <div className="header">
-            <Header />
-          </div>
-          <div className="body">
+        <HeaderFooter>
             <GraphList names={memoizedNames} />
-          </div>
-          <div className="footer">
-            <Footer language={true} />
-          </div>
-        </div>
+        </HeaderFooter>
       )}
     </div>
   );

@@ -11,12 +11,21 @@
   letter-spacing: -0.075rem;
 }
 
+@mixin content-center {
+  margin-top: 5px;
+  text-align: center;
+  display: block;  
+  cursor: pointer;
+}
+
 @mixin toolHover {
   background-color: #e9e6e6;
 }
+
 .headerwrap {
   display: flex;
   width: 100%;
+  height: 3.5rem;
   padding: 0 3%;
   position: relative;
 }
@@ -42,14 +51,16 @@
   display: block;
   width: 80px;
   cursor: pointer;
+  margin-top: 5px;  
+}
+
+.graph:hover{
+  transform: scaleY(1.3);
 }
 
 .youtube {
-  margin-top: 5px;
-  text-align: center;
-  display: block;
+  @include content-center;
   width: 100px;
-  cursor: pointer;
 }
 
 .youtube:hover {
@@ -62,4 +73,12 @@
 
 .companyPage:hover {
   @include toolHover;
+}
+
+.ward:hover {
+  transform: scaleY(1.3);
+}
+
+.ward{
+  @include content-center;
 }

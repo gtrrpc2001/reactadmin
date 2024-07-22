@@ -8,14 +8,12 @@ import {
 import { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { saveLog } from "../../data/login";
-import "./home.scss";
 import { getHistory } from "../../axios/api/serverApi";
 import { useEffect, useState } from "react";
 import { Loading } from "../../components/component/loading/loading";
 import { HomeBody } from "./body/body";
-import { Footer } from "./footer/footer";
-import { Header } from "./header/header";
 import { historyLast } from "../../axios/interface/history_last";
+import { HeaderFooter } from "../Header_Footer/HeaderFooter";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -37,9 +35,9 @@ export default function Home() {
         const getData: historyLast[] = await getHistory(
           `/mslLast/webTable?eq=${eqSelector}`
         );
-  
+
         if (loading) setLoding(false);
-  
+
         if (getData?.length != 0 && !String(getData).includes("result")) {
           setData(getData);
           const names = getData.map((d: any) => {
@@ -88,21 +86,13 @@ export default function Home() {
         {loading ? (
           <Loading loading={loading} />
         ) : (
-          <div className="home">
-            <div className="header">
-              <Header />
-            </div>
-            <div className="body">
-              <HomeBody
-                HandleLogout={HandleLogout}
-                check={check}
-                HandleCheckbox={HandleCheckbox}
-              />
-            </div>
-            <div className="footer">
-              <Footer language={true} />
-            </div>
-          </div>
+          <HeaderFooter>
+            <HomeBody
+              HandleLogout={HandleLogout}
+              check={check}
+              HandleCheckbox={HandleCheckbox}
+            />
+          </HeaderFooter>
         )}
       </div>
     </>

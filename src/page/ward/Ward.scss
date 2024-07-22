@@ -1,0 +1,30 @@
+.main {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    height: 650px;
+}
+
+.ward-header {
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: default;
+}
+
+.ward-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.room, .nurse-station, .waiting-room {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.room h2, .nurse-station h2, .waiting-room h2 {
+    margin-bottom: 10px;
+}

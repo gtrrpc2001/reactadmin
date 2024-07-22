@@ -6,6 +6,9 @@ import LoginPage from "./page/login/login";
 import Home from "./page/home/home";
 import { Graph } from "./page/graph/graph";
 import { PersistGate } from "redux-persist/integration/react";
+import { Ward } from "./page/ward/Ward";
+import { Room } from "./page/ward/Room/Room";
+
 
 const App: React.FC = () => {
   return (
@@ -15,6 +18,7 @@ const App: React.FC = () => {
           <Route path="/" element={<LoginPage />} />,
           <Route path="/home" element={<Home />} />,
           <Route path="/home/graph" element={<Graph />} />,
+          <Route path="/home/ward" element={<Ward/>}/>,
           <Route path="*" element={<Navigate to={"/"} replace={true} />} />,
         </Routes>
       </PersistGate>

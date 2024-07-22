@@ -7,10 +7,9 @@ import {
   Typography,
   ListItemButton,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getWritetimeList } from "../../data/data";
 import { calculTime, getToday } from "../../controller/modalController";
-import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store/store";
 import React from "react";
@@ -43,12 +42,27 @@ export const WritetimeList = React.memo(function WritetimeList({
   const listEndRef = useRef<HTMLLIElement>(null);
   const [items, setItems] = useState<JSX.Element[] | undefined>();
 
+  const getList = async () => {
+    const result = await getWritetimeList(eq, writetime, calDate.current[1]);
+    setList(result);
+  };
+
   useEffect(() => {
-    const getList = async () => {
-      const result = await getWritetimeList(eq, writetime, calDate.current[1]);
-      setList(result);
+    const updateToday = async () => {
+      const newToday = getToday();
+      if (today.current !== newToday) {
+        today.current = newToday;
+        await getList();
+      }
+      console.log('newToday : ',newToday)
     };
 
+    const intervalId = setInterval(updateToday, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
     if (today.current != writetime) {
       today.current = writetime;
       calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days");
@@ -58,46 +72,40 @@ export const WritetimeList = React.memo(function WritetimeList({
   }, [writetime]);
 
   useEffect(() => {
-    const addNewArrWritetime = async () => {
-      let lastItem;
-      if (list.length > 0) {
-        lastItem = list[list.length - 1];
-      } else {
-        lastItem = undefined;
-      }
-      if (lastItem) {
-        const { writetime } = lastItem;
-        const result = await getWritetimeList(
-          eq,
-          writetime,
-          calDate.current[1]
-        );
-        if (result) {
-          if (!result.includes("result")) {
-            setList((prevList) => [...prevList, ...result]);
-          }
+    const addResult = async (writetime: string,newCheck:boolean = false) => {
+      const result = await getWritetimeList(eq, writetime, calDate.current[1]);      
+      if (!result.includes("result")) {
+        if(!newCheck){
+          setList((prevList) => {
+            return [...prevList,...result];
+          });
+        }else{
+          setList(result)
         }
-      } else {
-        const result = await getWritetimeList(
-          eq,
-          writetime,
-          calDate.current[1]
-        );
-        console.log(`writetime = ${writetime} , result : `, result);
-        if (result) {
-          if (!result.includes("result")) {
-            setList(result);
-          }
+      }else{
+        return result
+      }
+    };
+
+    const addNewArrWritetime = async () => {
+      const lastItem = list?.length > 0 ? list[list.length - 1] : today.current;      
+      if (lastItem) {
+        if (list.length > 0) {
+          const { writetime } = lastItem;          
+          await addResult(writetime);
+        } else {
+          await addResult(lastItem,true);
         }
       }
     };
-    if (today.current == writetime) {
-      addNewArrWritetime();
-    }
-  }, [todayArrCountSelector, list]);
+    addNewArrWritetime();
+  }, [todayArrCountSelector]);
 
-  const selectedColor = (index: number, box = false) =>
-    `${id == `${index + 1}` ? "#5388F7" : box ? "black" : "#c3c1c1"}`;
+  const selectedColor = useCallback(
+    (index: number, box = false) =>
+      `${id === `${index + 1}` ? "#5388F7" : box ? "black" : "#c3c1c1"}`,
+    [id]
+  );
 
   useEffect(() => {
     const itemes = () => {

@@ -73,6 +73,9 @@ export const ModalHome = ({ open, modalList, values, getProfile }: Props) => {
           bpm={modalList.bpm}
           eq={values.eq}
           time={modalList.writetime}
+          width={335}
+          height={280}
+          Ywidth={30}
         />
       </Box>
 
