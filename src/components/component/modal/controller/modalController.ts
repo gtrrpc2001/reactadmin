@@ -215,7 +215,7 @@ export const getDayjs = (
 export const getToday = (): string => {
   const tz = "Asia/Seoul";
   extendDayjs();
-  const result = dayjs(new Date()).tz(tz).format("YYYY-MM-DDTHH:mm:ss");
+  const result = dayjs(new Date()).tz(tz).format("YYYY-MM-DD");
   return result;
 };
 

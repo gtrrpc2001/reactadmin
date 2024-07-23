@@ -27,6 +27,7 @@ export const ModalRealTimeGraph = ({ open_close, bpm, eq, time ,width,height,Ywi
   const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]); 
 
   const EcgData = async (result: number[]) => {    
+    // console.log(dataArr.length , result.length)
     if (open && dataArr?.length < 500) {
       let newData: { ecg: number }[] = [];
       if (result.length > 1000) {

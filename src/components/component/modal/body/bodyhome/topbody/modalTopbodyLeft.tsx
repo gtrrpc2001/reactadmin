@@ -4,9 +4,27 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 type Props = {
   bpm: number;
+  width?: number;
+  height?: number;
+  fontSize?: number;
+  borderRadius?: number;
+  marginBlockStart?: number;
+  top?: number;
+  left?: number;
+  heartSize?: "small" | "inherit" | "medium" | "large";
 };
 
-export const ModalTopBodyLeft = ({ bpm }: Props) => {
+export const ModalTopBodyLeft = ({
+  bpm,
+  width = 150,
+  height = 70,
+  fontSize = 24,
+  borderRadius = 5,
+  marginBlockStart = 3,
+  top = 63,
+  left = 68,
+  heartSize = "large",
+}: Props) => {
   const bpmColor = "#5388F7";
 
   return (
@@ -14,12 +32,12 @@ export const ModalTopBodyLeft = ({ bpm }: Props) => {
       <Box
         sx={{
           display: "inline-block",
-          width: 150,
-          height: 70,
+          width: width,
+          height: height,
           pb: 2,
           bgcolor: "white",
           border: 3,
-          borderRadius: 5,
+          borderRadius: borderRadius,
           borderColor: bpmColor,
           verticalAlign: "middle",
           marginLeft: 1,
@@ -29,10 +47,10 @@ export const ModalTopBodyLeft = ({ bpm }: Props) => {
         <Typography
           sx={{
             fontFamily: "-moz-initial",
-            fontSize: 24,
+            fontSize: fontSize,
             color: bpmColor,
             fontWeight: "bold",
-            marginBlockStart: 3,
+            marginBlockStart: marginBlockStart,
             ":hover": { cursor: "default" },
           }}
           id="bpm"
@@ -43,8 +61,8 @@ export const ModalTopBodyLeft = ({ bpm }: Props) => {
         </Typography>
       </Box>
 
-      <Box sx={{ position: "absolute", top: 63, left: 68 }}>
-        <FavoriteIcon sx={{ color: bpmColor }} fontSize="large" />
+      <Box sx={{ position: "absolute", top: top, left: left }}>
+        <FavoriteIcon sx={{ color: bpmColor }} fontSize={heartSize} />
       </Box>
     </Box>
   );

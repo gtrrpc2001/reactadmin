@@ -9,6 +9,7 @@ import { getValues } from "../../../components/component/modal/controller/modalC
 import { ModalRealTimeGraph } from "../../graph/modalGraph";
 import { getHistory } from "../../../axios/api/serverApi";
 import React from "react";
+import { ModalTopBodyLeft } from "../../../components/component/modal/body/bodyhome/topbody/modalTopbodyLeft";
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,7 +26,7 @@ export const Room = ({ setRoomVisible }: Props) => {
     setOpenModal(true);
   };
 
-  const BedEcgBtnClick = (key: string) => {    
+  const BedEcgBtnClick = (key: string) => {
     setBedStates((prevStates) => ({
       ...prevStates,
       [key]: !prevStates[key],
@@ -45,7 +46,7 @@ export const Room = ({ setRoomVisible }: Props) => {
           `/mslLast/webTable?eq=${eq}`
         );
 
-        if (getData?.length != 0 && !String(getData).includes("result")) {                  
+        if (getData?.length != 0 && !String(getData).includes("result")) {
           setData(getData);
         }
       } catch (E) {
@@ -54,29 +55,53 @@ export const Room = ({ setRoomVisible }: Props) => {
       }
     }
 
-    let timer: NodeJS.Timeout | null = null;
-
-    if (Object.values(bedStates).some((state) => state)) {
-      timer = setInterval(async () => {
-        await getInfoList();
-      }, 1000);
-    } else if (timer) {
-      clearInterval(timer);
-    }
-
+    const timer = setInterval(async () => {
+      await getInfoList();
+    }, 1000);
+    
     return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
+      clearInterval(timer);
     };
+    // let timer: NodeJS.Timeout | null = null;
+
+    // if (Object.values(bedStates).some((state) => state)) {
+    //   timer = setInterval(async () => {
+    //     await getInfoList();
+    //   }, 1000);
+    // } else if (timer) {
+    //   clearInterval(timer);
+    // }
+
+    // return () => {
+    //   if (timer) {
+    //     clearInterval(timer);
+    //   }
+    // };
   }, [bedStates]);
 
   const getBedList = () => {
     return bedList.map((b, index) => {
       return (
         <React.Fragment key={index}>
-          {bedStates[`${index}`] ? (
-            <div className="bed ecgDisplay">
+          <div
+            key={index}
+            className={`bed ${bedStates[`${index}`] ? "ecgDisplay" : ""}`}
+            onClick={() => bedClick(b)}
+          >
+            <div className="bpm">
+              <ModalTopBodyLeft
+                bpm={userData.bpm}
+                width={50}
+                height={20}
+                borderRadius={3}
+                fontSize={20}
+                marginBlockStart={0.5}
+                top={-9}
+                left={27}
+                heartSize="small"
+              />
+            </div>
+            {bedStates[`${index}`] ? (
               <div className="ecg">
                 <ModalRealTimeGraph
                   open_close={bedStates[`${index}`]}
@@ -88,12 +113,10 @@ export const Room = ({ setRoomVisible }: Props) => {
                   Ywidth={35}
                 />
               </div>
-            </div>
-          ) : (
-            <div key={index} className="bed" onClick={() => bedClick(b)}>
-              {b}
-            </div>
-          )}
+            ) : (
+              b
+            )}
+          </div>
           <Button onClick={() => BedEcgBtnClick(`${index}`)}>
             {"<- ecg 보기"}
           </Button>

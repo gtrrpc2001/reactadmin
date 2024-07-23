@@ -1,7 +1,7 @@
 import { Hooks } from "react-table";
 import { CellCheckbox } from "../checkbox/cellCheckbox";
 import { useEffect, useState } from "react";
-import { getDate, getDayjs } from "../modal/controller/modalController";
+import { getDate, getToday } from "../modal/controller/modalController";
 
 export const CellSelectHooks = (hooks: Hooks<object>) => {
   return hooks.visibleColumns.push((columns) => [
@@ -23,7 +23,8 @@ export const CellSelectHooks = (hooks: Hooks<object>) => {
 export const useDateMemo = (writetime: string) => {
   const [currentDate, setCurrentDate] = useState(getDate(writetime));
   useEffect(() => {    
-    const newDate = getDate(writetime);
+    const newDate = getToday();
+    console.log('newDate : ',newDate , 'currentDate : ',currentDate)
     if (newDate !== currentDate) {
       setCurrentDate(newDate);
     }    
