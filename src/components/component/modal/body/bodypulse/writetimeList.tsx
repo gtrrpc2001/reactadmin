@@ -40,15 +40,18 @@ export const WritetimeList = React.memo(function WritetimeList({
     calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")
   );
   const listEndRef = useRef<HTMLLIElement>(null);
-  const [items, setItems] = useState<JSX.Element[] | undefined>();
-
-  const getList = async () => {
-    const result = await getWritetimeList(eq, writetime, calDate.current[1]);
-    setList(result);
-    console.log('writetime : ',writetime,' calDate.current[1] : ',calDate.current[1], ' result : ', result, ' list : ',list)
-  };
+  const [items, setItems] = useState<JSX.Element[] | undefined>();  
 
   useEffect(() => {
+    const getList = async () => {
+      const result = await getWritetimeList(eq, writetime, calDate.current[1]);
+      if(!result.includes('result'))
+        setList(result);
+      else
+        setList([]);
+      console.log('writetime : ',writetime,' calDate.current[1] : ',calDate.current[1], ' result : ', result, ' list : ',list)
+    };
+
     if (today.current != writetime) {
       today.current = writetime;
       calDate.current = calculTime(writetime, 0, 1, "YYYY-MM-DD", "days");
@@ -58,7 +61,7 @@ export const WritetimeList = React.memo(function WritetimeList({
   }, [writetime]);
 
   useEffect(() => {
-    const addResult = async (writetime: string,newCheck:boolean = false) => {
+    const addResult = async (writetime: string,newCheck:boolean = false) => {      
       const result = await getWritetimeList(eq, writetime, calDate.current[1]);      
       console.log('add ','writetime : ',writetime,' calDate.current[1] : ',calDate.current[1], ' result : ', result, ' list : ',list)
       if (!result.includes("result")) {
@@ -69,13 +72,11 @@ export const WritetimeList = React.memo(function WritetimeList({
         }else{
           setList(result)
         }
-      }else{
-        return result
       }
     };
 
-    const addNewArrWritetime = async () => {
-      const lastItem = list?.length > 0 ? list[list.length - 1] : today.current;      
+    const addNewArrWritetime = async () => {      
+      const lastItem = list?.length > 0 ? list[list.length - 1] : today.current;
       if (lastItem) {
         if (list.length > 0) {
           const { writetime } = lastItem;          
