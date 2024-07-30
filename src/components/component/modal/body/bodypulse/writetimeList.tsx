@@ -7,9 +7,9 @@ import {
   Typography,
   ListItemButton,
 } from "@mui/material";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getWritetimeList } from "../../data/data";
-import { calculTime, getToday } from "../../controller/modalController";
+import { calculTime } from "../../controller/modalController";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store/store";
 import React from "react";
@@ -35,12 +35,12 @@ export const WritetimeList = React.memo(function WritetimeList({
     (state) => state.todayArrCount
   );
 
-  const today = useRef<string>(writetime);  
+  const today = useRef<string>(writetime);
   const calDate = useRef<string[]>(
     calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")
   );
   const listEndRef = useRef<HTMLLIElement>(null);
-  const [items, setItems] = useState<JSX.Element[] | undefined>();  
+  const [items, setItems] = useState<JSX.Element[] | undefined>();
 
   useEffect(() => {
     const getList = async () => {
@@ -48,8 +48,7 @@ export const WritetimeList = React.memo(function WritetimeList({
       if(!result.includes('result'))
         setList(result);
       else
-        setList([]);
-      console.log('writetime : ',writetime,' calDate.current[1] : ',calDate.current[1], ' result : ', result, ' list : ',list)
+        setList([]);      
     };
 
     if (today.current != writetime) {
@@ -61,9 +60,8 @@ export const WritetimeList = React.memo(function WritetimeList({
   }, [writetime]);
 
   useEffect(() => {
-    const addResult = async (writetime: string,newCheck:boolean = false) => {      
-      const result = await getWritetimeList(eq, writetime, calDate.current[1]);      
-      console.log('add ','writetime : ',writetime,' calDate.current[1] : ',calDate.current[1], ' result : ', result, ' list : ',list)
+    const addResult = async (writetime: string,newCheck:boolean = false) => {
+      const result = await getWritetimeList(eq, writetime, calDate.current[1]);            
       if (!result.includes("result")) {
         if(!newCheck){
           setList((prevList) => {
