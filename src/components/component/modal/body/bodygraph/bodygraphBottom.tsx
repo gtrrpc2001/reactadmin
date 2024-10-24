@@ -123,8 +123,10 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
     >
       <Box sx={[childrenBoxStyle, { left: 40 }, hover]}>
         <Typography sx={textPadding}>{"Min"}</Typography>
-        <Typography sx={textPadding}>{min}</Typography>
-        <Typography sx={{ color: "#5388F7" }}>{`-${minus}`}</Typography>
+        <Typography sx={textPadding}>{fixedToNumber(min)}</Typography>
+        <Typography sx={{ color: "#5388F7" }}>{`-${fixedToNumber(
+          minus
+        )}`}</Typography>
       </Box>
       <Box sx={[childrenBoxStyle, hover]}>
         <Typography sx={[textPadding, textWeight]}>{getText()}</Typography>
