@@ -151,23 +151,34 @@ export const Writetime = ({
     setEffectFunc();
   }, [originalWritetime, clickWritetimeButton, clickDayGubunButton]);
 
-  const bpm_hrv = async (writetime: string) => {
+  const bpm_hrv_stress = async (
+    writetime: string,
+    stressCheck: boolean = false
+  ) => {
     switch (true) {
       case clickWritetimeButton?.days2:
         const time = calculTime(writetime, -1, 1, "YYYY-MM-DD", "day");
-        GraphValue(bpmGraphActions.value(await getBpm(eq, time[0], time[1])));
+        GraphValue(
+          bpmGraphActions.value(await getBpm(eq, time[0], time[1], stressCheck))
+        );
         setText(getWritetimeButtomValue(writetime, 1));
 
         break;
       case clickWritetimeButton?.days3:
         const times = calculTime(writetime, -2, 1, "YYYY-MM-DD", "day");
-        GraphValue(bpmGraphActions.value(await getBpm(eq, times[0], times[1])));
+        GraphValue(
+          bpmGraphActions.value(
+            await getBpm(eq, times[0], times[1], stressCheck)
+          )
+        );
         setText(getWritetimeButtomValue(writetime, 2));
         break;
       default:
         const timeOne = calculTime(writetime, 0, 1, "YYYY-MM-DD", "day");
         GraphValue(
-          bpmGraphActions.value(await getBpm(eq, timeOne[0], timeOne[1]))
+          bpmGraphActions.value(
+            await getBpm(eq, timeOne[0], timeOne[1], stressCheck)
+          )
         );
         setText(writetime);
         break;
@@ -248,8 +259,11 @@ export const Writetime = ({
       case iconSelect.step:
         pulseCalStepWritetimeGubun(writetime);
         break;
+      case iconSelect.stress:
+        bpm_hrv_stress(writetime, true);
+        break;
       default:
-        await bpm_hrv(writetime);
+        await bpm_hrv_stress(writetime);
         break;
     }
   };

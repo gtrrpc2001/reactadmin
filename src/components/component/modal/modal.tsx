@@ -1,8 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import UiModal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,10 +7,7 @@ import { historyLast } from "../../../axios/interface/history_last";
 import "./modal.scss";
 import "animate.css";
 import { ModalHeader } from "./header/modalHeader";
-import {
-  getClickFooter,
-  getValues,
-} from "./controller/modalController";
+import { getClickFooter, getValues } from "./controller/modalController";
 import { profileModal } from "../../../axios/interface/profileModal";
 import { Footer } from "./footer/footer";
 import { ModalHome } from "./body/bodyhome/modalHome";
@@ -22,10 +15,13 @@ import { footerIcon } from "../../../axios/interface/footerIcon";
 import { BodyGraph } from "./body/bodygraph/bodygraph";
 import { BodyPulse } from "./body/bodypulse/bodypulse";
 import { BodyProfile } from "./body/bodyprofile/bodyprofile";
-import { ModalDefaultType, modalValues } from "../../../axios/interface/modalvalues";
+import {
+  ModalDefaultType,
+  modalValues,
+} from "../../../axios/interface/modalvalues";
 import { todayArrCountAction } from "../../createslice/createslices";
 
-export const mainBoxstyle = (top:string,left:string) => {
+export const mainBoxstyle = (top: string, left: string) => {
   return {
     position: "absolute" as "absolute",
     top: top,
@@ -41,7 +37,7 @@ export const mainBoxstyle = (top:string,left:string) => {
     paddingInline: 0,
     paddingBlock: 0,
     display: "absolute",
-  } 
+  };
 };
 
 export const Modal = ({
@@ -57,6 +53,8 @@ export const Modal = ({
   const getProfile: profileModal = useSelector<RootState, any>(
     (state) => state.profile
   );
+
+  // console.log(getProfile);
   const [modalList, setModalList] = useState<modalValues>(
     getValues(data, values.eq)
   );
@@ -84,7 +82,7 @@ export const Modal = ({
 
   const closeModal = () => {
     setModalOpen(false);
-  };  
+  };
 
   const footerClick = async (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -137,7 +135,7 @@ export const Modal = ({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={mainBoxstyle("50%","50%")}>
+        <Box sx={mainBoxstyle("50%", "50%")}>
           <ModalHeader values={modalList} battery={values.battery} />
 
           {getModalUI(footerBtn)}

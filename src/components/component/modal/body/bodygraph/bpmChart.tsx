@@ -26,16 +26,17 @@ import { getWritetimeSelectHour_Min } from "../../../../../func/func";
 
 type Props = {
   clickWritetimeButton: writetimeButtonModal;
-  bpm: boolean;
+  id: string;
 };
 
-export const BpmChart = ({ clickWritetimeButton, bpm }: Props) => {
+export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
   let [Count, setCount] = useState<number>(1);
   const [backBtn, setBackBtn] = useState<boolean>(true);
   const [nextBtn, setNextBtn] = useState<boolean>(false);
   const data: graphBpm[] = useSelector<RootState, any>(
     (state) => state.bpmGraphValue
   );
+
   const writetime: string = useSelector<RootState, any>(
     (state) => state.writetimeGraph
   );
@@ -48,27 +49,39 @@ export const BpmChart = ({ clickWritetimeButton, bpm }: Props) => {
 
   const [slice, setSlice] = useState<number[]>(graphSliceShow(Count, length));
 
+  const [yHeight, setYHeight] = useState<number>(180);
+
+  useEffect(() => {
+    setYHeight(id == "stress" ? 100 : 180);
+  }, [id]);
+
   let start = slice[0];
   let end = slice[1];
 
   const getValue = (prevValue: number, d: graphBpm, time: string): number => {
-    if (bpm) {
+    if (id == "bpm") {
       if (d.writetime.includes(time)) {
         return d.bpm > 180 ? 180 : d.bpm;
       }
-    } else {
+    } else if (id == "hrv") {
       if (d.writetime.includes(time)) {
         return d.hrv > 180 ? 180 : d.hrv;
+      }
+    } else {
+      if (d.writetime.includes(time)) {
+        return d.stress > 100 ? 100 : d.stress;
       }
     }
     return prevValue;
   };
 
   const onlyTodayDataGubun = (data: graphBpm) => {
-    if (bpm) {
+    if (id == "bpm") {
       return data?.bpm;
-    } else {
+    } else if (id == "hrv") {
       return data?.hrv;
+    } else {
+      return data?.stress;
     }
   };
 
@@ -113,7 +126,14 @@ export const BpmChart = ({ clickWritetimeButton, bpm }: Props) => {
           return data?.slice(start, end)?.map((d) => {
             const value = onlyTodayDataGubun(d);
             return {
-              usageLast: value > 180 ? 180 : value,
+              usageLast:
+                id != "stress"
+                  ? value > 180
+                    ? 180
+                    : value
+                  : value > 100
+                  ? 100
+                  : value,
               xAxis: getWritetimeSelectHour_Min(d.writetime),
             };
           });
@@ -242,7 +262,7 @@ export const BpmChart = ({ clickWritetimeButton, bpm }: Props) => {
         return (
           <>
             <Line
-              name={bpm ? "bpm" : "hrv"}
+              name={id}
               yAxisId="left"
               type="monotone"
               dataKey="usageLast"
@@ -257,13 +277,13 @@ export const BpmChart = ({ clickWritetimeButton, bpm }: Props) => {
 
   return (
     <Box sx={{ width: 350, height: 350, marginTop: 2 }}>
-        <LineChart data={lineData} width={335} height={300}>
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis dataKey="xAxis" allowDataOverflow={true} domain={[0, 1000]} />
-          <YAxis yAxisId="left" domain={[0, 180]} width={30} />
-          <Tooltip active={true} />
-          {getLine()}
-        </LineChart>
+      <LineChart data={lineData} width={335} height={300}>
+        <CartesianGrid stroke="#f5f5f5" />
+        <XAxis dataKey="xAxis" allowDataOverflow={true} domain={[0, 1000]} />
+        <YAxis yAxisId="left" domain={[0, yHeight]} width={30} />
+        <Tooltip active={true} />
+        {getLine()}
+      </LineChart>
       <Box
         sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
       >

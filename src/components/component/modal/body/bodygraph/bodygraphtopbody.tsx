@@ -1,7 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, colors } from "@mui/material";
 import { graphModal } from "../../../../../axios/interface/graphModal";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { IconBox } from "./icons/iconbox";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 type Props = {
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -11,18 +13,58 @@ type Props = {
 export const BodyGraphTopBody = ({ onClick, graphIcon }: Props) => {
   const [defaultColor, setdefaultColor] = useState("transparent"); //#ef507b
   const [selectColor, setSelectColor] = useState("#040a5c");
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const bpm = graphIcon.bpm ? selectColor : defaultColor;
-  const pulse = graphIcon.pulse ? selectColor : defaultColor;
-  const hrv = graphIcon.hrv ? selectColor : defaultColor;
-  const cal = graphIcon.cal ? selectColor : defaultColor;
-  const step = graphIcon.step ? selectColor : defaultColor;
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
 
-  const bpmChildren = graphIcon.bpm ? "white" : "#c3c1c1";
-  const pulseChildren = graphIcon.pulse ? "white" : "#c3c1c1";
-  const hrvChildren = graphIcon.hrv ? "white" : "#c3c1c1";
-  const calChildren = graphIcon.cal ? "white" : "#c3c1c1";
-  const stepChildren = graphIcon.step ? "white" : "#c3c1c1";
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  const iconsConfig = [
+    {
+      id: "bpm",
+      text: "심박",
+      color: graphIcon.bpm ? selectColor : defaultColor,
+      childrenColor: graphIcon.bpm ? "white" : "#c3c1c1",
+    },
+    {
+      id: "pulse",
+      text: "비정상맥박",
+      color: graphIcon.pulse ? selectColor : defaultColor,
+      childrenColor: graphIcon.pulse ? "white" : "#c3c1c1",
+    },
+    {
+      id: "stress",
+      text: "스트레스",
+      color: graphIcon.stress ? selectColor : defaultColor,
+      childrenColor: graphIcon.stress ? "white" : "#c3c1c1",
+    },
+    {
+      id: "hrv",
+      text: "맥박변동률",
+      color: graphIcon.hrv ? selectColor : defaultColor,
+      childrenColor: graphIcon.hrv ? "white" : "#c3c1c1",
+    },
+    {
+      id: "cal",
+      text: "칼로리",
+      color: graphIcon.cal ? selectColor : defaultColor,
+      childrenColor: graphIcon.cal ? "white" : "#c3c1c1",
+    },
+    {
+      id: "step",
+      text: "걸음",
+      color: graphIcon.step ? selectColor : defaultColor,
+      childrenColor: graphIcon.step ? "white" : "#c3c1c1",
+    },
+  ];
 
   const width = 55;
   const height = width;
@@ -31,6 +73,7 @@ export const BodyGraphTopBody = ({ onClick, graphIcon }: Props) => {
   const borderRadius = 5;
   const hover = { cursor: "pointer" };
   const marginLeft = 1.2;
+
   const buttonStyle = {
     width: width,
     height: height,
@@ -39,68 +82,60 @@ export const BodyGraphTopBody = ({ onClick, graphIcon }: Props) => {
     borderRadius: borderRadius,
     ":hover": hover,
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
   };
 
   const fontStyle = {
     fontSize: 12,
     fontWeight: "bold",
-    position: "fixed",
-    top: 103,
   };
   const iconStyle = { marginTop: 0.3 };
 
+  const ArrowStyle = {
+    marginBottom: 1.5,
+    borderRadius: 2,
+    height: 60,
+    ":hover": {
+      bgcolor: colors.grey[300],
+    },
+  };
   return (
-    <Box sx={{ height: 70, display: "flex" }}>
-      <IconBox
-        boxID={"bpm"}
-        onClick={(e) => onClick(e)}
-        boxSx={[buttonStyle, { marginLeft: 1, bgcolor: bpm }]}
-        iconSx={[{ color: bpmChildren }, iconStyle]}
-        fontSx={[fontStyle, { color: bpmChildren }]}
-        icons={"bpm"}
-        text={"심박"}
-      />
-
-      <IconBox
-        boxID={"pulse"}
-        onClick={(e) => onClick(e)}
-        boxSx={[buttonStyle, { marginLeft: marginLeft, bgcolor: pulse }]}
-        iconSx={[{ color: pulseChildren }, iconStyle]}
-        fontSx={[fontStyle, { color: pulseChildren }]}
-        icons={"pulse"}
-        text={"비정상맥박"}
-      />
-
-      <IconBox
-        boxID={"hrv"}
-        onClick={(e) => onClick(e)}
-        boxSx={[buttonStyle, { marginLeft: marginLeft, bgcolor: hrv }]}
-        iconSx={[{ color: hrvChildren }, iconStyle]}
-        fontSx={[fontStyle, { color: hrvChildren }]}
-        icons={"hrv"}
-        text={"맥박변동률"}
-      />
-
-      <IconBox
-        boxID={"cal"}
-        onClick={(e) => onClick(e)}
-        boxSx={[buttonStyle, { marginLeft: marginLeft, bgcolor: cal }]}
-        iconSx={[{ color: calChildren }, iconStyle]}
-        fontSx={[fontStyle, { color: calChildren }]}
-        icons={"cal"}
-        text={"칼로리"}
-      />
-
-      <IconBox
-        boxID={"step"}
-        onClick={(e) => onClick(e)}
-        boxSx={[buttonStyle, { marginLeft: marginLeft, bgcolor: step }]}
-        iconSx={[{ color: stepChildren }, iconStyle]}
-        fontSx={[fontStyle, { color: stepChildren }]}
-        icons={"step"}
-        text={"걸음"}
-      />
-    </Box>
+    <div style={{ display: "flex", height: 70, alignItems: "center" }}>
+      <KeyboardArrowLeftIcon onClick={scrollLeft} sx={ArrowStyle} />
+      <Box
+        ref={scrollRef}
+        sx={{
+          height: 70,
+          display: "flex",
+          overflowX: "hidden",
+          overflowY: "hidden",
+          whiteSpace: "nowrap",
+          width: "500px",
+        }}
+      >
+        {iconsConfig.map(({ id, text, color, childrenColor }) => (
+          <div key={id}>
+            <IconBox
+              boxID={id}
+              onClick={(e) => onClick(e)}
+              boxSx={[
+                buttonStyle,
+                { marginLeft: id === "bpm" ? 0 : marginLeft, bgcolor: color },
+              ]}
+              iconSx={[{ color: childrenColor }, iconStyle]}
+              fontSx={[fontStyle, { color: childrenColor }]}
+              icons={id}
+              text={text}
+              stressCheck={
+                id === "stress" ? (color == selectColor ? true : false) : false
+              }
+            />
+          </div>
+        ))}
+      </Box>
+      <ChevronRightIcon onClick={scrollRight} sx={ArrowStyle} />
+    </div>
   );
 };

@@ -16,13 +16,13 @@ import { progressBarValue } from "../../controller/modalController";
 type Props = {
   clickWritetimeButton?: writetimeButtonModal;
   clickDayGubunButton?: dayGubunButtonModal;
-  bpm?: boolean;
+  id?: string;
   profile?: profileModal;
   step?: boolean;
   setting?: number;
 };
 
-export const BodyGraphBpmBottom = ({ clickWritetimeButton, bpm }: Props) => {
+export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
   const writetime: string = useSelector<RootState, any>(
     (state) => state.writetimeGraph
   );
@@ -43,10 +43,48 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, bpm }: Props) => {
     setPlus(max - aver);
   };
 
+  const getTextValues = () => {
+    switch (id) {
+      case "stress":
+        return data?.map((d) => d.stress);
+      case "hrv":
+        return data?.map((d) => d.hrv);
+      default:
+        return data?.map((d) => d.bpm);
+    }
+  };
+
+  const getText = () => {
+    switch (id) {
+      case "stress":
+        return "스트레스";
+      case "hrv":
+        return "평균변동률";
+      default:
+        return "평균심박수";
+    }
+  };
+
+  const getTextTech = () => {
+    switch (id) {
+      case "stress":
+        return "stress";
+      case "hrv":
+        return "ms";
+      default:
+        return "BPM";
+    }
+  };
+
+  const fixedToNumber = (num: number) => {
+    return Number.isInteger(num) ? num : num.toFixed(2);
+  };
+
   useEffect(() => {
     const getValue = () => {
       if (data?.length != 0 && !String(data).includes("result")) {
-        const value = bpm ? data?.map((d) => d.bpm) : data?.map((d) => d.hrv);
+        const value = getTextValues();
+
         const max = Math?.max(...value);
         const min = Math?.min(...value);
         const aver = Math.floor(
@@ -89,16 +127,16 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, bpm }: Props) => {
         <Typography sx={{ color: "#5388F7" }}>{`-${minus}`}</Typography>
       </Box>
       <Box sx={[childrenBoxStyle, hover]}>
-        <Typography sx={[textPadding, textWeight]}>
-          {bpm ? "평균심박수" : "평균변동률"}
-        </Typography>
+        <Typography sx={[textPadding, textWeight]}>{getText()}</Typography>
         <Typography sx={[textPadding, textWeight]}>{aver}</Typography>
-        <Typography sx={textWeight}>{bpm ? "BPM" : "ms"}</Typography>
+        <Typography sx={textWeight}>{getTextTech()}</Typography>
       </Box>
       <Box sx={[childrenBoxStyle, { right: 40 }, hover]}>
         <Typography sx={textPadding}>{"Max"}</Typography>
-        <Typography sx={textPadding}>{max}</Typography>
-        <Typography sx={{ color: "#ef507b" }}>{`+${plus}`}</Typography>
+        <Typography sx={textPadding}>{fixedToNumber(max)}</Typography>
+        <Typography sx={{ color: "#ef507b" }}>{`+${fixedToNumber(
+          plus
+        )}`}</Typography>
       </Box>
     </Box>
   );
@@ -169,7 +207,7 @@ export const BodyGraphCalStepBottom = ({ setting, profile, step }: Props) => {
   const secondSetting = step
     ? `${secondSettingNum} km`
     : `${secondSettingNum} kcal`;
-
+  // console.log(`${profile?.distanceKM} -- ${profile?.calexe} -- ${setting}`);
   useEffect(() => {
     try {
       if (data.length != 0 && !String(data).includes("result")) {

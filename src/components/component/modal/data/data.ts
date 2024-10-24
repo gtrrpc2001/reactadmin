@@ -3,6 +3,7 @@ import {
   getGraphArr,
   getGraphBpm,
   getGraphCalStep,
+  getStress,
 } from "../../../../axios/api/serverApi";
 import {
   graphBpm,
@@ -13,11 +14,24 @@ import {
 export const getBpm = async (
   eq: string,
   startDate: string,
-  endDate: string
+  endDate: string,
+  stressCheck: boolean = false
 ): Promise<graphBpm[]> => {
-  const result = await getGraphBpm(
-    `/mslbpm/webBpm?eq=${eq}&startDate=${startDate}&endDate=${endDate}`
-  );
+  let result: graphBpm[] = []
+  if (stressCheck) {
+    const data = await getStress(
+      `/mslecgstress/ecgStressData?eq=${eq}&startDate=${startDate}&endDate=${endDate}`
+    );
+    data.forEach((value, index) => {
+      const { pns_percent, sns_percent, writetime } = value
+      result.push({ stress: Math.abs((pns_percent - sns_percent)), bpm: 0, hrv: 0, writetime: writetime })
+    })
+    console.log(result)
+  } else {
+    result = await getGraphBpm(
+      `/mslbpm/webBpm?eq=${eq}&startDate=${startDate}&endDate=${endDate}`
+    );
+  }
   return result;
 };
 

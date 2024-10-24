@@ -101,25 +101,29 @@ export const getClickFooter = (id: string): footerIcon => {
 export const getClickGraph = (id: string): graphModal => {
   const bpm = "bpm";
   const pulse = "pulse";
+  const stress = "stress";
   const hrv = "hrv";
   const cal = "cal";
   const step = "step";
   let iconClick: graphModal = {
     bpm: true,
     pulse: false,
+    stress: false,
     hrv: false,
     cal: false,
     step: false,
   };
   switch (true) {
     case id.includes(pulse):
-      return { bpm: false, pulse: true, hrv: false, cal: false, step: false };
+      return { bpm: false, pulse: true, stress: false, hrv: false, cal: false, step: false };
+    case id.includes(stress):
+      return { bpm: false, pulse: false, stress: true, hrv: false, cal: false, step: false };
     case id.includes(hrv):
-      return { bpm: false, pulse: false, hrv: true, cal: false, step: false };
+      return { bpm: false, pulse: false, stress: false, hrv: true, cal: false, step: false };
     case id.includes(cal):
-      return { bpm: false, pulse: false, hrv: false, cal: true, step: false };
+      return { bpm: false, pulse: false, stress: false, hrv: false, cal: true, step: false };
     case id.includes(step):
-      return { bpm: false, pulse: false, hrv: false, cal: false, step: true };
+      return { bpm: false, pulse: false, stress: false, hrv: false, cal: false, step: true };
     default:
       return iconClick;
   }
@@ -400,7 +404,7 @@ export const getPulse = (
           xAxis: d.writetime,
         };
       });
-    } catch {}
+    } catch { }
   }
 };
 
@@ -435,7 +439,7 @@ export const getCalStep = (
           xAxis: d.writetime,
         };
       });
-    } catch {}
+    } catch { }
   }
 };
 

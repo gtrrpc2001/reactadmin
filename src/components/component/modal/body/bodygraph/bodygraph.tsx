@@ -33,6 +33,7 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
   const [clickGraph, setClickGraph] = useState<graphModal>({
     bpm: true,
     pulse: false,
+    stress: false,
     hrv: false,
     cal: false,
     step: false,
@@ -108,10 +109,10 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
     );
   };
 
-  const bpm_hrv = (bool: boolean) => {
+  const bpm_hrv_stress = (id: string) => {
     return (
       <>
-        <BpmChart clickWritetimeButton={clickWritetimeButton} bpm={bool} />
+        <BpmChart clickWritetimeButton={clickWritetimeButton} id={id} />
         <WritetimeButton
           onClick={(e) => writetimeButtonHandler(e)}
           clickWritetimeButton={clickWritetimeButton}
@@ -124,14 +125,16 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
     switch (true) {
       case iconSelect.pulse:
         return pulse_cal_step();
+      case iconSelect.stress:
+        return bpm_hrv_stress("stress");
       case iconSelect.hrv:
-        return bpm_hrv(false);
+        return bpm_hrv_stress("hrv");
       case iconSelect.cal:
         return pulse_cal_step();
       case iconSelect.step:
         return pulse_cal_step();
       default:
-        return bpm_hrv(true);
+        return bpm_hrv_stress("bpm");
     }
   };
 
@@ -141,11 +144,18 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
         return (
           <BodyGraphPulseBottom clickDayGubunButton={clickDayGubunButton} />
         );
+      case iconSelect.stress:
+        return (
+          <BodyGraphBpmBottom
+            clickWritetimeButton={clickWritetimeButton}
+            id={"stress"}
+          />
+        );
       case iconSelect.hrv:
         return (
           <BodyGraphBpmBottom
             clickWritetimeButton={clickWritetimeButton}
-            bpm={false}
+            id={"hrv"}
           />
         );
 
@@ -169,7 +179,7 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
         return (
           <BodyGraphBpmBottom
             clickWritetimeButton={clickWritetimeButton}
-            bpm={true}
+            id={"bpm"}
           />
         );
     }
