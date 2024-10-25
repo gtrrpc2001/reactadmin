@@ -13,11 +13,12 @@ import { ModalTopBodyLeft } from "../../../components/component/modal/body/bodyh
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  roomId: number;
 };
 
 const bedList = ["침대 1", "침대 2", "침대 3", "침대 4", "침대 5", "침대 6"];
 
-export const Room = ({ setRoomVisible }: Props) => {
+export const Room = ({ setRoomVisible, roomId }: Props) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [bedStates, setBedStates] = useState<{ [key: string]: boolean }>({});
   const [data, setData] = useState<historyLast[]>([]);
@@ -58,7 +59,7 @@ export const Room = ({ setRoomVisible }: Props) => {
     const timer = setInterval(async () => {
       await getInfoList();
     }, 1000);
-    
+
     return () => {
       clearInterval(timer);
     };
@@ -117,9 +118,12 @@ export const Room = ({ setRoomVisible }: Props) => {
               b
             )}
           </div>
-          <Button onClick={() => BedEcgBtnClick(`${index}`)}>
-            {"<- ecg 보기"}
-          </Button>
+          <button
+            className="ecg-button"
+            onClick={() => BedEcgBtnClick(`${index}`)}
+          >
+            {"<- ECG 보기"}
+          </button>
         </React.Fragment>
       );
     });

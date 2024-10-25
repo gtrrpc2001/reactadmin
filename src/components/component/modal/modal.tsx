@@ -48,7 +48,7 @@ export const Modal = ({
   const dispatch = useDispatch();
   const values = useSelector<RootState, any>((state) => state.cellValues);
   const data: historyLast[] = useSelector<RootState, any>(
-    (state) => state.modalData
+    (state) => state.historylast
   );
   const getProfile: profileModal = useSelector<RootState, any>(
     (state) => state.profile

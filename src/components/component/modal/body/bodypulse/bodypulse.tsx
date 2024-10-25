@@ -9,7 +9,6 @@ import {
 } from "../../controller/modalController";
 import { useEffect, useRef, useState } from "react";
 import { PulseChart } from "./pulseChart";
-import { useDateMemo } from "../../../hooks/selectCheckboxHooks";
 
 type Props = {
   eq: string;
@@ -23,11 +22,6 @@ export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
   const [disabled, setDisabled] = useState(true);
   const [writetimes, setWritetimes] = useState<any[]>([]);
   const [id, setId] = useState<string>("");
-  const memoWritetime = useDateMemo(startTime); 
-
-  useEffect(() => {
-    setWritetime(memoWritetime);
-  }, [memoWritetime]);
 
   const setValue = (id: string) => {
     const plusDate = calculTime(writetime, -1, 1, "YYYY-MM-DD", "days");

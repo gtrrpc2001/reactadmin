@@ -1,16 +1,16 @@
 @font-face {
-  font-family: 'Bungee Spice Regular';
-  src: url('./assets/font/BungeeSpice-Regular.ttf');
+  font-family: "Bungee Spice Regular";
+  src: url("./assets/font/BungeeSpice-Regular.ttf");
 }
 
 @font-face {
-  font-family: 'Dongle';
-  src: url('./assets/font/Dongle-Regular.ttf');
+  font-family: "Dongle";
+  src: url("./assets/font/Dongle-Regular.ttf");
 }
 
 :root {
-  --font-dongle: 'dongle';
-  --font-bungee: 'Bungee Spice Regular';
+  --font-dongle: "dongle";
+  --font-bungee: "Bungee Spice Regular";
   --menus-height: 17rem;
 }
 
@@ -34,6 +34,6 @@ ul {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

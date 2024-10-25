@@ -40,6 +40,17 @@ export const eqSlice = createSlice({
 });
 export const eqActions = eqSlice.actions;
 
+export const pageSlice = createSlice({
+  name: "page",
+  initialState: { currentPage: 0 },
+  reducers: {
+    setCurrentPage: (state, action: PayloadAction<any>) =>
+      (state.currentPage = action.payload),
+  },
+});
+
+export const pageActions = pageSlice.actions;
+
 export const ModalSlice = createSlice({
   name: "history_last",
   initialState: [],

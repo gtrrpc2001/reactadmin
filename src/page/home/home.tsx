@@ -53,7 +53,7 @@ export default function Home() {
 
     let isMounted = true;
     const timer = setInterval(async () => {
-      if (loginSelector) await getInfoList();
+      if (loginSelector && !check) await getInfoList();
     }, 1000);
 
     return () => {
@@ -64,8 +64,9 @@ export default function Home() {
 
   useEffect(() => {
     const table_modalData = () => {
-      if (check == false) InfoDispatch(listActions.listHistory(data));
-      InfoDispatch(ModalActions.ModalHistory(data));
+      if (check == false) {
+        InfoDispatch(listActions.listHistory(data));
+      }
     };
     table_modalData();
   }, [data]);

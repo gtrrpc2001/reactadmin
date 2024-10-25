@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useGlobalFilter,
   useSortBy,
@@ -23,9 +23,10 @@ import { Tbody } from "./tbody";
 import { Modal } from "../modal/modal";
 import {
   cellActions,
+  pageActions,
   profileActions,
 } from "../../createslice/createslices";
-import { getOnlyArr, getProfile } from "../../../axios/api/serverApi";
+import { getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
 import { historyLast } from "../../../axios/interface/history_last";
 
@@ -40,6 +41,9 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
   const cellDispatch = useDispatch();
   const profileDispach = useDispatch();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
+  const currentPage = useSelector(
+    (state: RootState) => state.tablePage.currentPage
+  );
 
   const {
     getTableProps,
@@ -60,7 +64,12 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
     state,
     selectedFlatRows,
   } = useTable(
-    { columns, data, autoResetSelectedRows: false },
+    {
+      columns,
+      data,
+      autoResetSelectedRows: false,
+      autoResetPage: false,
+    },
     useGlobalFilter,
     useSortBy,
     usePagination,
@@ -89,7 +98,7 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
       if (!row?.isSelected) {
         const Profile = await getProfile(
           `/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`
-        );        
+        );
         profileDispach(profileActions.profile(Profile));
         cellDispatch(cellActions.cellValues(cellVlaue));
         setOpenModal(!isOpenModal);

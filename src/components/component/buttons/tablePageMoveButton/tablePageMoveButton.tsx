@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GotoPageButton } from "../GotoPageButton";
 import { PageButton } from "../pageButton";
 import { TableState } from "react-table";
@@ -26,10 +26,15 @@ export const TablePageMoveButton = ({
   canNextPage,
 }: Props) => {
   const { pageIndex } = state;
+  const [inputValue, setInputValue] = useState(pageIndex + 1);
+  useEffect(() => {
+    setInputValue(pageIndex + 1);
+  }, [pageIndex]);
 
   function movePage(e: React.ChangeEvent<HTMLInputElement>): void {
     const value = e.target.value;
     const pageNumber = value ? Number(value) - 1 : 0;
+    setInputValue(pageNumber + 1);
     gotoPage(pageNumber);
   }
 
@@ -60,7 +65,9 @@ export const TablePageMoveButton = ({
         <input
           className="gotopageInput"
           type="number"
-          defaultValue={pageIndex + 1}
+          defaultValue={inputValue}
+          min={1}
+          max={pageOptions.length}
           onChange={(e) => movePage(e)}
         />
       </span>
