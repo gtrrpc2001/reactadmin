@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import { historyLast } from "../../../axios/interface/history_last";
 import { modalValues } from "../../../axios/interface/modalvalues";
 import { getValues } from "../../../components/component/modal/controller/modalController";
-import { ModalRealTimeGraph } from "../../graph/modalGraph";
 import { getHistory } from "../../../axios/api/serverApi";
 import React from "react";
-import { ModalTopBodyLeft } from "../../../components/component/modal/body/bodyhome/topbody/modalTopbodyLeft";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { PatientDroppable } from "../patient/patientDroppable";
+import { BedListUI } from "../bed/bedList";
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,12 +18,18 @@ type Props = {
 };
 
 const bedList = ["침대 1", "침대 2", "침대 3", "침대 4", "침대 5", "침대 6"];
+const patientList = ["환자 A", "환자 B", "환자 C", "환자 D", "환자 E"];
 
 export const Room = ({ setRoomVisible, roomId }: Props) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [bedStates, setBedStates] = useState<{ [key: string]: boolean }>({});
   const [data, setData] = useState<historyLast[]>([]);
   const eq = "jhaseung@medsyslab.co.kr";
+  const [userData, setUserData] = useState<modalValues>(getValues(data, eq));
+  const [assignedPatients, setAssignedPatients] = useState<string[]>(
+    Array(bedList.length).fill(null)
+  );
+
   const bedClick = (name: string) => {
     setOpenModal(true);
   };
@@ -33,8 +40,6 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
       [key]: !prevStates[key],
     }));
   };
-
-  const [userData, setUserData] = useState<modalValues>(getValues(data, eq));
 
   useEffect(() => {
     setUserData(getValues(data, eq));
@@ -80,55 +85,46 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
     // };
   }, [bedStates]);
 
-  const getBedList = () => {
-    return bedList.map((b, index) => {
-      return (
-        <React.Fragment key={index}>
-          <div
-            key={index}
-            className={`bed ${bedStates[`${index}`] ? "ecgDisplay" : ""}`}
-            onClick={() => bedClick(b)}
-          >
-            <div className="bpm">
-              <ModalTopBodyLeft
-                bpm={userData.bpm}
-                width={50}
-                height={20}
-                borderRadius={3}
-                fontSize={20}
-                marginBlockStart={0.5}
-                top={-9}
-                left={27}
-                heartSize="small"
-              />
-            </div>
-            {bedStates[`${index}`] ? (
-              <div className="ecg">
-                <ModalRealTimeGraph
-                  open_close={bedStates[`${index}`]}
-                  bpm={userData.bpm}
-                  eq="jhaseung@medsyslab.co.kr"
-                  time={userData.writetime}
-                  width={350}
-                  height={280}
-                  Ywidth={35}
-                />
-              </div>
-            ) : (
-              b
-            )}
-          </div>
-          <button
-            className="ecg-button"
-            onClick={() => BedEcgBtnClick(`${index}`)}
-          >
-            {"<- ECG 보기"}
-          </button>
-        </React.Fragment>
-      );
-    });
+  const handleDragEnd = (result: any) => {
+    if (!result.destination) return;
+
+    const updatedPatients = Array.from(assignedPatients);
+    // 환자를 침대에 배치
+    if (
+      result.source.droppableId === "patientList" &&
+      result.destination.droppableId === "bedList"
+    ) {
+      updatedPatients[result.destination.index] =
+        patientList[result.source.index];
+    }
+    // 환자 이동 (침대 간 이동은 현재 구현하지 않음)
+    else if (
+      result.source.droppableId === "bedList" &&
+      result.destination.droppableId === "bedList"
+    ) {
+      const [removed] = updatedPatients.splice(result.source.index, 1);
+      updatedPatients.splice(result.destination.index, 0, removed);
+    }
+
+    setAssignedPatients(updatedPatients);
   };
 
+  // {assignedPatients[index] ? (
+  //   <div className="patient-info">
+  //     {assignedPatients[index]} {/* 할당된 환자 이름 표시 */}
+  //     <ModalRealTimeGraph
+  //       open_close={bedStates[`${index}`]}
+  //       bpm={userData.bpm}
+  //       eq={eq}
+  //       time={userData.writetime}
+  //       width={350}
+  //       height={280}
+  //       Ywidth={35}
+  //     />
+  //   </div>
+  // ) : (
+  //   b
+  // )}
   return (
     <>
       <div className="Room">
@@ -139,9 +135,29 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
           }}
         ></Button>
         <div className="roomDisplay">
-          <div className="roomSize">
-            <div className="bed-wrap">{getBedList()}</div>
-          </div>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <div className="roomSize">
+              <Droppable droppableId="bedList">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="bed-wrap"
+                  >
+                    <BedListUI
+                      bedList={bedList}
+                      bedStates={bedStates}
+                      userData={userData}
+                      bedClick={bedClick}
+                      BedEcgBtnClick={BedEcgBtnClick}
+                    />
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+            <PatientDroppable patientList={patientList} />
+          </DragDropContext>
         </div>
       </div>
       {isOpenModal && (
