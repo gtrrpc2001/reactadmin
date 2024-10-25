@@ -4,6 +4,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 type Props = {
   bpm: number;
+  temp?: number;
   width?: number;
   height?: number;
   fontSize?: number;
@@ -16,6 +17,7 @@ type Props = {
 
 export const ModalTopBodyLeft = ({
   bpm,
+  temp,
   width = 150,
   height = 70,
   fontSize = 24,
@@ -59,6 +61,23 @@ export const ModalTopBodyLeft = ({
         >
           {bpm}
         </Typography>
+        {temp && (
+          <Typography
+            sx={{
+              fontFamily: "-moz-initial",
+              fontSize: 15,
+              color: "#ef507b",
+              fontWeight: "bold",
+              marginBlockStart: 1,
+              ":hover": { cursor: "default" },
+            }}
+            id="temp"
+            variant="h5"
+            component="h5"
+          >
+            {`${temp}°C`}
+          </Typography>
+        )}
       </Box>
 
       <Box sx={{ position: "absolute", top: top, left: left }}>
