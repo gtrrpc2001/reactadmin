@@ -69,6 +69,7 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
       data,
       autoResetSelectedRows: false,
       autoResetPage: false,
+      autoResetGlobalFilter: false,
     },
     useGlobalFilter,
     useSortBy,
