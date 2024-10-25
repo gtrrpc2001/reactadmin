@@ -38,7 +38,11 @@ const LoginPage = () => {
     emailChecked();
     pwChecked();
     setNotAllow(
-      (emailValid && pw.length > 7) || (email == "admin" && pw == "admin")
+      (emailValid && pw.length > 7) ||
+        (email == `${process.env.REACT_APP_ADMIN}` &&
+          pw == `${process.env.REACT_APP_ADMIN}`) ||
+        (email == `${process.env.REACT_APP_BUSINESS}` &&
+          pw == `${process.env.REACT_APP_BUSINESS}`)
     );
   }, [email, pw]);
 
@@ -113,7 +117,12 @@ const LoginPage = () => {
         <div style={{ justifyContent: "center" }}>
           <LoginLogo logo={logo2Image} logoClick={logoClick} />
           <div className="contentWrap">
-            <form onSubmit={(e) => { e.preventDefault(); HandleLogin();}}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                HandleLogin();
+              }}
+            >
               <div className="inputTitle">이메일 주소</div>
 
               <LoginInput
