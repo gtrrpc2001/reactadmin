@@ -11,7 +11,6 @@ import { PatientDroppable } from "../patient/patientDroppable";
 import { BedListUI } from "../bed/bedList";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import { useNavigate } from "react-router-dom";
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,8 +30,12 @@ const bedList = [
   "침대 10",
 ];
 
+const arraysEqual = (arr1: string[], arr2: string[]) => {
+  if (arr1.length !== arr2.length) return false;
+  return true;
+};
+
 export const Room = ({ setRoomVisible, roomId }: Props) => {
-  const navigate = useNavigate();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [bedStates, setBedStates] = useState<{ [key: string]: boolean }>({});
   const getTableData = useSelector<RootState, any>(
@@ -40,11 +43,14 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
   );
   const [data, setData] = useState<historyLast[]>(getTableData);
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
-  const tableNames = data.map((value: historyLast) => value.eqname);
+  const tableNames = useMemo(() => data.map((value) => value.eqname), [data]);
   const [patientList, setPatientList] = useState<string[]>(tableNames);
+  const firstData = useRef<historyLast[]>([]);
 
   useEffect(() => {
-    setPatientList(tableNames);
+    if (!arraysEqual(patientList, tableNames)) {
+      setPatientList(tableNames);
+    }
   }, [tableNames]);
 
   const [assignedPatients, setAssignedPatients] = useState<string[]>(
@@ -63,8 +69,9 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
   };
 
   useEffect(() => {
+    firstData.current = data;
     //db에서 room 번호 bed 번호 받아오기
-  }, []);
+  }, [patientList]);
 
   useEffect(() => {
     async function getInfoList() {
@@ -171,6 +178,7 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
                       userData={data}
                       bedClick={bedClick}
                       BedEcgBtnClick={BedEcgBtnClick}
+                      cfData={firstData.current}
                     />
                     {provided.placeholder}
                   </div>

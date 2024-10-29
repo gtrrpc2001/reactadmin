@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ModalTopBodyLeft } from "../../../components/component/modal/body/bodyhome/topbody/modalTopbodyLeft";
 import { ModalRealTimeGraph } from "../../graph/modalGraph";
 import "./bedList.scss";
@@ -12,6 +12,7 @@ type Props = {
   userData: historyLast[];
   bedClick: (name: string) => void;
   BedEcgBtnClick: (key: string) => void;
+  cfData: historyLast[];
 };
 
 export const BedListUI = ({
@@ -20,15 +21,42 @@ export const BedListUI = ({
   userData,
   bedClick,
   BedEcgBtnClick,
+  cfData,
 }: Props) => {
+  const memoData = useMemo(() => {
+    const userDataMap = new Map(userData.map((user) => [user.eq, user]));
+    const currentUsers = new Map<string, historyLast>();
+    cfData.forEach((u) => {
+      const existingUser = userDataMap.get(u.eq);
+      if (
+        existingUser &&
+        new Date(u.writetime) < new Date(existingUser.writetime)
+      ) {
+        currentUsers.set(existingUser.eq, existingUser);
+      }
+    });
+
+    userData.forEach((user) => {
+      const existingUser = currentUsers.get(user.eq);
+
+      if (!existingUser) {
+        currentUsers.set(user.eq, user);
+      } else {
+        if (new Date(user.writetime) > new Date(existingUser.writetime)) {
+          currentUsers.set(user.eq, user);
+        }
+      }
+    });
+    return Array.from(currentUsers.values());
+  }, [userData, cfData]);
+
   return (
     <>
       {bedList.map((b, index) => {
         let data;
-        if (userData.length >= 1) {
-          data = userData[index];
+        if (memoData.length >= 1) {
+          data = memoData[index];
         }
-        console.log(userData.length);
         const bpm = data ? data.bpm : 0;
         const eq = data ? data.eq : "";
         const eqname = data ? data.eqname : "";
