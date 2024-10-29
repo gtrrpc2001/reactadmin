@@ -49,7 +49,13 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
 
   useEffect(() => {
     if (!arraysEqual(patientList, tableNames)) {
-      setPatientList(tableNames);
+      setPatientList((list) => {
+        list.forEach((value, index) => {
+          const checkName = tableNames.find((v) => v === value);
+          if (!checkName) list.push(tableNames[index]);
+        });
+        return list;
+      });
     }
   }, [tableNames]);
 
