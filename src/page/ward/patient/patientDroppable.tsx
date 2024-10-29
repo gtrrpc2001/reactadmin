@@ -16,7 +16,11 @@ export const PatientDroppable = ({ patientList }: Props) => {
         >
           <h3>환자 리스트</h3>
           {patientList.map((patient, index) => (
-            <Draggable key={patient} draggableId={patient} index={index}>
+            <Draggable
+              key={patient + index}
+              draggableId={patient}
+              index={index}
+            >
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}

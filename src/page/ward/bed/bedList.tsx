@@ -1,15 +1,15 @@
 import React from "react";
 import { ModalTopBodyLeft } from "../../../components/component/modal/body/bodyhome/topbody/modalTopbodyLeft";
-import { modalValues } from "../../../axios/interface/modalvalues";
 import { ModalRealTimeGraph } from "../../graph/modalGraph";
 import "./bedList.scss";
+import { historyLast } from "../../../axios/interface/history_last";
 
 type Props = {
   bedList: string[];
   bedStates: {
     [key: string]: boolean;
   };
-  userData: modalValues;
+  userData: historyLast[];
   bedClick: (name: string) => void;
   BedEcgBtnClick: (key: string) => void;
 };
@@ -21,21 +21,34 @@ export const BedListUI = ({
   bedClick,
   BedEcgBtnClick,
 }: Props) => {
-  const eq = "jhaseung@medsyslab.co.kr";
   return (
     <>
       {bedList.map((b, index) => {
+        let data;
+        if (userData.length >= 1) {
+          data = userData[index];
+        }
+        console.log(userData.length);
+        const bpm = data ? data.bpm : 0;
+        const eq = data ? data.eq : "";
+        const eqname = data ? data.eqname : "";
+        const temp = data ? data.temp : 0;
+        const writetime = data ? data.writetime : "";
+        const key = eq + index;
         return (
-          <React.Fragment key={index}>
+          <React.Fragment key={key}>
             <div
-              key={index}
-              className={`bed ${bedStates[`${index}`] ? "ecgDisplay" : ""}`}
+              key={key}
+              className={`bed ${bedStates[`${key}`] ? "ecgDisplay" : ""}`}
               onClick={() => bedClick(b)}
             >
+              <div style={{ height: 25, textAlign: "center" }}>
+                <text>{eqname}</text>
+              </div>
               <div className="bpm">
                 <ModalTopBodyLeft
-                  bpm={userData.bpm}
-                  temp={userData.temp}
+                  bpm={bpm}
+                  temp={temp}
                   width={50}
                   height={20}
                   borderRadius={3}
@@ -47,15 +60,15 @@ export const BedListUI = ({
                 />
               </div>
 
-              {bedStates[`${index}`] ? (
+              {bedStates[`${key}`] ? (
                 <div className="ecg">
                   <ModalRealTimeGraph
-                    open_close={bedStates[`${index}`]}
-                    bpm={userData.bpm}
+                    open_close={bedStates[`${key}`]}
+                    bpm={bpm}
                     eq={eq}
-                    time={userData.writetime}
+                    time={writetime}
                     width={350}
-                    height={280}
+                    height={235}
                     Ywidth={35}
                   />
                 </div>
@@ -65,7 +78,7 @@ export const BedListUI = ({
             </div>
             <button
               className="ecg-button"
-              onClick={() => BedEcgBtnClick(`${index}`)}
+              onClick={() => BedEcgBtnClick(`${key}`)}
             >
               {"<- ECG 보기"}
             </button>

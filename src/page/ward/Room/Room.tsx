@@ -2,30 +2,51 @@ import { Button, styled } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./Room.scss";
 import { BedInfo } from "../modal/bedModal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { historyLast } from "../../../axios/interface/history_last";
-import { modalValues } from "../../../axios/interface/modalvalues";
-import { getValues } from "../../../components/component/modal/controller/modalController";
 import { getHistory } from "../../../axios/api/serverApi";
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { PatientDroppable } from "../patient/patientDroppable";
 import { BedListUI } from "../bed/bedList";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
   roomId: number;
 };
 
-const bedList = ["침대 1", "침대 2", "침대 3", "침대 4", "침대 5", "침대 6"];
-const patientList = ["환자 A", "환자 B", "환자 C", "환자 D", "환자 E"];
+const bedList = [
+  "침대 1",
+  "침대 2",
+  "침대 3",
+  "침대 4",
+  "침대 5",
+  "침대 6",
+  "침대 7",
+  "침대 8",
+  "침대 9",
+  "침대 10",
+];
 
 export const Room = ({ setRoomVisible, roomId }: Props) => {
+  const navigate = useNavigate();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [bedStates, setBedStates] = useState<{ [key: string]: boolean }>({});
-  const [data, setData] = useState<historyLast[]>([]);
-  const eq = "jhaseung@medsyslab.co.kr";
-  const [userData, setUserData] = useState<modalValues>(getValues(data, eq));
+  const getTableData = useSelector<RootState, any>(
+    (state) => state.historylast
+  );
+  const [data, setData] = useState<historyLast[]>(getTableData);
+  const eqSelector = useSelector<RootState, string>((state) => state.eq);
+  const tableNames = data.map((value: historyLast) => value.eqname);
+  const [patientList, setPatientList] = useState<string[]>(tableNames);
+
+  useEffect(() => {
+    setPatientList(tableNames);
+  }, [tableNames]);
+
   const [assignedPatients, setAssignedPatients] = useState<string[]>(
     Array(bedList.length).fill(null)
   );
@@ -42,14 +63,14 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
   };
 
   useEffect(() => {
-    setUserData(getValues(data, eq));
-  }, [data]);
+    //db에서 room 번호 bed 번호 받아오기
+  }, []);
 
   useEffect(() => {
     async function getInfoList() {
       try {
         const getData: historyLast[] = await getHistory(
-          `/mslLast/webTable?eq=${eq}`
+          `/mslLast/webTable?eq=${eqSelector}`
         );
 
         if (getData?.length != 0 && !String(getData).includes("result")) {
@@ -68,21 +89,21 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
     return () => {
       clearInterval(timer);
     };
-    // let timer: NodeJS.Timeout | null = null;
+    //   // let timer: NodeJS.Timeout | null = null;
 
-    // if (Object.values(bedStates).some((state) => state)) {
-    //   timer = setInterval(async () => {
-    //     await getInfoList();
-    //   }, 1000);
-    // } else if (timer) {
-    //   clearInterval(timer);
-    // }
+    //   // if (Object.values(bedStates).some((state) => state)) {
+    //   //   timer = setInterval(async () => {
+    //   //     await getInfoList();
+    //   //   }, 1000);
+    //   // } else if (timer) {
+    //   //   clearInterval(timer);
+    //   // }
 
-    // return () => {
-    //   if (timer) {
-    //     clearInterval(timer);
-    //   }
-    // };
+    //   // return () => {
+    //   //   if (timer) {
+    //   //     clearInterval(timer);
+    //   //   }
+    //   // };
   }, [bedStates]);
 
   const handleDragEnd = (result: any) => {
@@ -147,7 +168,7 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
                     <BedListUI
                       bedList={bedList}
                       bedStates={bedStates}
-                      userData={userData}
+                      userData={data}
                       bedClick={bedClick}
                       BedEcgBtnClick={BedEcgBtnClick}
                     />
