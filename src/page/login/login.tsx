@@ -82,12 +82,9 @@ const LoginPage = () => {
   const HandleLogin = async (e?: React.KeyboardEvent<HTMLInputElement>) => {
     if (notAllow) {
       if (e?.currentTarget.id == "password") {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          setHandleLogin();
-        }
+        if (e?.key === "Enter") setHandleLogin();
       } else {
-        emailEnter();
+        setHandleLogin();
       }
     }
   };
