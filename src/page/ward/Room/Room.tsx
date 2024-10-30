@@ -43,21 +43,8 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
   );
   const [data, setData] = useState<historyLast[]>(getTableData);
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
-  const tableNames = useMemo(() => data.map((value) => value.eqname), [data]);
-  const [patientList, setPatientList] = useState<string[]>(tableNames);
+  const [patientList, setPatientList] = useState<string[]>([]);
   const firstData = useRef<historyLast[]>([]);
-
-  useEffect(() => {
-    if (!arraysEqual(patientList, tableNames)) {
-      setPatientList((list) => {
-        list.forEach((value, index) => {
-          const checkName = tableNames.find((v) => v === value);
-          if (!checkName) list.push(tableNames[index]);
-        });
-        return list;
-      });
-    }
-  }, [tableNames]);
 
   const [assignedPatients, setAssignedPatients] = useState<string[]>(
     Array(bedList.length).fill(null)
@@ -88,6 +75,21 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
 
         if (getData?.length != 0 && !String(getData).includes("result")) {
           setData(getData);
+        }
+
+        const newPatientList = getData.map((item) => item.eqname);
+        if (!arraysEqual(patientList, newPatientList)) {
+          if (patientList.length < 1) {
+            setPatientList(newPatientList);
+          } else {
+            setPatientList((list) => {
+              list.forEach((value, index) => {
+                const checkName = newPatientList.find((v) => v === value);
+                if (!checkName) list.push(newPatientList[index]);
+              });
+              return list;
+            });
+          }
         }
       } catch (E) {
         console.log(E);

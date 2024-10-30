@@ -26,7 +26,7 @@ export const Graph = () => {
         <Loading loading={loading} />
       ) : (
         <HeaderFooter>
-            <GraphList names={memoizedNames} />
+          <GraphList names={memoizedNames} />
         </HeaderFooter>
       )}
     </div>

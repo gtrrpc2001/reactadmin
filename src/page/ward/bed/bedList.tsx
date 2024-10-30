@@ -71,7 +71,7 @@ export const BedListUI = ({
               onClick={() => bedClick(b)}
             >
               <div style={{ height: 25, textAlign: "center" }}>
-                <text>{eqname}</text>
+                <span>{eqname}</span>
               </div>
               <div className="bpm">
                 <ModalTopBodyLeft

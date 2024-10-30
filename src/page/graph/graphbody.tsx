@@ -17,11 +17,12 @@ import { exportToExcel } from "../../func/excel";
 type Props = {
   names: { eq: string; eqname: string }[];
   marginTop: number;
+  marginBottom: number;
 };
 
 const getCheckMaxValue = (value: number) => (value > 180 ? 180 : value);
 
-export const GraphBody = ({ names, marginTop }: Props) => {
+export const GraphBody = ({ names, marginTop, marginBottom }: Props) => {
   const [id, setId] = useState<string>("");
   const [data, setData] = useState<any[]>([]);
   const [kindButton, setKindButton] = useState<graphKindButton>({
@@ -153,7 +154,15 @@ export const GraphBody = ({ names, marginTop }: Props) => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", marginTop: marginTop }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        marginTop: marginTop,
+        justifyContent: "center",
+        marginBottom: marginBottom,
+      }}
+    >
       <UserList
         nameList={names}
         handler={handler}
