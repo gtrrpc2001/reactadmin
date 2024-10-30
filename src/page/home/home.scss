@@ -36,8 +36,7 @@
 }
 
 @media (max-width: 768px) {
-  .body {
-    overflow-x: auto;
-    overflow-y: hidden;
+  .home {
+    overflow: auto;
   }
 }

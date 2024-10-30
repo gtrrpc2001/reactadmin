@@ -134,7 +134,7 @@ const LoginPage = () => {
                 inputRef={emailRef}
                 placeholder="test@gmail.com"
                 value={email}
-                onKeypress={emailEnter}
+                onKeypress={() => {}} //emailEnter
                 onHandler={onEmailHandler}
               />
 
