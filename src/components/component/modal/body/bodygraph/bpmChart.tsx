@@ -16,6 +16,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 import { ButtonChartBpm } from "./ChartButton";
 import {
@@ -236,103 +237,90 @@ export const BpmChart = ({
     setLineName();
   }, [clickWritetimeButton, writetime]);
 
+  const stressLine = () => {
+    const lines = [
+      { dataKey: "sns", stroke: "#ef507b", name: "SNS" },
+      { dataKey: "pns", stroke: "#5388F7", name: "PNS" },
+    ];
+
+    const referenceLines = [
+      { y: 40, stroke: "blue" },
+      { y: 60, stroke: "blue" },
+      { y: 20, stroke: "red" },
+      { y: 80, stroke: "red" },
+    ];
+
+    return (
+      <>
+        {lines.map((line) => (
+          <Line
+            key={line.dataKey}
+            name={line.name}
+            yAxisId="left"
+            type="monotone"
+            dataKey={line.dataKey}
+            stroke={line.stroke}
+            dot={false}
+          />
+        ))}
+        <Legend />
+        {referenceLines.map((refLine) => (
+          <ReferenceLine
+            key={refLine.y}
+            y={refLine.y}
+            stroke={refLine.stroke}
+            strokeDasharray="3 3"
+            yAxisId="left"
+          />
+        ))}
+      </>
+    );
+  };
+
+  const bpm_hrvLine = () => {
+    const linesConfig = {
+      days2: [
+        { name: lineName2, dataKey: "usageLast1", stroke: "#8884d8" },
+        { name: lineName3, dataKey: "usageLast2", stroke: "#ff7300" },
+      ],
+      days3: [
+        { name: lineName1, dataKey: "usageLast3", stroke: "#8884d8" },
+        { name: lineName2, dataKey: "usageLast4", stroke: "#ff7300" },
+        { name: lineName3, dataKey: "usageLast5", stroke: "#7ac4c0" },
+      ],
+      default: [{ name: id, dataKey: "usageLast", stroke: "#8884d8" }],
+    };
+
+    const selectedLines = clickWritetimeButton.days2
+      ? linesConfig.days2
+      : clickWritetimeButton.days3
+      ? linesConfig.days3
+      : linesConfig.default;
+
+    return (
+      <>
+        {selectedLines.map((line) => (
+          <Line
+            key={line.dataKey} // 각 Line의 고유 키 설정
+            name={line.name}
+            yAxisId="left"
+            type="monotone"
+            dataKey={line.dataKey}
+            stroke={line.stroke}
+            dot={false}
+          />
+        ))}
+        <Legend />
+      </>
+    );
+  };
+
   const getLine = () => {
     if (idCheck(id, true)) {
-      return (
-        <>
-          <Line
-            name={id}
-            yAxisId="left"
-            type="monotone"
-            dataKey="sns"
-            stroke="#ef507b"
-            dot={false}
-          />
-          <Legend />
-          <Line
-            name={id}
-            yAxisId="left"
-            type="monotone"
-            dataKey="pns"
-            stroke="#5388F7"
-            dot={false}
-          />
-          <Legend />
-        </>
-      );
+      return stressLine();
     }
 
-    switch (true) {
-      case clickWritetimeButton.days2:
-        return (
-          <>
-            <Line
-              name={lineName2}
-              yAxisId="left"
-              type="monotone"
-              dataKey="usageLast1"
-              stroke="#8884d8"
-              dot={false}
-            />
-            <Legend />
-            <Line
-              name={lineName3}
-              yAxisId="left"
-              type="monotone"
-              dataKey="usageLast2"
-              stroke="#ff7300"
-              dot={false}
-            />
-            <Legend />
-          </>
-        );
-      case clickWritetimeButton.days3:
-        return (
-          <>
-            <Line
-              name={lineName1}
-              yAxisId="left"
-              type="monotone"
-              dataKey="usageLast3"
-              stroke="#8884d8"
-              dot={false}
-            />
-            <Legend />
-            <Line
-              name={lineName2}
-              yAxisId="left"
-              type="monotone"
-              dataKey="usageLast4"
-              stroke="#ff7300"
-              dot={false}
-            />
-            <Legend />
-            <Line
-              name={lineName3}
-              yAxisId="left"
-              type="monotone"
-              dataKey="usageLast5"
-              stroke="#7ac4c0"
-              dot={false}
-            />
-            <Legend />
-          </>
-        );
-      default:
-        return (
-          <>
-            <Line
-              name={id}
-              yAxisId="left"
-              type="monotone"
-              dataKey="usageLast"
-              stroke="#8884d8"
-              dot={false}
-            />
-            <Legend />
-          </>
-        );
-    }
+    return bpm_hrvLine();
   };
 
   return (
