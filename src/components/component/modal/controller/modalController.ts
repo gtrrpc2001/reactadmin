@@ -498,3 +498,8 @@ export const getPulseEcgDataConverter = (result: string[]) => {
   });
   return dataList;
 };
+
+export const idCheck = (id: string | undefined, equal: boolean = false) => {
+  if (!equal) return id != "stress";
+  else return id == "stress";
+};

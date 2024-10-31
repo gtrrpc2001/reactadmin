@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   graphBpm,
+  graphModal,
   writetimeButtonModal,
 } from "../../../../../axios/interface/graphModal";
 import { useSelector } from "react-redux";
@@ -19,17 +20,23 @@ import {
 import { ButtonChartBpm } from "./ChartButton";
 import {
   graphSliceShow,
+  idCheck,
   replaceYear,
   selectTime,
 } from "../../controller/modalController";
 import { getWritetimeSelectHour_Min } from "../../../../../func/func";
 
 type Props = {
+  headerIconClick: graphModal;
   clickWritetimeButton: writetimeButtonModal;
   id: string;
 };
 
-export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
+export const BpmChart = ({
+  headerIconClick,
+  clickWritetimeButton,
+  id,
+}: Props) => {
   let [Count, setCount] = useState<number>(1);
   const [backBtn, setBackBtn] = useState<boolean>(true);
   const [nextBtn, setNextBtn] = useState<boolean>(false);
@@ -52,13 +59,17 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
   const [yHeight, setYHeight] = useState<number>(180);
 
   useEffect(() => {
-    setYHeight(id == "stress" ? 100 : 180);
+    setYHeight(idCheck(id, true) ? 100 : 180);
   }, [id]);
+
+  useEffect(() => {
+    setCount(1);
+  }, [headerIconClick]);
 
   let start = slice[0];
   let end = slice[1];
 
-  const getValue = (prevValue: number, d: graphBpm, time: string): number => {
+  const getValue = (prevValue: number, d: graphBpm, time: string) => {
     if (id == "bpm") {
       if (d.writetime.includes(time)) {
         return d.bpm > 180 ? 180 : d.bpm;
@@ -66,10 +77,6 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
     } else if (id == "hrv") {
       if (d.writetime.includes(time)) {
         return d.hrv > 180 ? 180 : d.hrv;
-      }
-    } else {
-      if (d.writetime.includes(time)) {
-        return d.stress > 100 ? 100 : d.stress;
       }
     }
     return prevValue;
@@ -85,7 +92,51 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
     }
   };
 
+  const getLineValue = (value: any, d: graphBpm) => {
+    if (idCheck(id)) {
+      let usageLast = 0;
+      if (value > 180) usageLast = 180;
+      else usageLast = value;
+      return {
+        usageLast: usageLast,
+        xAxis: getWritetimeSelectHour_Min(d.writetime),
+      };
+    } else {
+      let usageLast: { sns: number; pns: number } = { sns: 0, pns: 0 };
+      if (value.sns > 100) {
+        usageLast.sns = 100;
+      } else {
+        usageLast.sns = value.sns;
+      }
+
+      if (value.pns > 100) {
+        usageLast.pns = 100;
+      } else {
+        usageLast.pns = value.pns;
+      }
+      return {
+        sns: usageLast.sns,
+        pns: usageLast.pns,
+        xAxis: getWritetimeSelectHour_Min(d.writetime),
+      };
+    }
+  };
+
+  const defaultData = () => {
+    try {
+      return data?.slice(start, end)?.map((d) => {
+        const value: any = onlyTodayDataGubun(d);
+        return getLineValue(value, d);
+      });
+    } catch {
+      return [];
+    }
+  };
+
   const getData = () => {
+    if (idCheck(id, true)) {
+      return defaultData();
+    }
     switch (true) {
       case clickWritetimeButton.days2:
         const times: string[] = selectTime(writetime, 1);
@@ -112,7 +163,6 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
           _first = getValue(_first, d, time1[0]);
           _second = getValue(_second, d, time2[0]);
           third = getValue(third, d, time2[1]);
-
           return {
             usageLast3: _first,
             usageLast4: _second,
@@ -122,24 +172,7 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
         });
         return v2;
       default:
-        try {
-          return data?.slice(start, end)?.map((d) => {
-            const value = onlyTodayDataGubun(d);
-            return {
-              usageLast:
-                id != "stress"
-                  ? value > 180
-                    ? 180
-                    : value
-                  : value > 100
-                  ? 100
-                  : value,
-              xAxis: getWritetimeSelectHour_Min(d.writetime),
-            };
-          });
-        } catch {
-          return [];
-        }
+        return defaultData();
     }
   };
 
@@ -175,24 +208,26 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
 
   useEffect(() => {
     const setLineName = () => {
-      switch (true) {
-        case clickWritetimeButton.days2:
-          const times: string[] = selectTime(writetime, 1);
-          const yesterTime = replaceYear(times[0]);
-          const todayTime = replaceYear(times[1]);
-          setLineName2(yesterTime);
-          setLineName3(todayTime);
-          break;
-        case clickWritetimeButton.days3:
-          const calDayAgo2 = selectTime(writetime, 2);
-          const calDayAgo1 = selectTime(writetime, 1);
-          const dayAgo2 = replaceYear(calDayAgo2[0]);
-          const dayAgo1 = replaceYear(calDayAgo1[0]);
-          const today = replaceYear(calDayAgo1[1]);
-          setLineName1(dayAgo2);
-          setLineName2(dayAgo1);
-          setLineName3(today);
-          break;
+      if (idCheck(id)) {
+        switch (true) {
+          case clickWritetimeButton.days2:
+            const times: string[] = selectTime(writetime, 1);
+            const yesterTime = replaceYear(times[0]);
+            const todayTime = replaceYear(times[1]);
+            setLineName2(yesterTime);
+            setLineName3(todayTime);
+            break;
+          case clickWritetimeButton.days3:
+            const calDayAgo2 = selectTime(writetime, 2);
+            const calDayAgo1 = selectTime(writetime, 1);
+            const dayAgo2 = replaceYear(calDayAgo2[0]);
+            const dayAgo1 = replaceYear(calDayAgo1[0]);
+            const today = replaceYear(calDayAgo1[1]);
+            setLineName1(dayAgo2);
+            setLineName2(dayAgo1);
+            setLineName3(today);
+            break;
+        }
       }
     };
     setNextBtn(false);
@@ -202,6 +237,31 @@ export const BpmChart = ({ clickWritetimeButton, id }: Props) => {
   }, [clickWritetimeButton, writetime]);
 
   const getLine = () => {
+    if (idCheck(id, true)) {
+      return (
+        <>
+          <Line
+            name={id}
+            yAxisId="left"
+            type="monotone"
+            dataKey="sns"
+            stroke="#ef507b"
+            dot={false}
+          />
+          <Legend />
+          <Line
+            name={id}
+            yAxisId="left"
+            type="monotone"
+            dataKey="pns"
+            stroke="#5388F7"
+            dot={false}
+          />
+          <Legend />
+        </>
+      );
+    }
+
     switch (true) {
       case clickWritetimeButton.days2:
         return (

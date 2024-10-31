@@ -151,37 +151,50 @@ export const Writetime = ({
     setEffectFunc();
   }, [originalWritetime, clickWritetimeButton, clickDayGubunButton]);
 
+  const defaultWritetimeData = async (
+    writetime: string,
+    stressCheck: boolean = false
+  ) => {
+    const timeOne = calculTime(writetime, 0, 1, "YYYY-MM-DD", "day");
+    GraphValue(
+      bpmGraphActions.value(
+        await getBpm(eq, timeOne[0], timeOne[1], stressCheck)
+      )
+    );
+    setText(writetime);
+  };
+
   const bpm_hrv_stress = async (
     writetime: string,
     stressCheck: boolean = false
   ) => {
-    switch (true) {
-      case clickWritetimeButton?.days2:
-        const time = calculTime(writetime, -1, 1, "YYYY-MM-DD", "day");
-        GraphValue(
-          bpmGraphActions.value(await getBpm(eq, time[0], time[1], stressCheck))
-        );
-        setText(getWritetimeButtomValue(writetime, 1));
+    if (iconSelect.stress) {
+      await defaultWritetimeData(writetime, stressCheck);
+    } else {
+      switch (true) {
+        case clickWritetimeButton?.days2:
+          const time = calculTime(writetime, -1, 1, "YYYY-MM-DD", "day");
+          GraphValue(
+            bpmGraphActions.value(
+              await getBpm(eq, time[0], time[1], stressCheck)
+            )
+          );
+          setText(getWritetimeButtomValue(writetime, 1));
 
-        break;
-      case clickWritetimeButton?.days3:
-        const times = calculTime(writetime, -2, 1, "YYYY-MM-DD", "day");
-        GraphValue(
-          bpmGraphActions.value(
-            await getBpm(eq, times[0], times[1], stressCheck)
-          )
-        );
-        setText(getWritetimeButtomValue(writetime, 2));
-        break;
-      default:
-        const timeOne = calculTime(writetime, 0, 1, "YYYY-MM-DD", "day");
-        GraphValue(
-          bpmGraphActions.value(
-            await getBpm(eq, timeOne[0], timeOne[1], stressCheck)
-          )
-        );
-        setText(writetime);
-        break;
+          break;
+        case clickWritetimeButton?.days3:
+          const times = calculTime(writetime, -2, 1, "YYYY-MM-DD", "day");
+          GraphValue(
+            bpmGraphActions.value(
+              await getBpm(eq, times[0], times[1], stressCheck)
+            )
+          );
+          setText(getWritetimeButtomValue(writetime, 2));
+          break;
+        default:
+          await defaultWritetimeData(writetime, stressCheck);
+          break;
+      }
     }
   };
 
@@ -275,9 +288,6 @@ export const Writetime = ({
   };
 
   const getHandler = async (id: string, bool: boolean) => {
-    console.log(
-      `startTime : ${startTime} -- originalWritetime : ${originalWritetime} -- ${iconSelect} -- ${clickDayGubunButton}`
-    );
     await getWritetime(id);
     setDisabled(bool);
   };

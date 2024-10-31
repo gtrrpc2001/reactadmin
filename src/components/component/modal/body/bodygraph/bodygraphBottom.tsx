@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { ProgressBar } from "./progressBar";
 import { profileModal } from "../../../../../axios/interface/profileModal";
-import { progressBarValue } from "../../controller/modalController";
+import { idCheck, progressBarValue } from "../../controller/modalController";
 
 type Props = {
   clickWritetimeButton?: writetimeButtonModal;
@@ -35,6 +35,13 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
   const [minus, setMimus] = useState<number>(0);
   const [plus, setPlus] = useState<number>(0);
 
+  const [maxSNS, setMaxSNS] = useState<number>(0);
+  const [minSNS, setMinSNS] = useState<number>(0);
+  const [avgSNS, setAvgSNS] = useState<number>(0);
+  const [maxPNS, setMaxPNS] = useState<number>(0);
+  const [minPNS, setMinPNS] = useState<number>(0);
+  const [avgPNS, setAvgPNS] = useState<number>(0);
+
   const setTextValues = (max: number, min: number, aver: number) => {
     setMax(max);
     setMin(min);
@@ -43,7 +50,23 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
     setPlus(max - aver);
   };
 
-  const getTextValues = () => {
+  const setStressTextValues = (
+    maxSNS: number,
+    minSNS: number,
+    avgSNS: number,
+    maxPNS: number,
+    minPNS: number,
+    avgPNS: number
+  ) => {
+    setMaxSNS(maxSNS);
+    setMinSNS(minSNS);
+    setAvgSNS(avgSNS);
+    setMaxPNS(maxPNS);
+    setMinPNS(minPNS);
+    setAvgPNS(avgPNS);
+  };
+
+  const getTextValues = (): any[] => {
     switch (id) {
       case "stress":
         return data?.map((d) => d.stress);
@@ -83,14 +106,56 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
   useEffect(() => {
     const getValue = () => {
       if (data?.length != 0 && !String(data).includes("result")) {
-        const value = getTextValues();
-
-        const max = Math?.max(...value);
-        const min = Math?.min(...value);
-        const aver = Math.floor(
-          value?.reduce((total, next) => total + next, 0) / value.length
-        );
-        setTextValues(max, min, aver);
+        if (id == "stress") {
+          const value = getTextValues();
+          if (!value[0]) {
+            return;
+          }
+          const snsList = value.map((d: { pns: number; sns: number }) => d.sns);
+          const pnsList = value.map((d: { pns: number; sns: number }) => d.pns);
+          const maxSNS = Math.max(...snsList);
+          const minSNS = Math.min(...snsList);
+          const maxPNS = Math.max(...pnsList);
+          const minPNS = Math.min(...pnsList);
+          const avgSNS = Math.floor(
+            value.reduce(
+              (
+                total: { pns: number; sns: number },
+                next: { pns: number; sns: number }
+              ) => {
+                return {
+                  pns: total.pns,
+                  sns: total.sns + next.sns,
+                };
+              },
+              { pns: 0, sns: 0 }
+            ).sns / value.length
+          );
+          const avgPNS = Math.floor(
+            value.reduce(
+              (
+                total: { pns: number; sns: number },
+                next: { pns: number; sns: number }
+              ) => {
+                return {
+                  pns: total.pns + next.pns,
+                  sns: total.sns,
+                };
+              },
+              { pns: 0, sns: 0 }
+            ).pns / value.length
+          );
+          setStressTextValues(maxSNS, minSNS, avgSNS, maxPNS, minPNS, avgPNS);
+        } else {
+          const value = getTextValues();
+          const max = Math?.max(...value);
+          const min = Math?.min(...value);
+          const aver = Math.floor(
+            value?.reduce((total: number, next: number) => total + next, 0) /
+              value.length
+          );
+          setTextValues(max, min, aver);
+        }
       } else {
         setTextValues(0, 0, 0);
       }
@@ -112,33 +177,82 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
   };
 
   const hover = { ":hover": { cursor: "default" } };
+
   return (
     <Box
       sx={{
-        height: 80,
+        height: 120,
         display: "flex",
         justifyContent: "center",
-        marginTop: 1,
+        marginTop: idCheck(id) ? 1 : 3,
       }}
     >
       <Box sx={[childrenBoxStyle, { left: 40 }, hover]}>
-        <Typography sx={textPadding}>{"Min"}</Typography>
-        <Typography sx={textPadding}>{fixedToNumber(min)}</Typography>
-        <Typography sx={{ color: "#5388F7" }}>{`-${fixedToNumber(
-          minus
-        )}`}</Typography>
+        {idCheck(id, true) && (
+          <Typography
+            sx={{ color: "#ef507b", fontWeight: "bold", marginBottom: 1 }}
+          >
+            {"SNS"}
+          </Typography>
+        )}
+        <Typography
+          sx={[textPadding, idCheck(id, true) && { color: "#ef507b" }]}
+        >
+          {idCheck(id) ? "Min" : maxSNS.toFixed(1)}
+        </Typography>
+
+        <Typography sx={[textPadding, idCheck(id, true) && textWeight]}>
+          {idCheck(id) ? fixedToNumber(min) : avgSNS.toFixed(1)}
+        </Typography>
+        <Typography sx={{ color: "#5388F7" }}>
+          {idCheck(id) ? `-${fixedToNumber(minus)}` : minSNS.toFixed(1)}
+        </Typography>
       </Box>
-      <Box sx={[childrenBoxStyle, hover]}>
-        <Typography sx={[textPadding, textWeight]}>{getText()}</Typography>
-        <Typography sx={[textPadding, textWeight]}>{aver}</Typography>
-        <Typography sx={textWeight}>{getTextTech()}</Typography>
+      <Box
+        sx={[childrenBoxStyle, hover, idCheck(id, true) && { paddingTop: 2.8 }]}
+      >
+        <Typography
+          sx={[
+            textPadding,
+            textWeight,
+            idCheck(id, true) && {
+              marginTop: 1,
+              color: "#ef507b",
+              paddingTop: 0.28,
+            },
+          ]}
+        >
+          {idCheck(id) ? getText() : "Max"}
+        </Typography>
+        <Typography sx={[textPadding, textWeight]}>
+          {idCheck(id) ? aver : "Avg"}
+        </Typography>
+        <Typography
+          sx={[textWeight, idCheck(id, true) && { color: "#5388F7" }]}
+        >
+          {idCheck(id) ? getTextTech() : "Min"}
+        </Typography>
       </Box>
       <Box sx={[childrenBoxStyle, { right: 40 }, hover]}>
-        <Typography sx={textPadding}>{"Max"}</Typography>
-        <Typography sx={textPadding}>{fixedToNumber(max)}</Typography>
-        <Typography sx={{ color: "#ef507b" }}>{`+${fixedToNumber(
-          plus
-        )}`}</Typography>
+        {idCheck(id, true) && (
+          <Typography
+            sx={{ color: "#5388F7", fontWeight: "bold", marginBottom: 1 }}
+          >
+            {"PNS"}
+          </Typography>
+        )}
+        <Typography
+          sx={[textPadding, idCheck(id, true) && { color: "#ef507b" }]}
+        >
+          {idCheck(id) ? "Max" : maxSNS.toFixed(1)}
+        </Typography>
+
+        <Typography sx={[textPadding, idCheck(id, true) && textWeight]}>
+          {idCheck(id) ? fixedToNumber(max) : avgPNS.toFixed(1)}
+        </Typography>
+        <Typography sx={{ color: idCheck(id) ? "#ef507b" : "#5388F7" }}>
+          {idCheck(id) ? `+${fixedToNumber(plus)}` : minPNS.toFixed(1)}
+        </Typography>
       </Box>
     </Box>
   );

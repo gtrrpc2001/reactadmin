@@ -24,9 +24,8 @@ export const getBpm = async (
     );
     data.forEach((value, index) => {
       const { pns_percent, sns_percent, writetime } = value
-      result.push({ stress: Math.abs((pns_percent - sns_percent)), bpm: 0, hrv: 0, writetime: writetime })
+      result.push({ stress: { sns: sns_percent, pns: pns_percent }, bpm: 0, hrv: 0, writetime: writetime })
     })
-    console.log(result)
   } else {
     result = await getGraphBpm(
       `/mslbpm/webBpm?eq=${eq}&startDate=${startDate}&endDate=${endDate}`

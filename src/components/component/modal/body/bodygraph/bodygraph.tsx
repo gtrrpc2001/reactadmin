@@ -3,6 +3,7 @@ import {
   getClickDayGubunButton,
   getClickGraph,
   getClickWriteimteButton,
+  idCheck,
 } from "../../controller/modalController";
 import {
   graphModal,
@@ -112,11 +113,17 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
   const bpm_hrv_stress = (id: string) => {
     return (
       <>
-        <BpmChart clickWritetimeButton={clickWritetimeButton} id={id} />
-        <WritetimeButton
-          onClick={(e) => writetimeButtonHandler(e)}
+        <BpmChart
+          headerIconClick={clickGraph}
           clickWritetimeButton={clickWritetimeButton}
+          id={id}
         />
+        {idCheck(id) && (
+          <WritetimeButton
+            onClick={(e) => writetimeButtonHandler(e)}
+            clickWritetimeButton={clickWritetimeButton}
+          />
+        )}
       </>
     );
   };

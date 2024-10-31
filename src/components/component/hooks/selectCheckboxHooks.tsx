@@ -22,13 +22,12 @@ export const CellSelectHooks = (hooks: Hooks<object>) => {
 
 export const useDateMemo = (writetime: string) => {
   const [currentDate, setCurrentDate] = useState(getDate(writetime));
-  useEffect(() => {    
+  useEffect(() => {
     const newDate = getToday();
-    console.log('newDate : ',newDate , 'currentDate : ',currentDate)
     if (newDate !== currentDate) {
       setCurrentDate(newDate);
-    }    
+    }
   }, [writetime, currentDate]);
-  
+
   return currentDate;
 };

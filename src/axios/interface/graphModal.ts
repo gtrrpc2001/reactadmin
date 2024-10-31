@@ -10,7 +10,7 @@ export interface graphModal {
 export interface graphBpm {
   bpm: number;
   hrv: number;
-  stress: number;
+  stress: { pns: number, sns: number };
   writetime: string;
 }
 
