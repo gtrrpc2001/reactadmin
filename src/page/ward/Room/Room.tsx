@@ -44,6 +44,7 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
   const [data, setData] = useState<historyLast[]>(getTableData);
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
   const [patientList, setPatientList] = useState<string[]>([]);
+  const newPatientList = useRef<string[]>([]);
   const firstData = useRef<historyLast[]>([]);
 
   const [assignedPatients, setAssignedPatients] = useState<string[]>(
@@ -61,10 +62,33 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
     }));
   };
 
+  const getPatientListMemo = (newList: string[]) => {
+    if (!arraysEqual(patientList, newList)) {
+      if (patientList.length < 1) {
+        setPatientList(newList);
+      } else {
+        console.log("여기가 1개씩");
+        setPatientList((list) => {
+          const updatedList = [...list];
+          newList.forEach((newPatient) => {
+            if (!updatedList.includes(newPatient)) {
+              updatedList.push(newPatient);
+            }
+          });
+          return list;
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     firstData.current = data;
     //db에서 room 번호 bed 번호 받아오기
   }, [patientList]);
+
+  useEffect(() => {
+    getPatientListMemo(newPatientList.current);
+  }, [newPatientList.current]);
 
   useEffect(() => {
     async function getInfoList() {
@@ -77,20 +101,7 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
           setData(getData);
         }
 
-        const newPatientList = getData.map((item) => item.eqname);
-        if (!arraysEqual(patientList, newPatientList)) {
-          if (patientList.length < 1) {
-            setPatientList(newPatientList);
-          } else {
-            setPatientList((list) => {
-              list.forEach((value, index) => {
-                const checkName = newPatientList.find((v) => v === value);
-                if (!checkName) list.push(newPatientList[index]);
-              });
-              return list;
-            });
-          }
-        }
+        newPatientList.current = getData.map((item) => item.eqname);
       } catch (E) {
         console.log(E);
         return [];

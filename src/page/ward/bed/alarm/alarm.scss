@@ -1,0 +1,51 @@
+.notification {
+  position: absolute;
+  z-index: 1000;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-close {
+  align-self: flex-end;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.notification-close:hover {
+  color: #000;
+}
+
+.notification h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.notification p {
+  margin: 0 0 20px;
+}
+
+.notification-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.notification-button:hover {
+  background-color: #0056b3;
+}

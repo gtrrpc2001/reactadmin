@@ -1,8 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ModalTopBodyLeft } from "../../../components/component/modal/body/bodyhome/topbody/modalTopbodyLeft";
 import { ModalRealTimeGraph } from "../../graph/modalGraph";
 import "./bedList.scss";
 import { historyLast } from "../../../axios/interface/history_last";
+import { BedAlarm } from "./alarm/alarm";
 
 type Props = {
   bedList: string[];
@@ -50,6 +51,101 @@ export const BedListUI = ({
     return Array.from(currentUsers.values());
   }, [userData, cfData]);
 
+  const [notificationStates, setNotificationStates] = useState(
+    Array(bedList.length).fill(false)
+  );
+
+  const [notificationPositions, setNotificationPositions] = useState<
+    { top: number; left: number }[]
+  >(Array(bedList.length).fill({ top: 0, left: 0 }));
+
+  const [arrList, setArrlist] = useState<Map<string, number>>(new Map());
+
+  const handleCloseNotification = (index: number) => {
+    setNotificationStates((prevStates) => {
+      const newStates = [...prevStates];
+      newStates[index] = false;
+      return newStates;
+    });
+  };
+
+  useEffect(() => {
+    const initialArrList = new Map<string, number>();
+    memoData.forEach((data, index) => {
+      const key = data.eq + index;
+      initialArrList.set(key, data.arrcnt);
+    });
+    setArrlist(initialArrList);
+  }, []);
+
+  useEffect(() => {
+    const updateNotifications = () => {
+      bedList.forEach((b, index) => {
+        let data;
+        if (memoData.length >= 1) {
+          data = memoData[index];
+        }
+        const arrCnt = data ? data.arrcnt : 0;
+        const eq = data ? data.eq : "";
+        const key = eq + index;
+
+        if (arrList.has(key)) {
+          const previousArrCnt = arrList.get(key);
+          if (arrCnt != previousArrCnt) {
+            setNotificationStates((prevStates) => {
+              const newStates = [...prevStates];
+              newStates[index] = true;
+              return newStates;
+            });
+
+            setArrlist((prev) => {
+              const newMap = new Map(prev);
+              newMap.set(key, arrCnt);
+              return newMap;
+            });
+          }
+        } else {
+          setArrlist((prev) => {
+            const newMap = new Map(prev);
+            newMap.set(key, arrCnt);
+            return newMap;
+          });
+        }
+
+        const bedElement = document.getElementById(key);
+        if (bedElement) {
+          const rect = bedElement.getBoundingClientRect();
+          const newPosition = {
+            top: rect.top + window.scrollY,
+            left: rect.left + window.scrollX,
+          };
+          setNotificationPositions((prevPositions) => {
+            const newPositions = [...prevPositions];
+            newPositions[index] = newPosition;
+            return newPositions;
+          });
+        }
+      });
+    };
+    updateNotifications();
+  }, [bedList, memoData]);
+
+  const getNameChanged = (name: string) => {
+    const check = name.search(" ");
+    const middleIndex =
+      check != -1 && check != 0
+        ? Math.floor(name.length / 2) - 1
+        : Math.floor(name.length / 2);
+    const modifiedName = name
+      .split("")
+      .map((char, index) => {
+        return index === middleIndex ? "X" : char; // 가운데 글자만 'X'로 변경
+      })
+      .join("");
+
+    return modifiedName;
+  };
+
   return (
     <>
       {bedList.map((b, index) => {
@@ -59,10 +155,14 @@ export const BedListUI = ({
         }
         const bpm = data ? data.bpm : 0;
         const eq = data ? data.eq : "";
-        const eqname = data ? data.eqname : "";
+
+        const eqname = data ? getNameChanged(data.eqname) : "";
+
         const temp = data ? data.temp : 0;
         const writetime = data ? data.writetime : "";
+
         const key = eq + index;
+
         return (
           <React.Fragment key={key}>
             <div
@@ -74,6 +174,13 @@ export const BedListUI = ({
                 <span>{eqname}</span>
               </div>
               <div className="bpm">
+                {notificationStates[index] && (
+                  <BedAlarm
+                    message={`${writetime}에 비정상 맥방이 발생 했습니다.`}
+                    onClose={() => handleCloseNotification(index)}
+                    position={notificationPositions[index]}
+                  />
+                )}
                 <ModalTopBodyLeft
                   bpm={bpm}
                   temp={temp}
