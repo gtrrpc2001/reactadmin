@@ -277,7 +277,39 @@ export const BpmChart = ({
     );
   };
 
+  const calculateStandardDeviation = (data: number[]): number => {
+    const n = data.length;
+    if (n === 0) return 0;
+
+    const mean = data.reduce((acc, val) => acc + val, 0) / n;
+    const squaredDiffs = data.map((val) => {
+      const diff = val - mean;
+      return diff * diff;
+    });
+
+    const variance = squaredDiffs.reduce((acc, val) => acc + val, 0) / n;
+    return Math.sqrt(variance);
+  };
+
   const bpm_hrvLine = () => {
+    const selectData =
+      id == "bpm" ? data?.map((d) => d.bpm) : data?.map((d) => d.hrv);
+    const aver = Math.floor(
+      selectData?.reduce((total: number, next: number) => total + next, 0) /
+        selectData.length
+    );
+
+    const stdDeviation = calculateStandardDeviation(selectData);
+
+    const max = aver + stdDeviation;
+    const min = aver - stdDeviation;
+
+    const referenceLines = [
+      { y: max, stroke: "red" },
+      { y: aver, stroke: "pink" },
+      { y: min, stroke: "blue" },
+    ];
+
     const linesConfig = {
       days2: [
         { name: lineName2, dataKey: "usageLast1", stroke: "#8884d8" },
@@ -301,7 +333,7 @@ export const BpmChart = ({
       <>
         {selectedLines.map((line) => (
           <Line
-            key={line.dataKey} // 각 Line의 고유 키 설정
+            key={line.dataKey}
             name={line.name}
             yAxisId="left"
             type="monotone"
@@ -311,6 +343,15 @@ export const BpmChart = ({
           />
         ))}
         <Legend />
+        {referenceLines.map((refLine) => (
+          <ReferenceLine
+            key={refLine.y}
+            y={refLine.y}
+            stroke={refLine.stroke}
+            strokeDasharray="3 3"
+            yAxisId="left"
+          />
+        ))}
       </>
     );
   };
