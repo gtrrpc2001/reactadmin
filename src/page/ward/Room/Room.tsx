@@ -4,13 +4,20 @@ import "./Room.scss";
 import { BedInfo } from "../modal/bedModal";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { historyLast } from "../../../axios/interface/history_last";
-import { getHistory } from "../../../axios/api/serverApi";
+import { getHistory, getProfile } from "../../../axios/api/serverApi";
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { PatientDroppable } from "../patient/patientDroppable";
 import { BedListUI } from "../bed/bedList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { Modal } from "../../../components/component/modal/modal";
+import { calculTime } from "../../../components/component/modal/controller/modalController";
+import {
+  cellActions,
+  listActions,
+  profileActions,
+} from "../../../components/createslice/createslices";
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,15 +51,43 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
   const [data, setData] = useState<historyLast[]>(getTableData);
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
   const [patientList, setPatientList] = useState<string[]>([]);
+  const [bedClickEq, setBedClickEq] = useState<string>("");
   const newPatientList = useRef<string[]>([]);
   const firstData = useRef<historyLast[]>([]);
+  const Dispatch = useDispatch();
 
   const [assignedPatients, setAssignedPatients] = useState<string[]>(
     Array(bedList.length).fill(null)
   );
 
-  const bedClick = (name: string) => {
-    setOpenModal(true);
+  const bedClick = async (name: string, eq: string) => {
+    if (data.length > 0) {
+      const user = data.filter((d) => d.eq === eq);
+      if (user) {
+        const oneUser = user[0];
+        const changtime = oneUser?.changeTime?.split(" ")[0];
+        const battery = oneUser.battery;
+        const startDate = oneUser.writetime?.split(" ")[0];
+        const eqname = oneUser.eqname;
+        const timezone = oneUser.timezone;
+        const cellVlaue = {
+          eq,
+          eqname,
+          timezone,
+          startDate,
+          changtime,
+          battery,
+        };
+        const times = calculTime(startDate, -1, 1, "YYYY-MM-DD", "days");
+        const Profile = await getProfile(
+          `/mslecgarr/arrCnt?eq=${oneUser.eq}&startDate=${startDate}&endDate=${times[1]}`
+        );
+        Dispatch(profileActions.profile(Profile));
+        Dispatch(cellActions.cellValues(cellVlaue));
+        setBedClickEq(eq);
+        setOpenModal(!isOpenModal);
+      }
+    }
   };
 
   const BedEcgBtnClick = (key: string) => {
@@ -132,6 +167,35 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
     //   // };
   }, [bedStates]);
 
+  useEffect(() => {
+    async function getInfoList() {
+      try {
+        const getData: historyLast[] = await getHistory(
+          `/mslLast/webTable?eq=${bedClickEq}`
+        );
+
+        if (getData?.length != 0 && !String(getData).includes("result")) {
+          return getData;
+        }
+        return [];
+      } catch (E) {
+        console.log(E);
+        return [];
+      }
+    }
+
+    const timer = setInterval(async () => {
+      if (isOpenModal) {
+        const getData = await getInfoList();
+        Dispatch(listActions.listHistory(getData));
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [isOpenModal]);
+
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
 
@@ -209,7 +273,8 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
         </div>
       </div>
       {isOpenModal && (
-        <BedInfo open={isOpenModal} setModalOpen={setOpenModal}></BedInfo>
+        <Modal open={isOpenModal} setModalOpen={setOpenModal}></Modal>
+        // <BedInfo open={isOpenModal} setModalOpen={setOpenModal}></BedInfo>
       )}
     </>
   );

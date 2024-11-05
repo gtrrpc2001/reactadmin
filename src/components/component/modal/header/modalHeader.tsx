@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import BatteryCharging50Icon from "@mui/icons-material/BatteryCharging50";
 import alarm from "../../../../assets/image/KakaoTalk_20231012_172309103_01.png";
 import { Zoom, Tooltip } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { modalValues } from "../../../../axios/interface/modalvalues";
 
 type Props = {
@@ -14,7 +14,12 @@ type Props = {
 export const ModalHeader = ({ values, battery }: Props) => {
   const [check, setCheck] = useState(false);
   const arrCnt = values.arrCnt;
+  const arrCntRef = useRef<number>(arrCnt);
   const [open, setOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    arrCntRef.current = arrCnt;
+  }, []);
 
   const headerBox = {
     display: "flex",
@@ -39,7 +44,14 @@ export const ModalHeader = ({ values, battery }: Props) => {
 
   useEffect(() => {
     const arrCheck = () => {
-      if (arrCnt != 0) setCheck(!open);
+      if (
+        arrCnt != 0 &&
+        arrCntRef.current != 0 &&
+        arrCntRef.current != arrCnt
+      ) {
+        arrCntRef.current = arrCnt;
+        setCheck(!open);
+      }
     };
 
     if (!open) arrCheck();

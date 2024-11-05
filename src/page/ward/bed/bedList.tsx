@@ -11,7 +11,7 @@ type Props = {
     [key: string]: boolean;
   };
   userData: historyLast[];
-  bedClick: (name: string) => void;
+  bedClick: (name: string, eq: string) => void;
   BedEcgBtnClick: (key: string) => void;
   cfData: historyLast[];
 };
@@ -61,6 +61,10 @@ export const BedListUI = ({
 
   const [arrList, setArrlist] = useState<Map<string, number>>(new Map());
 
+  const [fixedWritetimes, setFixedWritetimes] = useState<string[]>(
+    Array(bedList.length).fill("")
+  );
+
   const handleCloseNotification = (index: number) => {
     setNotificationStates((prevStates) => {
       const newStates = [...prevStates];
@@ -87,7 +91,8 @@ export const BedListUI = ({
         }
         const arrCnt = data ? data.arrcnt : 0;
         const eq = data ? data.eq : "";
-        const key = eq + index;
+        const key = `${eq} ${index}`;
+        const writetime = data ? data.writetime : "";
 
         if (arrList.has(key)) {
           const previousArrCnt = arrList.get(key);
@@ -95,6 +100,15 @@ export const BedListUI = ({
             setNotificationStates((prevStates) => {
               const newStates = [...prevStates];
               newStates[index] = true;
+
+              if (!fixedWritetimes[index]) {
+                setFixedWritetimes((prevWritetimes) => {
+                  const newWritetimes = [...prevWritetimes];
+                  newWritetimes[index] = writetime;
+                  return newWritetimes;
+                });
+              }
+
               return newStates;
             });
 
@@ -160,15 +174,17 @@ export const BedListUI = ({
 
         const temp = data ? data.temp : 0;
         const writetime = data ? data.writetime : "";
+        const alarmTime =
+          fixedWritetimes.length > 0 ? fixedWritetimes[index] : writetime;
 
-        const key = eq + index;
+        const key = `${eq} ${index}`;
 
         return (
           <React.Fragment key={key}>
             <div
               key={key}
               className={`bed ${bedStates[`${key}`] ? "ecgDisplay" : ""}`}
-              onClick={() => bedClick(b)}
+              onClick={() => bedClick(b, eq)}
             >
               <div style={{ height: 25, textAlign: "center" }}>
                 <span>{eqname}</span>
@@ -176,7 +192,7 @@ export const BedListUI = ({
               <div className="bpm">
                 {notificationStates[index] && (
                   <BedAlarm
-                    message={`${writetime}에 비정상 맥방이 발생 했습니다.`}
+                    message={`${alarmTime}에 비정상 맥방이 발생 했습니다.`}
                     onClose={() => handleCloseNotification(index)}
                     position={notificationPositions[index]}
                   />
