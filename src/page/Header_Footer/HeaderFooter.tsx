@@ -2,6 +2,8 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { Footer } from "../home/footer/footer";
 import { Header } from "../home/header/header";
 import "../home/home.scss";
+import { HomeBody } from "../home/body/body";
+import React from "react";
 
 export const HeaderFooter = ({ children }: PropsWithChildren) => {
   const [scale, setScale] = useState(1);
@@ -34,15 +36,21 @@ export const HeaderFooter = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
+  const isHomeBody: boolean = React.Children.toArray(children).some((child) => {
+    return React.isValidElement(child) && child.type === HomeBody;
+  });
+
+  const scaled = {
+    transformOrigin: "top left",
+    transform: `scale(${scale})`,
+  };
+
   return (
     <div className="home">
       <div className="header">
         <Header />
       </div>
-      <div
-        className="body"
-        style={{ transformOrigin: "top left", transform: `scale(${scale})` }}
-      >
+      <div className="body" style={isHomeBody ? scaled : {}}>
         {children}
       </div>
       <div className="footer">

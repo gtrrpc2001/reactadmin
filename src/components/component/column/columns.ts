@@ -53,7 +53,10 @@ export const COLUMNS = [
     Header: "비정상맥박 (회)",
     accessor: "arrcnt",
   },
-
+  {
+    Header: "배터리",
+    accessor: "battery",
+  },
   {
     Header: "국가",
     accessor: "timezone",
