@@ -42,7 +42,9 @@ const LoginPage = () => {
         (email == `${process.env.REACT_APP_ADMIN}` &&
           pw == `${process.env.REACT_APP_ADMIN}`) ||
         (email == `${process.env.REACT_APP_BUSINESS}` &&
-          pw == `${process.env.REACT_APP_BUSINESS}`)
+          pw == `${process.env.REACT_APP_BUSINESS}`) ||
+        (email == `${process.env.REACT_APP_BUSINESS2}` &&
+          pw == `${process.env.REACT_APP_BUSINESS2}`)
     );
   }, [email, pw]);
 
@@ -134,7 +136,7 @@ const LoginPage = () => {
                 inputRef={emailRef}
                 placeholder="test@gmail.com"
                 value={email}
-                onKeypress={() => {}} //emailEnter
+                onKeypress={() => {}}
                 onHandler={onEmailHandler}
               />
 
