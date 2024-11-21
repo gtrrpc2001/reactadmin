@@ -170,7 +170,7 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
           userType={props.userType}
           setExitAnimation={props.setExitAnimation}
         />
-        <Login_Button disabled={true} page={props.page} />
+        <Login_Button disabled={false} page={props.page} />
         {props.page == 1 && (
           <>
             <GoogleProvider />
