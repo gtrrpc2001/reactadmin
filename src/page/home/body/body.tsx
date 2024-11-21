@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { Table } from "../../../components/component/table/table";
 import "./body.scss";
 
@@ -11,9 +12,14 @@ export const HomeBody = ({ HandleLogout, check, HandleCheckbox }: Props) => {
   return (
     <div className="mainBody">
       <div className="clslogout">
-        <button className="logoutbutton" onClick={HandleLogout}>
+        <Button
+          variant="outlined"
+          color="primary"
+          className="headerLogout"
+          onClick={HandleLogout}
+        >
           로그아웃
-        </button>
+        </Button>
       </div>
 
       <Table stopCheck={check} stopHandleCheckbox={HandleCheckbox} />

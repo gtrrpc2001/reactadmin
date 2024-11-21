@@ -29,6 +29,7 @@ import {
 import { getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
 import { historyLast } from "../../../axios/interface/history_last";
+import * as mui from "@mui/material";
 
 type Props = {
   stopCheck: boolean;
@@ -41,9 +42,6 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
   const cellDispatch = useDispatch();
   const profileDispach = useDispatch();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
-  const currentPage = useSelector(
-    (state: RootState) => state.tablePage.currentPage
-  );
 
   const {
     getTableProps,
@@ -129,7 +127,7 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
       </div>
 
       <div className="table">
-        <table {...getTableProps()}>
+        <mui.Table {...getTableProps()}>
           <Theader headerGroups={headerGroups} />
 
           <Tbody
@@ -138,7 +136,7 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
             prepareRow={prepareRow}
             cellClick={onClickToggleModal}
           />
-        </table>
+        </mui.Table>
 
         <TablePageMoveButton
           gotoPage={gotoPage}

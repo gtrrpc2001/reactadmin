@@ -1,3 +1,4 @@
+import { TableHead } from "@mui/material";
 import { HeaderGroup } from "react-table";
 
 type Props = {
@@ -6,7 +7,7 @@ type Props = {
 
 export const Theader = ({ headerGroups }: Props) => {
   return (
-    <thead>
+    <TableHead>
       {headerGroups.map(
         (headerGroup: {
           getHeaderGroupProps: () => JSX.IntrinsicAttributes &
@@ -21,6 +22,6 @@ export const Theader = ({ headerGroups }: Props) => {
           </tr>
         )
       )}
-    </thead>
+    </TableHead>
   );
 };

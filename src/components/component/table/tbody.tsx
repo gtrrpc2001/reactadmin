@@ -1,3 +1,4 @@
+import { TableCell, TableRow } from "@mui/material";
 import { Row, TableBodyPropGetter, TableBodyProps } from "react-table";
 
 type Props = {
@@ -31,13 +32,16 @@ export const Tbody = ({ BodyProps, page, prepareRow, cellClick }: Props) => {
       {page.map((row: Row) => {
         prepareRow(row);
         return (
-          <tr className="tbody_tr" {...row.getRowProps()}>
+          <TableRow className="tbody_tr" {...row.getRowProps()}>
             {row.cells.map((cell: any) => (
-              <td {...cell.getCellProps()} onClick={(e) => cellClick(e, cell)}>
+              <TableCell
+                {...cell.getCellProps()}
+                onClick={(e) => cellClick(e, cell)}
+              >
                 {info(cell)}
-              </td>
+              </TableCell>
             ))}
-          </tr>
+          </TableRow>
         );
       })}
     </tbody>
