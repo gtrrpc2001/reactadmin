@@ -1,136 +1,140 @@
-@mixin inputWrapfocus {
-  border: 1px solid $buttonColor;
-}
-@mixin defaultbackground {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-@mixin inputWrap {
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 5px;
-  background-color: $whiteColor;
-  border: 1px solid #e2e0e0;
-  cursor: text;
-}
-
-@mixin inputBox {
-  width: 100%;
-  outline: none;
-  border: none;
-  height: 100%;
-  font-size: 18px;
-  font-weight: 400;
-}
-
-@mixin inputBoxColor {
-  color: $dacolor;
-}
-
-$dacolor: #dadada;
-$whiteColor: white;
-$buttonColor: #9e30f4;
-
 .background {
-  @include defaultbackground;
+  background-image: url("../../assets/image/KakaoTalk_20231012_172515024.png");
+  background-color: #d9d7e0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.backgroudImg {
-  @include defaultbackground;
+.pageSelector {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
 }
 
-.login {
-  position: absolute;
+.Grid-Container {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+@mixin GridRow-Base {
+  display: flex;
+  align-items: center;
+}
+
+.GridItem-center {
+  @include GridRow-Base;
+  justify-content: center;
+}
+
+.GridRow-center {
+  @include GridRow-Base;
+  padding-top: 10px;
+  justify-content: center;
+}
+
+.linkWraper {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.logininput {
   width: 100%;
-  height: 100%;
-  max-width: 600px;
-  padding: 0 15px;
-  left: 50%;
-  transform: translate(-50%, 0);
 
-  background-color: transparent;
-  overflow: hidden;
-
-  display: "flex";
-  flex-direction: column;
+  &.MuiTextField-root {
+    background-color: #ffffff;
+  }
+  &.MuiTextField-root:hover {
+    background-color: #f0f0f0f0;
+  }
 }
 
-.titleWrap {
-  margin-top: 8px;
-  padding-left: 10%;
+.loginButtonWraper {
+  margin-top: 10px;
 }
 
-.logo {
-  width: 90%;
-  height: 20%;
-  margin-top: 40px;
-  cursor: pointer;
-}
-
-.contentWrap {
-  margin-top: 40px;
-  flex: 1;
-}
-
-.inputTitle {
-  font-size: 22px;
-  font-weight: 600;
-  color: #262626;
-}
-
-.inputWrap {
-  @include inputWrap;
-}
-
-.inputWrapEmail {
-  @include inputWrap;
-}
-
-.inputWrap:focus-within {
-  @include inputWrapfocus;
-}
-
-.inputWrapEmail:focus-within {
-  @include inputWrapfocus;
-}
-
-.inputPw {
-  @include inputBox;
-}
-.inputPw::placeholder {
-  @include inputBoxColor;
-}
-
-.inputEmail {
-  @include inputBox;
-}
-.inputEmail::placeholder {
-  @include inputBoxColor;
+.CorpButtonWraper {
+  margin-bottom: 3px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .loginButton {
+  &.MuiButton-root {
+    width: 200px;
+    height: 35px;
+  }
+}
+
+.titleWraper {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.iconWraper {
+  display: flex;
+}
+
+.lookheartText {
+  &.MuiTypography-root {
+    font-size: 35px;
+    font-weight: 500;
+    color: #33afe4;
+  }
+}
+
+.loginPaper {
+  width: 25%;
+  min-width: 300px;
+}
+
+.SignInWraper {
   width: 100%;
-  height: 48px;
-  border: none;
-  font-weight: bold;
-  border-radius: 64px;
-  background-color: $buttonColor;
-  color: $whiteColor;
-  margin-bottom: 16px;
-  cursor: pointer;
-  font-size: 22px;
 }
 
-.bottomButton:disabled {
-  background-color: $dacolor;
-  color: $whiteColor;
+.GoogleLoginButton {
+  &.MuiButtonBase-root {
+    width: 200px;
+    height: 35px;
+  }
 }
 
-.errorMessageWrap {
-  margin-top: 8px;
-  color: #ef0000;
-  font-size: 20px;
+.AppleLoginWraper {
+  padding-bottom: 20px;
+}
+
+.UserTypeSelect {
+  &.MuiButtonBase-root {
+    width: 100px;
+    height: 30px;
+
+    &.Mui-selected {
+      background-color: #33afe4;
+      color: white;
+    }
+  }
+}
+
+.MuiTabs-indicator {
+  &.css-1aquho2-MuiTabs-indicator {
+    background-color: #33afe4;
+  }
+}
+
+.AppleLoginButton {
+  margin: 0px;
+  padding: 0px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.loginform {
+  width: 100%;
 }

@@ -1,0 +1,99 @@
+@mixin MainColor {
+  color: #33afe4;
+}
+
+.linkWraper {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.signupInput {
+  width: 100%;
+
+  &.MuiTextField-root {
+    background-color: #ffffff;
+  }
+  &.MuiTextField-root:hover {
+    background-color: #f0f0f0f0;
+  }
+}
+
+.SignUpWraper {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.submit_button {
+  &.MuiButtonBase-root {
+    width: 120px;
+  }
+}
+
+.SignupTitleWraper {
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+
+.lookheartText {
+  &.MuiTypography-root {
+    font-size: 35px;
+    font-weight: 500;
+    color: #33afe4;
+  }
+}
+
+.signUpPaper {
+  width: 25%;
+  min-width: 300px;
+}
+
+.navBefore {
+  @include MainColor;
+
+  &.MuiSvgIcon-root {
+    width: 30px;
+    height: 30px;
+    display: flex;
+  }
+  &.MuiSvgIcon-root:hover {
+    background-color: #f0f0f0f0;
+  }
+}
+
+.SignUpWrapper {
+  width: 100%;
+}
+
+.SignUpPageIcon {
+  @include MainColor;
+}
+
+.SignUpPageNum {
+  @include MainColor;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.SignUpPageSlash {
+  @include MainColor;
+  &.MuiTypography-root {
+    font-weight: bold;
+  }
+}
+
+.BirthPicker {
+  &.MuiTextField-root {
+    width: 100%;
+  }
+}
+
+.sexSelect {
+  &.MuiButtonBase-root {
+    width: 50px;
+  }
+}
+
+.AgreementTextField {
+  max-height: 400px;
+  overflow: auto;
+}

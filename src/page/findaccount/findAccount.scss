@@ -1,0 +1,49 @@
+.findPwWraper {
+  width: 100%;
+}
+
+.findPwEmailInput {
+  width: 100%;
+
+  &.MuiTextField-root {
+    background-color: #ffffff;
+  }
+  &.MuiTextField-root:hover {
+    background-color: #f0f0f0f0;
+  }
+}
+
+.FindPwFooter {
+  &.MuiTypography-root {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 0.85em;
+  }
+}
+
+.submitEmailButton {
+  &.MuiButtonBase-root {
+    width: 100%;
+  }
+}
+
+.FindPwInfoText {
+  &.MuiTypography-root {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+}
+
+.ConfirmFooter {
+  &.MuiTypography-root {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 0.85em;
+  }
+}
+
+.ConfirmInfoText {
+  &.MuiTypography-root {
+    font-size: 0.9em;
+  }
+}
