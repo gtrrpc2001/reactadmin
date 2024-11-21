@@ -57,16 +57,16 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
       if (isEmailValid(props.email)) {
         setIsEmailError(false);
         setEmailHelperText(<></>);
-        emailValid.current = false;
+        emailValid.current = true;
       } else {
         setIsEmailError(true);
         setEmailHelperText(<>올바른 이메일을 입력해주세요</>);
-        emailValid.current = true;
+        emailValid.current = false;
       }
     } else {
       setIsEmailError(false);
       setEmailHelperText(<></>);
-      emailValid.current = true;
+      emailValid.current = false;
     }
   }, [props.email]);
 
@@ -76,21 +76,22 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
       if (isPwValid(props.pw)) {
         setIsPwError(false);
         setPwHelperText(<></>);
-        pwValid.current = false;
+        pwValid.current = true;
       } else {
         setIsPwError(true);
         setPwHelperText(<>올바른 비밀번호를 입력해주세요</>);
-        pwValid.current = true;
+        pwValid.current = false;
       }
     } else {
       setIsPwError(false);
       setPwHelperText(<></>);
-      pwValid.current = true;
+      pwValid.current = false;
     }
   }, [props.pw]);
 
   useEffect(() => {
     // 버튼 이펙트 실행
+
     if (emailValid.current && pwValid.current) {
       setButtonDisabled(false);
     } else {
@@ -169,7 +170,7 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
           userType={props.userType}
           setExitAnimation={props.setExitAnimation}
         />
-        <Login_Button disabled={buttonDisabled} page={props.page} />
+        <Login_Button disabled={true} page={props.page} />
         {props.page == 1 && (
           <>
             <GoogleProvider />
