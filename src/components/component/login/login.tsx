@@ -57,16 +57,16 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
       if (isEmailValid(props.email)) {
         setIsEmailError(false);
         setEmailHelperText(<></>);
-        emailValid.current = true;
+        emailValid.current = false;
       } else {
         setIsEmailError(true);
         setEmailHelperText(<>올바른 이메일을 입력해주세요</>);
-        emailValid.current = false;
+        emailValid.current = true;
       }
     } else {
       setIsEmailError(false);
       setEmailHelperText(<></>);
-      emailValid.current = false;
+      emailValid.current = true;
     }
   }, [props.email]);
 
@@ -76,16 +76,16 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
       if (isPwValid(props.pw)) {
         setIsPwError(false);
         setPwHelperText(<></>);
-        pwValid.current = true;
+        pwValid.current = false;
       } else {
         setIsPwError(true);
         setPwHelperText(<>올바른 비밀번호를 입력해주세요</>);
-        pwValid.current = false;
+        pwValid.current = true;
       }
     } else {
       setIsPwError(false);
       setPwHelperText(<></>);
-      pwValid.current = false;
+      pwValid.current = true;
     }
   }, [props.pw]);
 
