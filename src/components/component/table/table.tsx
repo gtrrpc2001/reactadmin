@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useGlobalFilter,
   useSortBy,
@@ -43,6 +43,83 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
   const profileDispach = useDispatch();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
 
+  const memberCheckCount = useRef<{ [key: number]: number }>({});
+  const usingMember = useRef<any[]>([]);
+  const notUsingMember = useRef<any[]>([]);
+
+  const arrangedData = useMemo(() => {
+    data.map((row: any) => {
+      const usingMemberIndex = usingMember.current.findIndex(
+        (item: any) => item.idx === row.idx
+      );
+      if (usingMemberIndex !== -1) {
+        // 사용중인 멤버 목록에 있으면
+        if (
+          usingMember.current[usingMemberIndex].changeTime === row.changeTime
+        ) {
+          console.log(
+            "미사용 검사",
+            row.eqname,
+            memberCheckCount.current[row.idx]
+          );
+          // 사용자 목록의 측정 시간과 새 데이터의 측정 시간이 같다면
+          if (memberCheckCount.current[row.idx] !== undefined) {
+            memberCheckCount.current[row.idx] += 1;
+
+            if (memberCheckCount.current[row.idx] >= 5) {
+              // 5번 이상 체크되면
+              console.log(
+                "사용자 -> 미사용 전환",
+                usingMember.current[usingMemberIndex]
+              );
+              usingMember.current.splice(usingMemberIndex, 1); // 사용자 -> 미사용자 전환 을 위한 기존 객체 삭제
+              notUsingMember.current.unshift(row); // 미사용자의 0번째 자리로 추가
+              delete memberCheckCount.current[row.idx]; // 사용자 체크 횟수 삭제
+            }
+          } else {
+            // 최초 건수 발생
+            console.log(
+              "미사용 검사",
+              row.eqname,
+              memberCheckCount.current[row.idx]
+            );
+            memberCheckCount.current[row.idx] = 1;
+          }
+        } else {
+          // 사용자 목록의 측정 시간과 새 데이터의 측정 시간이 다르다면
+          usingMember.current[usingMemberIndex] = row;
+          delete memberCheckCount.current[row.idx];
+        }
+      } else {
+        // 미사용중인 멤버 라면
+
+        const notUsingMemberIndex = notUsingMember.current.findIndex(
+          (item: any) => item.idx === row.idx
+        );
+
+        if (notUsingMemberIndex === -1) {
+          notUsingMember.current.push(row);
+        } else {
+          if (
+            notUsingMember.current[notUsingMemberIndex].changeTime !==
+            row.changeTime
+          ) {
+            notUsingMember.current.splice(notUsingMemberIndex, 1);
+            usingMember.current.push(row);
+          }
+        }
+      }
+    });
+
+    return [...usingMember.current, ...notUsingMember.current];
+  }, [data]);
+
+  const [tableValue, setTableValue] = useState<any>(arrangedData);
+
+  useEffect(() => {
+    setTableValue(arrangedData);
+  }, [arrangedData]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -64,7 +141,7 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
   } = useTable(
     {
       columns,
-      data,
+      data: tableValue,
       autoResetSelectedRows: false,
       autoResetPage: false,
       autoResetGlobalFilter: false,
