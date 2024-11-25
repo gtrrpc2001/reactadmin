@@ -43,75 +43,67 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
   const profileDispach = useDispatch();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
 
-  const memberCheckCount = useRef<{ [key: number]: number }>({});
-  const usingMember = useRef<any[]>([]);
-  const notUsingMember = useRef<any[]>([]);
+  const dict = useRef<{ value: any; using: boolean; count: number }[]>([]);
 
   const arrangedData = useMemo(() => {
-    data.map((row: any) => {
-      const usingMemberIndex = usingMember.current.findIndex(
-        (item: any) => item.idx === row.idx
-      );
-      if (usingMemberIndex !== -1) {
-        // 사용중인 멤버 목록에 있으면
-        if (
-          usingMember.current[usingMemberIndex].changeTime === row.changeTime
-        ) {
-          console.log(
-            "미사용 검사",
-            row.eqname,
-            memberCheckCount.current[row.idx]
-          );
-          // 사용자 목록의 측정 시간과 새 데이터의 측정 시간이 같다면
-          if (memberCheckCount.current[row.idx] !== undefined) {
-            memberCheckCount.current[row.idx] += 1;
-
-            if (memberCheckCount.current[row.idx] >= 5) {
-              // 5번 이상 체크되면
-              console.log(
-                "사용자 -> 미사용 전환",
-                usingMember.current[usingMemberIndex]
-              );
-              usingMember.current.splice(usingMemberIndex, 1); // 사용자 -> 미사용자 전환 을 위한 기존 객체 삭제
-              notUsingMember.current.unshift(row); // 미사용자의 0번째 자리로 추가
-              delete memberCheckCount.current[row.idx]; // 사용자 체크 횟수 삭제
-            }
-          } else {
-            // 최초 건수 발생
-            console.log(
-              "미사용 검사",
-              row.eqname,
-              memberCheckCount.current[row.idx]
-            );
-            memberCheckCount.current[row.idx] = 1;
-          }
-        } else {
-          // 사용자 목록의 측정 시간과 새 데이터의 측정 시간이 다르다면
-          usingMember.current[usingMemberIndex] = row;
-          delete memberCheckCount.current[row.idx];
-        }
-      } else {
-        // 미사용중인 멤버 라면
-
-        const notUsingMemberIndex = notUsingMember.current.findIndex(
-          (item: any) => item.idx === row.idx
+    let tableArray = dict.current;
+    if (tableArray.length === 0) {
+      data.map((row: any) => {
+        tableArray.push({ value: row, using: false, count: 0 });
+      });
+    } else {
+      data.map((row: any) => {
+        const memberIndex = tableArray.findIndex(
+          (item: any) => item.value.idx === row.idx
         );
 
-        if (notUsingMemberIndex === -1) {
-          notUsingMember.current.push(row);
+        if (memberIndex === -1) {
+          // 전체 멤버 목록에 없으면 (완전 신규 가입) 테이블에 추가하기
+          tableArray.push({ value: row, using: false, count: 0 });
         } else {
-          if (
-            notUsingMember.current[notUsingMemberIndex].changeTime !==
-            row.changeTime
-          ) {
-            notUsingMember.current.splice(notUsingMemberIndex, 1);
-            usingMember.current.push(row);
+          // 이미 있는 사람일 경우
+          const tableMember = tableArray[memberIndex];
+
+          if (tableMember.using) {
+            if (tableMember.value.changeTime === row.changeTime) {
+              // 사용중이였던 사람의 측정시간이 이전과 같을 경우 미사용 검사 횟수 1 증가
+              tableMember.count += 1;
+              if (tableMember.count >= 3) {
+                // 이전에 찼던 사람이 착용을 안 할 경우, 미사용 검사 횟수 기준 초과 : 3
+                tableArray.splice(memberIndex, 1);
+                const destIndex = tableArray.findIndex(
+                  (item: any) => item.using === false
+                );
+                tableArray.splice(destIndex, 0, {
+                  value: row,
+                  using: false,
+                  count: 0,
+                });
+              }
+            } else {
+              // 꾸준히 찼던 사람 이라면
+              tableMember.count = 0;
+              tableMember.value = row;
+            }
+          } else {
+            // 미사용 중일 경우 측정 시간 비교를 통해 다시 사용중인지 검사, 측정 시간이 달라지면 사용중으로 전환
+            if (tableMember.value.changeTime !== row.changeTime) {
+              tableArray.splice(memberIndex, 1);
+              const destIndex = tableArray.findIndex(
+                (item: any) => item.using === false
+              );
+              tableArray.splice(destIndex, 0, {
+                value: row,
+                using: true,
+                count: 0,
+              });
+            }
           }
         }
-      }
-    });
+      });
+    }
 
-    return [...usingMember.current, ...notUsingMember.current];
+    return tableArray.map((item) => item.value);
   }, [data]);
 
   const [tableValue, setTableValue] = useState<any>(arrangedData);
