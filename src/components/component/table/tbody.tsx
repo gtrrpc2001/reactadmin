@@ -32,23 +32,27 @@ export const Tbody = ({ BodyProps, page, prepareRow, cellClick }: Props) => {
       {page.map((row: Row) => {
         prepareRow(row);
         return (
-          <TableRow
-            className="tbody_tr"
-            {...row.getRowProps()}
-            sx={{
-              maxWidth: 150,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {row.cells.map((cell: any) => (
-              <TableCell
-                {...cell.getCellProps()}
-                onClick={(e) => cellClick(e, cell)}
-              >
-                {info(cell)}
-              </TableCell>
-            ))}
+          <TableRow className="tbody_tr" {...row.getRowProps()}>
+            {row.cells.map((cell) => {
+              let maxWidth = 150;
+              if (cell.column.Header == "장치명") {
+                maxWidth = 100;
+              }
+              return (
+                <TableCell
+                  sx={{
+                    maxWidth: maxWidth,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                  {...cell.getCellProps()}
+                  onClick={(e) => cellClick(e, cell)}
+                >
+                  {info(cell)}
+                </TableCell>
+              );
+            })}
           </TableRow>
         );
       })}
