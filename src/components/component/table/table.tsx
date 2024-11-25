@@ -18,7 +18,10 @@ import "./table.scss";
 import { TablePageMoveButton } from "../buttons/tablePageMoveButton/tablePageMoveButton";
 import { StopCheckbox } from "../checkbox/stopCheckbox";
 import { Theader } from "./theader";
-import { CellSelectHooks } from "../hooks/selectCheckboxHooks";
+import {
+  CellSelectHooks,
+  useTableDataMemo,
+} from "../hooks/selectCheckboxHooks";
 import { Tbody } from "./tbody";
 import { Modal } from "../modal/modal";
 import {
@@ -45,66 +48,7 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
 
   const dict = useRef<{ value: any; using: boolean; count: number }[]>([]);
 
-  const arrangedData = useMemo(() => {
-    let tableArray = dict.current;
-    if (tableArray.length === 0) {
-      data.map((row: any) => {
-        tableArray.push({ value: row, using: false, count: 0 });
-      });
-    } else {
-      data.map((row: any) => {
-        const memberIndex = tableArray.findIndex(
-          (item: any) => item.value.idx === row.idx
-        );
-
-        if (memberIndex === -1) {
-          // 전체 멤버 목록에 없으면 (완전 신규 가입) 테이블에 추가하기
-          tableArray.push({ value: row, using: false, count: 0 });
-        } else {
-          // 이미 있는 사람일 경우
-          const tableMember = tableArray[memberIndex];
-
-          if (tableMember.using) {
-            if (tableMember.value.changeTime === row.changeTime) {
-              // 사용중이였던 사람의 측정시간이 이전과 같을 경우 미사용 검사 횟수 1 증가
-              tableMember.count += 1;
-              if (tableMember.count >= 3) {
-                // 이전에 찼던 사람이 착용을 안 할 경우, 미사용 검사 횟수 기준 초과 : 3
-                tableArray.splice(memberIndex, 1);
-                const destIndex = tableArray.findIndex(
-                  (item: any) => item.using === false
-                );
-                tableArray.splice(destIndex, 0, {
-                  value: row,
-                  using: false,
-                  count: 0,
-                });
-              }
-            } else {
-              // 꾸준히 찼던 사람 이라면
-              tableMember.count = 0;
-              tableMember.value = row;
-            }
-          } else {
-            // 미사용 중일 경우 측정 시간 비교를 통해 다시 사용중인지 검사, 측정 시간이 달라지면 사용중으로 전환
-            if (tableMember.value.changeTime !== row.changeTime) {
-              tableArray.splice(memberIndex, 1);
-              const destIndex = tableArray.findIndex(
-                (item: any) => item.using === false
-              );
-              tableArray.splice(destIndex, 0, {
-                value: row,
-                using: true,
-                count: 0,
-              });
-            }
-          }
-        }
-      });
-    }
-
-    return tableArray.map((item) => item.value);
-  }, [data]);
+  const arrangedData = useTableDataMemo(data, dict.current);
 
   const [tableValue, setTableValue] = useState<any>(arrangedData);
 

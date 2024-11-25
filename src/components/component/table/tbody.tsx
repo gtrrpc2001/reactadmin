@@ -32,7 +32,15 @@ export const Tbody = ({ BodyProps, page, prepareRow, cellClick }: Props) => {
       {page.map((row: Row) => {
         prepareRow(row);
         return (
-          <TableRow className="tbody_tr" {...row.getRowProps()}>
+          <TableRow
+            className="tbody_tr"
+            {...row.getRowProps()}
+            sx={{
+              maxWidth: 150,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {row.cells.map((cell: any) => (
               <TableCell
                 {...cell.getCellProps()}
