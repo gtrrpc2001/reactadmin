@@ -126,9 +126,6 @@ export const Header = ({ children }: PropsWithChildren) => {
             </List>
           </Box>
 
-          {/* <Divider /> 
-        <Box sx={{ flexGrow: 0.1 }}></Box> */}
-
           <div className="logoutbuttonDiv">
             <Button
               className="logoutbutton"

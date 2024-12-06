@@ -48,13 +48,14 @@ export const HeaderFooter = ({ children }: PropsWithChildren) => {
   return (
     <div className="home">
       <div className="header">
-        <Header />
-      </div>
-      <div className="body" style={isHomeBody ? scaled : {}}>
-        {children}
-      </div>
-      <div className="footer">
-        <Footer language={true} />
+        <Header>
+          <div className="body" style={isHomeBody ? scaled : {}}>
+            {children}
+          </div>
+          <div className="footer">
+            <Footer language={true} />
+          </div>
+        </Header>
       </div>
     </div>
   );
