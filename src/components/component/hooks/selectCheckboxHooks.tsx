@@ -94,7 +94,11 @@ export const useTableDataMemo = (
       });
     }
 
-    return tableArray.map((item) => item.value);
+    return tableArray.map((item) => {
+      const newValue = { ...item.value, using: item.using };
+
+      return newValue;
+    });
   }, [data]);
 
   return resultData;
