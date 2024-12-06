@@ -1,5 +1,10 @@
 export const COLUMNS = [
   {
+    Header: "장치명",
+    accessor: "log",
+  },
+
+  {
     Header: "아이디",
     accessor: "eq",
   },
@@ -58,7 +63,11 @@ export const COLUMNS = [
     accessor: "battery",
   },
   {
-    Header: "국가",
+    Header: "상태",
+    accessor: "using",
+  },
+  {
+    Header: "지역",
     accessor: "timezone",
   },
 ];

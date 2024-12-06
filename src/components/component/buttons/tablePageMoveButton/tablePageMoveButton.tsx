@@ -1,29 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { GotoPageButton } from "../GotoPageButton";
-import { PageButton } from "../pageButton";
 import { TableState } from "react-table";
 import "./tablePageMoveButton.scss";
+import { TablePagination } from "@mui/material";
 
 type Props = {
   gotoPage: (updater: number | ((pageIndex: number) => number)) => void;
-  previousPage: () => void;
-  nextPage: () => void;
+  setPageSize: (pagesize: number) => void;
+  dataCount: number;
   state: TableState<object>;
-  pageOptions: number[];
-  pageCount: number;
-  canPreviousPage: boolean;
-  canNextPage: boolean;
 };
 
 export const TablePageMoveButton = ({
   gotoPage,
-  previousPage,
-  nextPage,
+  setPageSize,
+  dataCount,
   state,
-  pageOptions,
-  pageCount,
-  canPreviousPage,
-  canNextPage,
 }: Props) => {
   const { pageIndex } = state;
   const [inputValue, setInputValue] = useState(pageIndex + 1);
@@ -31,61 +22,26 @@ export const TablePageMoveButton = ({
     setInputValue(pageIndex + 1);
   }, [pageIndex]);
 
-  function movePage(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.value;
-    const pageNumber = value ? Number(value) - 1 : 0;
-    setInputValue(pageNumber + 1);
-    gotoPage(pageNumber);
-  }
+  const handlePageChane = (e: unknown, newPage: number) => {
+    gotoPage(newPage);
+  };
+
+  const handleRowsPerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPageSize(parseInt(e.target.value));
+    gotoPage(0);
+  };
 
   return (
-    <div className="table-pagination">
-      <GotoPageButton
-        className="GotoPageButton"
-        onClick={() => gotoPage(0)}
-        pageCount={0}
-        disabled={!canPreviousPage}
-        children="<<"
-      />
-
-      <PageButton
-        className="PageButton"
-        onClick={() => previousPage()}
-        disabled={!canPreviousPage}
-        children={"이전"}
-      />
-
-      <span>
-        <strong className="prevStrong">
-          {pageIndex + 1} / {pageOptions.length}
-        </strong>
-      </span>
-      <span>
-        페이지 이동:{" "}
-        <input
-          className="gotopageInput"
-          type="number"
-          defaultValue={inputValue}
-          min={1}
-          max={pageOptions.length}
-          onChange={(e) => movePage(e)}
-        />
-      </span>
-
-      <PageButton
-        className="PageButton"
-        onClick={() => nextPage()}
-        disabled={!canNextPage}
-        children={"다음"}
-      />
-
-      <GotoPageButton
-        className="GotoPageButton"
-        onClick={() => gotoPage(pageCount - 1)}
-        pageCount={pageCount - 1}
-        disabled={!canNextPage}
-        children=">>"
-      />
-    </div>
+    <TablePagination
+      className="tablePagination"
+      rowsPerPageOptions={[10, 15, 25, 50]}
+      component="div"
+      count={dataCount}
+      rowsPerPage={state.pageSize}
+      page={pageIndex}
+      onPageChange={handlePageChane}
+      onRowsPerPageChange={handleRowsPerPage}
+      labelRowsPerPage="행 / 페이지 :"
+    />
   );
 };

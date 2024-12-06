@@ -1,28 +1,32 @@
 $font-size: 20px;
-$bordercolor: #6699FF;
+$bordercolor: #6699ff;
 $borderRadius: 10px;
 
 .formSearch {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
   margin-left: 20px;
-  width: 50%;
-  height: 100%;
 }
 
 .filterinput {
-  font-size: $font-size;
-  height: 12%;
-  width: 83%;
-  border-color: $bordercolor;
-  border-radius: $borderRadius;
+  &.MuiInputBase-root {
+    font-size: $font-size;
+    width: 100%;
+
+    border-color: $bordercolor;
+    border-radius: $borderRadius;
+  }
+
+  .MuiInputBase-input {
+    width: 300px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
 }
 
 .filterbutton {
-  margin-left: 3px;
-  font-size: $font-size;
-  height: 35px;
-  border: none;
-  border-radius: $borderRadius;
-  background-color: $bordercolor;
-  width: 50px;
-  cursor: pointer;
+  &.MuiButtonBase-root {
+    margin-left: 15px;
+  }
 }

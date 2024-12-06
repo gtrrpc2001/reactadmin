@@ -13,10 +13,9 @@ import { Search } from "../search/search";
 import { COLUMNS } from "../column/columns";
 import { RootState } from "../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { PageSelect } from "../combobox/PageSelect";
 import "./table.scss";
 import { TablePageMoveButton } from "../buttons/tablePageMoveButton/tablePageMoveButton";
-import { StopCheckbox } from "../checkbox/stopCheckbox";
+
 import { Theader } from "./theader";
 import {
   CellSelectHooks,
@@ -32,29 +31,22 @@ import {
 import { getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
 import { historyLast } from "../../../axios/interface/history_last";
-import * as mui from "@mui/material";
+import {
+  Button,
+  Table as MuiTable,
+  TableContainer,
+  TablePagination,
+  Typography,
+} from "@mui/material";
 
-type Props = {
-  stopCheck: boolean;
-  stopHandleCheckbox: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
-  const columns = useMemo(() => COLUMNS, []);
+export const Table = () => {
+  const columns: any = useMemo(() => COLUMNS, []);
   const data = useSelector<RootState, any>((state) => state.historylast);
   const cellDispatch = useDispatch();
   const profileDispach = useDispatch();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
-
   const dict = useRef<{ value: any; using: boolean; count: number }[]>([]);
-
   const arrangedData = useTableDataMemo(data, dict.current);
-
-  const [tableValue, setTableValue] = useState<any>(arrangedData);
-
-  useEffect(() => {
-    setTableValue(arrangedData);
-  }, [arrangedData]);
 
   const {
     getTableProps,
@@ -64,20 +56,14 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
     prepareRow,
     setGlobalFilter,
     page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
     gotoPage,
-    pageCount,
     setPageSize,
     state,
     selectedFlatRows,
   } = useTable(
     {
-      columns,
-      data: tableValue,
+      columns: columns,
+      data: arrangedData,
       autoResetSelectedRows: false,
       autoResetPage: false,
       autoResetGlobalFilter: false,
@@ -88,8 +74,6 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
     useRowSelect,
     CellSelectHooks
   );
-
-  const { pageSize, selectedRowIds } = state;
 
   const onClickToggleModal = async (
     e: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
@@ -119,28 +103,24 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
   };
 
   return (
-    <>
+    <div className="tableWrapper">
       <div className="table-pagesize">
         <div className="clsStopCheckbox">
-          <StopCheckbox check={stopCheck} HandleCheckbox={stopHandleCheckbox} />
-          <button
+          <Button
             className="selectButton"
+            variant="outlined"
             onClick={() => {
               const test = selectedFlatRows.map((d) => d.original);
-              console.log(selectedFlatRows);
             }}
           >
             옵션
-          </button>
+          </Button>
           <Search onSubmit={setGlobalFilter} />
-        </div>
-        <div className="clsTableControll">
-          <PageSelect pageSize={pageSize} setPageSize={(e) => setPageSize(e)} />
         </div>
       </div>
 
-      <div className="table">
-        <mui.Table {...getTableProps()}>
+      <TableContainer className="tableContainer">
+        <MuiTable {...getTableProps()} className="table">
           <Theader headerGroups={headerGroups} />
 
           <Tbody
@@ -149,24 +129,20 @@ export const Table = ({ stopCheck, stopHandleCheckbox }: Props) => {
             prepareRow={prepareRow}
             cellClick={onClickToggleModal}
           />
-        </mui.Table>
+        </MuiTable>
 
         <TablePageMoveButton
           gotoPage={gotoPage}
-          previousPage={previousPage}
-          nextPage={nextPage}
           state={state}
-          pageOptions={pageOptions}
-          pageCount={pageCount}
-          canPreviousPage={canPreviousPage}
-          canNextPage={canNextPage}
+          setPageSize={setPageSize}
+          dataCount={rows.length}
         />
 
         {isOpenModal && (
           <Modal open={isOpenModal} setModalOpen={setOpenModal}></Modal>
         )}
-      </div>
-    </>
+      </TableContainer>
+    </div>
   );
 };
 

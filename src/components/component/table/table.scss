@@ -1,12 +1,24 @@
 $colorddd: #ddd;
 $align: center;
 $display: flex;
-$colorAA: #6699FF;
+$colorAA: #6699ff;
+
+.tableContainer {
+  border: 1px solid #dddddd;
+}
+
+.table {
+  &.MuiTable-root {
+    table-layout: auto;
+  }
+}
+
+.tableWrapper {
+}
 
 .table-pagesize {
   width: 100%;
-  margin: 5px;
-  display: $display;
+  margin-bottom: 10px;
 }
 
 .clsTableControll {
@@ -17,8 +29,10 @@ $colorAA: #6699FF;
 }
 
 .clsStopCheckbox {
-  width: 70%;
+  width: 100%;
   display: $display;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .selectButton {
@@ -32,14 +46,9 @@ $colorAA: #6699FF;
   cursor: pointer;
 }
 
-.table {
-  font-size: 24px;
-}
-
-table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+.checkbox {
+  display: flex;
+  justify-content: center;
 }
 
 table td,
@@ -55,15 +64,13 @@ table tr:nth-child(even) {
 .tbody_tr:hover {
   background-color: $colorddd;
   cursor: pointer;
-  transform: scaleY(1.5);
 }
 
 table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: $colorAA;
-  color: white;
+  background-color: #fafafa;
 }
 
 .table-pagination {
@@ -81,4 +88,103 @@ table th {
 
 .gotopageInput {
   width: 50px;
+}
+
+.cellDeviceName {
+  &.MuiTypography-root {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: balck;
+  }
+}
+
+.cellUserName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.MuiTypography-root {
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+}
+
+.cellEmail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.MuiTypography-root {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: darkgray;
+  }
+}
+
+.tbody_cell {
+  &.MuiTableCell-root {
+    min-width: 10px;
+    max-width: 150px;
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+  }
+}
+
+.tableHeader {
+  align-items: center;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+
+  &.MuiTableCell-root {
+    padding: 8px;
+  }
+
+  .tableHeaderCell {
+    &.MuiTypography-root {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.writedate {
+  &.MuiTypography-root {
+    font-size: 0.85rem;
+  }
+}
+
+.writetime {
+  &.MuiTypography-root {
+    font-size: 0.85rem;
+  }
+}
+
+.userStatusCell {
+  display: flex;
+  align-items: center;
+
+  .userStatus {
+    &.using {
+      background-color: #52c41a;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+    }
+
+    &.notUsing {
+      background-color: lightcoral;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+    }
+  }
+
+  .userStatusLabel {
+    &.MuiTypography-root {
+      padding-left: 7px;
+      font-size: 0.85rem;
+    }
+  }
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { TableToggleRowsSelectedProps } from "react-table";
-import "./stopCheckbox.scss";
+import "./cellCheckbox.scss";
 
 export const CellCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }: any, ref: any) => {
@@ -12,9 +11,9 @@ export const CellCheckbox = React.forwardRef(
     }, [resolvedRef, indeterminate]);
 
     return (
-      <>
+      <div className="checkbox">
         <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
+      </div>
     );
   }
 );

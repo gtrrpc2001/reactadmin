@@ -1,40 +1,5 @@
-@mixin button {
-  margin-left: 5px;
-  font-size: 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: #6699FF;
-  text-align: center;
-  cursor: pointer;
-}
-
-.table-pagination {
-  margin: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.prevStrong {
-  display: block;
-  width: 100px;
-  text-align: center;
-}
-
-.gotopageInput {
-  width: 30px;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.PageButton {
-  width: 50px;
-  @include button;
-}
-
-.GotoPageButton {
-  width: 25px;
-  height: 30px;
-  @include button;
+.tablePagination {
+  &.MuiToolbar-root {
+    background-color: black;
+  }
 }

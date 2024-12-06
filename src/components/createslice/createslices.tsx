@@ -126,3 +126,13 @@ export const todayArrCountSlice = createSlice({
   },
 });
 export const todayArrCountAction = todayArrCountSlice.actions;
+
+export const exceptColumnIdSlice = createSlice({
+  name: "exceptColumn",
+  initialState: ["eqname", "battery", "step", "distanceKM", "cal", "calexe"],
+  reducers: {
+    value: (state: Array<string>, action: PayloadAction<Array<string>>) =>
+      (state = action.payload),
+  },
+});
+export const exceptColumnIdAction = exceptColumnIdSlice.actions;

@@ -13,6 +13,7 @@ import {
   ModalSlice,
   todayArrCountSlice,
   pageSlice,
+  exceptColumnIdSlice,
 } from "../components/createslice/createslices";
 import { persistStore } from "redux-persist";
 import { persistReducer } from "redux-persist";
@@ -31,7 +32,9 @@ const rootReducer = combineReducers({
   names: nameSlice.reducer,
   modalData: ModalSlice.reducer,
   todayArrCount: todayArrCountSlice.reducer,
-  tablePage: pageSlice.reducer
+  tablePage: pageSlice.reducer,
+  exceptColumn: exceptColumnIdSlice.reducer,
+
 });
 
 const persistConfig = {

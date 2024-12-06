@@ -1,11 +1,17 @@
-import { TableHead } from "@mui/material";
+import { TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { HeaderGroup } from "react-table";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 type Props = {
   headerGroups: HeaderGroup<object>[];
 };
 
 export const Theader = ({ headerGroups }: Props) => {
+  const exceptColumn = useSelector<RootState, String[]>(
+    (state) => state.exceptColumn
+  );
+
   return (
     <TableHead>
       {headerGroups.map(
@@ -15,11 +21,22 @@ export const Theader = ({ headerGroups }: Props) => {
             React.HTMLAttributes<HTMLTableRowElement>;
           headers: any[];
         }) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-            ))}
-          </tr>
+          <TableRow {...(headerGroup.getHeaderGroupProps() as any)}>
+            {headerGroup.headers.map((column) => {
+              if (!exceptColumn.includes(column.id)) {
+                return (
+                  <TableCell
+                    className="tableHeader"
+                    {...column.getHeaderProps()}
+                  >
+                    <Typography align="left" className="tableHeaderCell">
+                      {column.render("Header")}
+                    </Typography>
+                  </TableCell>
+                );
+              }
+            })}
+          </TableRow>
         )
       )}
     </TableHead>

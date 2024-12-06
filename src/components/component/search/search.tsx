@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./search.scss";
+import { Button, TextField } from "@mui/material";
 
 type Props = {
   onSubmit: (FilterValue: any) => void;
@@ -19,7 +20,7 @@ export const Search = ({ onSubmit }: Props) => {
   return (
     <div className="formSearch">
       <form onSubmit={handleSubmit}>
-        <input
+        <TextField
           className="filterinput"
           name="filter"
           value={filter}
@@ -28,7 +29,9 @@ export const Search = ({ onSubmit }: Props) => {
           }}
           placeholder={`Search`}
         />
-        <button className="filterbutton">검색</button>
+        <Button variant="contained" className="filterbutton">
+          검색
+        </Button>
       </form>
     </div>
   );

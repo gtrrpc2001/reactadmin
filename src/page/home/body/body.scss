@@ -1,18 +1,12 @@
 .mainBody {
-  width: 100%;
-  min-height: calc(100vh - 180px);
-}
-
-.clslogout {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
 }
 
-.logoutbutton {
-  margin-right: 45px;
-  font-size: 20px;
-  border: none;
-  border-radius: 12px;
-  background-color: #FF709E;  
-  cursor: pointer;  
+.TableWarpper {
+  width: 100%;
+  padding: 30px;
 }

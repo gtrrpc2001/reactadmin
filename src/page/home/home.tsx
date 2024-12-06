@@ -1,13 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import {
-  ModalActions,
   listActions,
-  loginActions,
   nameActions,
 } from "../../components/createslice/createslices";
 import { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { saveLog } from "../../data/login";
 import { getHistory } from "../../axios/api/serverApi";
 import { useEffect, useState } from "react";
 import { Loading } from "../../components/component/loading/loading";
@@ -17,7 +14,6 @@ import { HeaderFooter } from "../Header_Footer/HeaderFooter";
 
 export default function Home() {
   const navigate = useNavigate();
-  const useCheckDispatch = useDispatch<AppDispatch>();
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
   const loginSelector = useSelector<RootState, boolean>((state) => state.check);
   const InfoDispatch = useDispatch<AppDispatch>();
@@ -35,7 +31,6 @@ export default function Home() {
         const getData: historyLast[] = await getHistory(
           `/mslLast/webTable?eq=${eqSelector}`
         );
-
         if (loading) setLoding(false);
 
         if (getData?.length != 0 && !String(getData).includes("result")) {
@@ -71,12 +66,6 @@ export default function Home() {
     table_modalData();
   }, [data]);
 
-  const HandleLogout = async () => {
-    const loginBool = await saveLog(eqSelector, "로그아웃");
-    useCheckDispatch(loginActions.loginCheck(!loginBool));
-    navigate("/");
-  };
-
   function HandleCheckbox(event: React.ChangeEvent<HTMLInputElement>): void {
     setCheck(event.target.checked);
   }
@@ -88,11 +77,7 @@ export default function Home() {
           <Loading loading={loading} />
         ) : (
           <HeaderFooter>
-            <HomeBody
-              HandleLogout={HandleLogout}
-              check={check}
-              HandleCheckbox={HandleCheckbox}
-            />
+            <HomeBody check={check} HandleCheckbox={HandleCheckbox} />
           </HeaderFooter>
         )}
       </div>

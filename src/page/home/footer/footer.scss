@@ -1,10 +1,16 @@
 .wrap {
-  transform: translateX(30%);
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
 .row {
+  display: flex;
   margin-top: 30px;
   font-size: 2.4rem;
+  padding-bottom: 15px;
 }
 
 .service-info {
@@ -15,4 +21,58 @@
   font-size: 1.5rem;
   color: #ffffff80;
   margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.companyPage {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-left: 10px;
+
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 35px;
+  font-weight: 900;
+  color: white;
+  text-transform: none;
+  letter-spacing: -0.075rem;
+
+  .companyName {
+    .MuiTypography-root {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 550;
+      font-style: italic;
+    }
+  }
+}
+
+.siteMap {
+  display: flex;
+  margin-left: 10px;
+  padding: 10px;
+
+  &:hover {
+    background-color: #4b5d7e;
+  }
+}
+
+.youtubeIcon {
+  width: 40px;
+}
+
+.youtube {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.adressText {
+  &.MuiTypography-root {
+    color: #e9e9e9;
+    padding-bottom: 10px;
+    font-weight: 600;
+  }
 }
