@@ -1,25 +1,16 @@
-import React, { CSSProperties } from "react";
-import { ClipLoader } from "react-spinners";
+import { Box, CircularProgress } from "@mui/material";
 
-const override: CSSProperties = {
-  display: "flex",
-  marginLeft: "45%",
-  marginTop: "17%",
-  borderColor: "#E50915",
-  textAlign: "center",
-};
-
-export const Loading = ({ loading }: any) => {
+export const Loading = () => {
   return (
-    <div>
-      <ClipLoader
-        color="#E50915"
-        loading={loading}
-        cssOverride={override}
-        size={150}
-      >
-        *
-      </ClipLoader>
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <CircularProgress size="10rem" thickness={2} />
+    </Box>
   );
 };
