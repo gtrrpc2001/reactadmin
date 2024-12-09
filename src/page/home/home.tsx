@@ -17,7 +17,6 @@ export default function Home() {
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
   const loginSelector = useSelector<RootState, boolean>((state) => state.check);
   const InfoDispatch = useDispatch<AppDispatch>();
-  const [check, setCheck] = useState(false);
   const [loading, setLoding] = useState(true);
   const [data, setData] = useState<historyLast[]>([]);
 
@@ -48,7 +47,7 @@ export default function Home() {
 
     let isMounted = true;
     const timer = setInterval(async () => {
-      if (loginSelector && !check) await getInfoList();
+      if (loginSelector) await getInfoList();
     }, 1000);
 
     return () => {
@@ -59,25 +58,19 @@ export default function Home() {
 
   useEffect(() => {
     const table_modalData = () => {
-      if (check == false) {
-        InfoDispatch(listActions.listHistory(data));
-      }
+      InfoDispatch(listActions.listHistory(data));
     };
     table_modalData();
   }, [data]);
-
-  function HandleCheckbox(event: React.ChangeEvent<HTMLInputElement>): void {
-    setCheck(event.target.checked);
-  }
 
   return (
     <>
       <div>
         {loading ? (
-          <Loading loading={loading} />
+          <Loading />
         ) : (
           <HeaderFooter>
-            <HomeBody check={check} HandleCheckbox={HandleCheckbox} />
+            <HomeBody />
           </HeaderFooter>
         )}
       </div>

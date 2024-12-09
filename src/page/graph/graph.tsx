@@ -23,7 +23,7 @@ export const Graph = () => {
   return (
     <div>
       {loading ? (
-        <Loading loading={loading} />
+        <Loading />
       ) : (
         <HeaderFooter>
           <GraphList names={memoizedNames} />
