@@ -4,10 +4,8 @@ import "./body.scss";
 
 export const HomeBody = () => {
   return (
-    <div className="mainBody">
-      <Box className="TableWarpper">
-        <Table />
-      </Box>
-    </div>
+    <Box className="TableWarpper">
+      <Table />
+    </Box>
   );
 };

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { HeaderFooter } from "../Header_Footer/HeaderFooter";
 import "./Ward.scss";
 import { Room } from "./Room/Room";
 export const Ward = () => {
@@ -12,7 +11,7 @@ export const Ward = () => {
   };
 
   return (
-    <HeaderFooter>
+    <>
       {roomVisible ? (
         <Room setRoomVisible={setRoomVisible} roomId={roomId} />
       ) : (
@@ -40,6 +39,6 @@ export const Ward = () => {
           </section>
         </div>
       )}
-    </HeaderFooter>
+    </>
   );
 };

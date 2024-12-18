@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { Loading } from "../../components/component/loading/loading";
 import { HomeBody } from "./body/body";
 import { historyLast } from "../../axios/interface/history_last";
-import { HeaderFooter } from "../Header_Footer/HeaderFooter";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ export default function Home() {
         );
         if (loading) setLoding(false);
 
-        if (getData?.length != 0 && !String(getData).includes("result")) {
+        if (getData?.length !== 0 && !String(getData).includes("result")) {
           setData(getData);
           const names = getData.map((d: any) => {
             return { eq: d.eq, eqname: d.eqname };
@@ -45,35 +44,21 @@ export default function Home() {
       }
     }
 
-    let isMounted = true;
     const timer = setInterval(async () => {
       if (loginSelector) await getInfoList();
     }, 1000);
 
     return () => {
-      isMounted = false;
       clearInterval(timer);
     };
-  }, [loginSelector]);
+  }, [loginSelector, InfoDispatch, eqSelector, loading]);
 
   useEffect(() => {
     const table_modalData = () => {
       InfoDispatch(listActions.listHistory(data));
     };
     table_modalData();
-  }, [data]);
+  }, [data, InfoDispatch]);
 
-  return (
-    <>
-      <div>
-        {loading ? (
-          <Loading />
-        ) : (
-          <HeaderFooter>
-            <HomeBody />
-          </HeaderFooter>
-        )}
-      </div>
-    </>
-  );
+  return <>{loading ? <Loading /> : <HomeBody />}</>;
 }

@@ -4,7 +4,7 @@ import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/component/loading/loading";
 import { GraphList } from "./graphList";
-import { HeaderFooter } from "../Header_Footer/HeaderFooter";
+import "./graph.scss";
 
 export const Graph = () => {
   const navigate = useNavigate();
@@ -21,14 +21,8 @@ export const Graph = () => {
   }, [loginSelector, navigate]);
 
   return (
-    <div>
-      {loading ? (
-        <Loading />
-      ) : (
-        <HeaderFooter>
-          <GraphList names={memoizedNames} />
-        </HeaderFooter>
-      )}
+    <div className="graph">
+      {loading ? <Loading /> : <GraphList names={memoizedNames} />}
     </div>
   );
 };

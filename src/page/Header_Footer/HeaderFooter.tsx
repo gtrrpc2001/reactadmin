@@ -1,11 +1,11 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Footer } from "../home/footer/footer";
 import { Header } from "../home/header/header";
 import "../home/home.scss";
-import { HomeBody } from "../home/body/body";
-import React from "react";
+import "./HeaderFooter.scss";
+import { Outlet } from "react-router-dom";
 
-export const HeaderFooter = ({ children }: PropsWithChildren) => {
+export const HeaderFooter = () => {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
@@ -36,9 +36,7 @@ export const HeaderFooter = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  const isHomeBody: boolean = React.Children.toArray(children).some((child) => {
-    return React.isValidElement(child) && child.type === HomeBody;
-  });
+  const isHomeBody = window.location.pathname === "/home";
 
   const scaled = {
     transformOrigin: "top left",
@@ -50,7 +48,9 @@ export const HeaderFooter = ({ children }: PropsWithChildren) => {
       <div className="header">
         <Header>
           <div className="body" style={isHomeBody ? scaled : {}}>
-            {children}
+            <div className="mainBody">
+              <Outlet />
+            </div>
           </div>
           <div className="footer">
             <Footer language={true} />

@@ -1,20 +1,86 @@
-import { Box, Divider } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { GraphBody } from "./graphbody";
+import AddIcon from "@mui/icons-material/Add";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import RemoveIcon from "@mui/icons-material/Remove";
+import "./graphList.scss";
 
 type Props = {
   names: { eq: string; eqname: string }[];
 };
 
 export const GraphList = ({ names }: Props) => {
+  const deleteUserById = (id: string) => {
+    setGraphUsers((prevUsers) => prevUsers.filter((node) => node.id !== id));
+  };
+
+  const [graphUsers, setGraphUsers] = useState<
+    { id: string; node: ReactNode }[]
+  >([]);
+  const maxIdNumber = useRef(0);
+  const addUser = () => {
+    const id = `graph${maxIdNumber.current + 1}`;
+    maxIdNumber.current += 1;
+    setGraphUsers([
+      ...graphUsers,
+      {
+        id: id,
+        node: (
+          <GraphBody
+            key={id}
+            graphId={id}
+            onDelete={deleteUserById}
+            names={names}
+          />
+        ),
+      },
+    ]);
+  };
+
+  const deleteUser = () => {
+    setGraphUsers([...graphUsers].slice(0, -1));
+  };
+
+  useEffect(() => {
+    if (!graphUsers.length) {
+      const id = `graph${maxIdNumber.current + 1}`;
+      maxIdNumber.current += 1;
+      setGraphUsers([
+        ...graphUsers,
+        {
+          id: id,
+          node: (
+            <GraphBody
+              key={id}
+              graphId={id}
+              onDelete={deleteUserById}
+              names={names}
+            />
+          ),
+        },
+      ]);
+    }
+  }, [graphUsers]);
+
   return (
-    <Box>
-      <Box sx={{ marginTop: 5 }}>
-        <GraphBody names={names} marginTop={0} marginBottom={0} />
-
-        <Divider sx={{ marginTop: 5 }} />
-
-        <GraphBody names={names} marginTop={5} marginBottom={3} />
+    <div className="graphListBox">
+      <Box flexGrow={1} padding={"3%"}>
+        {graphUsers.map((item) => item.node)}
       </Box>
-    </Box>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <IconButton size="large" onClick={addUser}>
+          <AddIcon />
+        </IconButton>
+        <IconButton size="large" onClick={deleteUser}>
+          <RemoveIcon />
+        </IconButton>
+      </Box>
+    </div>
   );
 };

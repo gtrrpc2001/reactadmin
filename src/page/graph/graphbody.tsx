@@ -1,10 +1,8 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
-import { UserList } from "./userList";
+import { Box, Divider, IconButton } from "@mui/material";
 import { GraphDatePicker } from "./datepicker";
 import { getGraphBpmHrvArrData, getGraphEcgValue } from "../../data/graph";
 import { Graphs } from "./graphBpmHrvArr";
-import { GraphKindButton } from "./graphDataKindButton";
 import { graphKindButton } from "../../axios/interface/graph";
 import { getCalendarTime, getWritetimeSelectHour_Min } from "../../func/func";
 import {
@@ -12,28 +10,35 @@ import {
   getClickGraphKindButton,
 } from "../../components/component/modal/controller/modalController";
 import { getCalStep } from "../../components/component/modal/data/data";
+import dayjs, { Dayjs } from "dayjs";
+import { UserSelect } from "./userSelect";
+import { EcgTimePicker } from "./ecgTimePicker";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { exportToExcel } from "../../func/excel";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 type Props = {
   names: { eq: string; eqname: string }[];
-  marginTop: number;
-  marginBottom: number;
+  graphId: string;
+  onDelete: (id: string) => void;
 };
 
 const getCheckMaxValue = (value: number) => (value > 180 ? 180 : value);
 
-export const GraphBody = ({ names, marginTop, marginBottom }: Props) => {
+export const GraphBody = ({ names, graphId, onDelete }: Props) => {
   const [id, setId] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [data, setData] = useState<any[]>([]);
   const [kindButton, setKindButton] = useState<graphKindButton>({
     bpm_hrv_arr: true,
     cal_step: false,
     ecg: false,
   });
-  const [writetime, setWritetime] = useState<string>("");
+  const [writetime, setWritetime] = useState<string>(getCalendarTime(dayjs()));
   const [ecgTime, setEcgTime] = useState<string>("");
   const prevEcgTime = useRef<string>("");
-  const [open, setOpen] = useState<boolean>(true);
+  const loginSelector = useSelector<RootState, string>((state) => state.eq);
 
   async function getData(
     id: string,
@@ -61,7 +66,6 @@ export const GraphBody = ({ names, marginTop, marginBottom }: Props) => {
                 writetime: d.writetime,
               };
             });
-            setOpen(true);
             break;
           default:
             result = await getGraphBpmHrvArrData(id, time, calTime);
@@ -73,7 +77,6 @@ export const GraphBody = ({ names, marginTop, marginBottom }: Props) => {
                 writetime: getWritetimeSelectHour_Min(d.writetime),
               };
             });
-            setOpen(true);
             break;
         }
 
@@ -106,15 +109,18 @@ export const GraphBody = ({ names, marginTop, marginBottom }: Props) => {
           });
         });
         setData(ecgList);
-        setOpen(true);
       }
     }
     getEcgData();
   }, [ecgTime]);
 
-  const handler = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    const nowId = e.currentTarget.id;
-    setId(nowId);
+  const selectUserHandler = (
+    event: React.SyntheticEvent,
+    value: { eq: string; eqname: string } | null,
+    reason: string
+  ) => {
+    setId(value ? value.eq : "");
+    setName(value ? value.eqname : "");
   };
 
   const pickerChange = (value: any) => {
@@ -122,95 +128,94 @@ export const GraphBody = ({ names, marginTop, marginBottom }: Props) => {
     setWritetime(currentTime);
   };
 
-  const ButtonHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const id = e?.currentTarget?.id;
-    let iconClick: graphKindButton = getClickGraphKindButton(id);
+  const ToolboxIconClickHandler = (id: string) => {
+    const iconClick: graphKindButton = getClickGraphKindButton(id);
     setKindButton(iconClick);
-    if (!iconClick.ecg) setOpen(false);
   };
 
-  const ecgTimeListHandler = (
-    e: React.MouseEvent<HTMLLIElement, MouseEvent>
-  ) => {
-    const nowId = e.currentTarget.id;
-    if (
-      prevEcgTime.current != nowId ||
-      (prevEcgTime.current == "" && ecgTime == "")
-    ) {
-      prevEcgTime.current = nowId;
-      setEcgTime(nowId);
-      setOpen(false);
+  const handleChange = (newValue: Dayjs | null) => {
+    if (newValue) {
+      const formattedTime = newValue.format("HH:mm");
+      setEcgTime(formattedTime);
+    } else {
+      setEcgTime("");
     }
   };
 
   const getEcgFileDownload = () => {
-    if (names.length != 0) {
-      const eqname = names.filter((d) => d.eq == id)[0].eqname;
+    if (
+      loginSelector == process.env.REACT_APP_ADMIN &&
+      name.length != 0 &&
+      ecgTime
+    ) {
       exportToExcel(
         data,
-        `${eqname}님의 ${writetime} ${ecgTime} 부터 10분간 ECG데이터`
+        `${name}님의 ${writetime} ${ecgTime} 부터 10분간 ECG데이터`
       );
     }
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        marginTop: marginTop,
-        justifyContent: "center",
-        marginBottom: marginBottom,
-      }}
-    >
-      <UserList
-        nameList={names}
-        handler={handler}
-        id={id}
-        width={300}
-        height={400}
-      />
-      <Box>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "top",
+        }}
+      >
+        <UserSelect
+          userList={names}
+          onChange={selectUserHandler}
+          data={data}
+          dataKind={kindButton}
+        />
+
         <Box
-          sx={{
-            paddingLeft: 5,
-            paddingBottom: 2,
-            display: "flex",
-            alignItems: "center",
-          }}
+          flexGrow={1}
+          maxWidth={"calc(100vw - 300px - 170px)"}
+          paddingLeft={"20px"}
         >
-          <GraphDatePicker onChange={pickerChange} width={170} height={50} />
-          <GraphKindButton
-            onClick={ButtonHandler}
-            onEcgTimeClick={ecgTimeListHandler}
-            excelButtonClick={getEcgFileDownload}
-            ecgData={data}
-            id={ecgTime}
-            eq={id}
-            time={writetime}
-            kindButton={kindButton}
-            fristItemWidth={230}
-          />
-        </Box>
-        {open ? (
-          <Graphs data={data} width={1300} height={340} kind={kindButton} />
-        ) : (
           <Box
             sx={{
               display: "flex",
-              width: 1300,
-              height: 350,
-              justifyContent: "center",
-              alignItems: "center",
             }}
           >
-            <Box sx={{ textAlign: "center" }}>
-              <CircularProgress color="primary" />
-              <Typography>{"약5초 기다려 주세요!."}</Typography>
+            <GraphDatePicker
+              onChange={pickerChange}
+              width={150}
+              today={dayjs()}
+            />
+            <Box flexGrow={1}>
+              <EcgTimePicker
+                width={150}
+                disabled={!kindButton.ecg}
+                time={writetime}
+                eq={id}
+                handleTime={handleChange}
+              />
+            </Box>
+            <Box>
+              <IconButton
+                onClick={() => onDelete(graphId)}
+                sx={{ marginRight: "20px" }}
+              >
+                <DeleteOutlineIcon fontSize="large" />
+              </IconButton>
             </Box>
           </Box>
-        )}
+          <Box>
+            <Graphs
+              data={data}
+              id={id}
+              writetime={writetime}
+              kind={kindButton}
+              kindButtonHandler={ToolboxIconClickHandler}
+              downloadECG={getEcgFileDownload}
+            />
+          </Box>
+        </Box>
       </Box>
+      <Divider sx={{ marginTop: "10px", marginBottom: "20px" }} />
     </Box>
   );
 };

@@ -175,27 +175,4 @@
   }
 }
 
-.appBarListWrapper {
-  width: 100%;
-
-  .appBarListItem {
-    width: 100%;
-  }
-
-  .listItemText {
-    padding-left: 15px;
-
-    &.selected {
-      .MuiTypography-root {
-        font-weight: 400;
-        font-size: 0.9rem;
-        color: #33afe4;
-      }
-    }
-
-    .MuiTypography-root {
-      font-weight: 400;
-      font-size: 0.9rem;
-    }
-  }
-}
+// .appBarListWrapper css 삭제

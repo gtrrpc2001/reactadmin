@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import { persistor, store } from "./store/store";
@@ -9,6 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Ward } from "./page/ward/Ward";
 import { UserSignUp } from "./page/signup/user/usersignup";
 import { FindAccount } from "./page/findaccount/findAccount";
+import { HeaderFooter } from "./page/Header_Footer/HeaderFooter";
 
 const App: React.FC = () => {
   return (
@@ -16,11 +17,13 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <Routes>
           <Route path="/" element={<LoginPage />} />,
-          <Route path="/home" element={<Home />} />,
-          <Route path="/home/graph" element={<Graph />} />,
-          <Route path="/home/ward" element={<Ward />} />,
           <Route path="/signup/user" element={<UserSignUp />} />,
           <Route path="/findpw/user" element={<FindAccount />} />,
+          <Route element={<HeaderFooter />}>
+            <Route path="/home" element={<Home />} />,
+            <Route path="/home/graph" element={<Graph />} />,
+            <Route path="/home/ward" element={<Ward />} />,
+          </Route>
           <Route path="*" element={<Navigate to={"/"} replace={true} />} />,
         </Routes>
       </PersistGate>
