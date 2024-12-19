@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import { motion } from "framer-motion";
 import { PropsWithChildren, useState } from "react";
 // import "../../../assets/agreement/useragree.txt";
@@ -44,12 +44,16 @@ export const SignupPages = ({
       transition={{ duration: 0.5 }}
     >
       {children}
-      <Grid container justifyContent="space-between" className="Grid-Container">
+      <Grid2
+        container
+        justifyContent="space-between"
+        className="Grid-Container"
+      >
         {pageNumber != 5 && (
           <PrevNextButton onClick={handlePrevButton} text="이전" />
         )}
         {NextButton[pageNumber]}
-      </Grid>
+      </Grid2>
     </motion.div>
   );
 };

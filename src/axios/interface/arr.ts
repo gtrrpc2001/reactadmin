@@ -1,3 +1,3 @@
-export interface yesterdayArr{
-    arrCnt:number
+export interface yesterdayArr {
+    arrCnt: number;
 }

@@ -75,7 +75,7 @@ export const EcgTimePicker = ({
             },
           },
         }}
-        shouldDisableTime={(value, view) => {
+        shouldDisableTime={(value, _view) => {
           const temp = value.format("HH:mm").toString();
           return !data.includes(temp);
         }}

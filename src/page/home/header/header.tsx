@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./header.scss";
-import { ReactComponent as TableIcon } from "../../../assets/image/iconmonstr-small-thumbnail-lined.svg";
-import { ReactComponent as GraphIcon } from "../../../assets/image/iconmonstr-medical-7.svg";
-import { ReactComponent as WardIcon } from "../../../assets/image/iconmonstr-medical-1.svg";
+import TableIcon from "../../../assets/image/iconmonstr-small-thumbnail-lined.svg";
+import GraphIcon from "../../../assets/image/iconmonstr-medical-7.svg";
+import WardIcon from "../../../assets/image/iconmonstr-medical-1.svg";
 import { Box, Button, Drawer, IconButton, Typography } from "@mui/material";
 import { saveLog } from "../../../data/login";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +13,8 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import { AdminMenuList } from "../../../components/component/menu/adminMenuList"; // 추가
-import { UserMenuList } from "../../../components/component/menu/userMenuList"; // 추가
+import { AdminMenuList } from "../../../components/component/menu/adminMenuList";
+import { UserMenuList } from "../../../components/component/menu/userMenuList";
 
 export const Header = ({ children }: PropsWithChildren) => {
   const navigation = useNavigate();
@@ -84,7 +84,7 @@ export const Header = ({ children }: PropsWithChildren) => {
 
           <UserMenuList userMenuList={appBarList} />
 
-          {eqSelector === process.env.REACT_APP_ADMIN && (
+          {eqSelector === import.meta.env.VITE_API_ADMIN && (
             <AdminMenuList adminMenuList={adminMenuList} />
           )}
           {/* -------- */}

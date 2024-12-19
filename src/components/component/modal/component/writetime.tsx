@@ -309,7 +309,7 @@ export const Writetime = ({
 
   const calendarHandler = (
     value: any,
-    cal: PickerSelectionState | undefined
+    _cal: PickerSelectionState | undefined
   ) => {
     setShowCalendar(false);
     const currentTime = getCalendarTime(value);
@@ -344,7 +344,7 @@ export const Writetime = ({
         {text}
       </Typography>
       <CalendarMonthIcon
-        onClick={(e) => {
+        onClick={(_e) => {
           setShowCalendar(!showCalendar);
         }}
         sx={{

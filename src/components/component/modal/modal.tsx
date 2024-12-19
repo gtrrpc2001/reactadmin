@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { historyLast } from "../../../axios/interface/history_last";
 import "./modal.scss";
-import "animate.css";
+// import "animate.css";
 import { ModalHeader } from "./header/modalHeader";
 import { getClickFooter, getValues } from "./controller/modalController";
 import { profileModal } from "../../../axios/interface/profileModal";
@@ -43,7 +43,6 @@ export const mainBoxstyle = (top: string, left: string) => {
 export const Modal = ({
   open,
   setModalOpen,
-  children,
 }: PropsWithChildren<ModalDefaultType>) => {
   const dispatch = useDispatch();
   const values = useSelector<RootState, any>((state) => state.cellValues);
@@ -99,13 +98,7 @@ export const Modal = ({
       case footerSelect.graph:
         return <BodyGraph profile={getProfile} eq={eq} startTime={startDate} />;
       case footerSelect.profile:
-        return (
-          <BodyProfile
-            cellValue={values}
-            modalList={modalList}
-            profile={getProfile}
-          />
-        );
+        return <BodyProfile cellValue={values} profile={getProfile} />;
 
       case footerSelect.pulse:
         return (

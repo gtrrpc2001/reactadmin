@@ -1,6 +1,5 @@
 import {
   getData,
-  getEcg,
   getEcgTime,
   getGraphBpmHrvArr,
   getGraphEcg,

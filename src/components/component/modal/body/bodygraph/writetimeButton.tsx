@@ -8,8 +8,8 @@ type Props = {
 };
 
 export const WritetimeButton = ({ onClick, clickWritetimeButton }: Props) => {
-  const [defaultColor, setdefaultColor] = useState("#bbb8b9");
-  const [selectColor, setSelectColor] = useState("#040a5c");
+  const [defaultColor] = useState("#bbb8b9");
+  const [selectColor] = useState("#040a5c");
 
   const today = clickWritetimeButton.today ? selectColor : defaultColor;
   const days2 = clickWritetimeButton.days2 ? selectColor : defaultColor;

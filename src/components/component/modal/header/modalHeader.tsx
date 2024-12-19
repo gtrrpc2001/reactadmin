@@ -64,9 +64,9 @@ export const ModalHeader = ({ values, battery }: Props) => {
     return () => clearTimeout(timer);
   }, [arrCnt]);
 
-  const batteryMouseEnter = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {};
+  // const batteryMouseEnter = (
+  //   e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  // ) => {};
 
   return (
     <Box sx={headerBox}>

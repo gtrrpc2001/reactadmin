@@ -1,5 +1,4 @@
-import { Grid, TextField } from "@mui/material";
-import { Login_tabProps } from "./login_tab";
+import { Grid2, TextField } from "@mui/material";
 import { ReactNode } from "react";
 
 type Props = {
@@ -18,7 +17,7 @@ type Props = {
 
 export const Login_TextFeild = (props: Props) => {
   return (
-    <Grid item xs={12} className="GridRow-center">
+    <Grid2 size={12} className="GridRow-center">
       <TextField
         id={props.id}
         className={props.className}
@@ -33,6 +32,6 @@ export const Login_TextFeild = (props: Props) => {
         autoComplete={props.autoComplete}
         fullWidth={props.fullWidth}
       />
-    </Grid>
+    </Grid2>
   );
 };

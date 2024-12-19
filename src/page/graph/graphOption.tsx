@@ -10,7 +10,7 @@ const GraphOption = (
 ) => {
   const loginSelector = useSelector<RootState, string>((state) => state.eq);
   const ecgDownloadShow =
-    loginSelector == process.env.REACT_APP_ADMIN ? true : false;
+    loginSelector == import.meta.env.VITE_API_ADMIN ? true : false;
   const setIconColor = () => {
     return {
       color: "#4D9FC9",

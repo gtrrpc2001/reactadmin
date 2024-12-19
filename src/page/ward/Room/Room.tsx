@@ -1,12 +1,12 @@
-import { Button, styled } from "@mui/material";
+import { Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./Room.scss";
-import { BedInfo } from "../modal/bedModal";
-import { useEffect, useMemo, useRef, useState } from "react";
+// import { BedInfo } from "../modal/bedModal";
+import { useEffect, useRef, useState } from "react";
 import { historyLast } from "../../../axios/interface/history_last";
 import { getHistory, getProfile } from "../../../axios/api/serverApi";
 import React from "react";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { PatientDroppable } from "../patient/patientDroppable";
 import { BedListUI } from "../bed/bedList";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +42,7 @@ const arraysEqual = (arr1: string[], arr2: string[]) => {
   return true;
 };
 
-export const Room = ({ setRoomVisible, roomId }: Props) => {
+export const Room = ({ setRoomVisible }: Props) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [bedStates, setBedStates] = useState<{ [key: string]: boolean }>({});
   const getTableData = useSelector<RootState, any>(
@@ -60,7 +60,7 @@ export const Room = ({ setRoomVisible, roomId }: Props) => {
     Array(bedList.length).fill(null)
   );
 
-  const bedClick = async (name: string, eq: string) => {
+  const bedClick = async (_name: string, eq: string) => {
     if (data.length > 0) {
       const user = data.filter((d) => d.eq === eq);
       if (user) {

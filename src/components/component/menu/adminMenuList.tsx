@@ -37,7 +37,7 @@ export const AdminMenuList = ({ adminMenuList }: AdminListProps) => {
       <List className="appBarListWrapper">
         {adminMenuList.map((item) => {
           return (
-            <div>
+            <div key={item.name}>
               <ListItemButton
                 onClick={toggleProductMenu}
                 className="adminListButton"
@@ -51,7 +51,10 @@ export const AdminMenuList = ({ adminMenuList }: AdminListProps) => {
                 <List component={"div"}>
                   {item.contents.map((content) => {
                     return (
-                      <ListItemButton sx={{ textAlign: "center" }}>
+                      <ListItemButton
+                        key={content.name}
+                        sx={{ textAlign: "center" }}
+                      >
                         <ListItemText primary={content.name} />
                       </ListItemButton>
                     );

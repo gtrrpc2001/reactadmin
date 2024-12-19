@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { useEffect } from "react";
 
 type Props = {
   id: string;
@@ -17,8 +16,7 @@ export const ButtonChartBpm = ({
   disabled,
   Handler,
   front,
-}: Props) => {  
-
+}: Props) => {
   return (
     <Button
       id={id}

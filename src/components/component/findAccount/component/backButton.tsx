@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { handleAnimatePrev } from "../../../../func/func";
@@ -16,8 +16,8 @@ type Props = {
 export const BackButton = ({ url, setExitParams }: Props) => {
   const navigate = useNavigate();
   return (
-    <Grid container className="pageSelector">
-      <Grid xs={4}>
+    <Grid2 container className="pageSelector">
+      <Grid2 size={4}>
         <div className="iconWraper">
           <div
             onClick={() => {
@@ -27,7 +27,7 @@ export const BackButton = ({ url, setExitParams }: Props) => {
             <NavigateBeforeIcon className="navBefore" />
           </div>
         </div>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };

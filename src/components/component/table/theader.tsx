@@ -15,17 +15,24 @@ export const Theader = ({ headerGroups }: Props) => {
   return (
     <TableHead>
       {headerGroups.map(
-        (headerGroup: {
-          getHeaderGroupProps: () => JSX.IntrinsicAttributes &
-            React.ClassAttributes<HTMLTableRowElement> &
-            React.HTMLAttributes<HTMLTableRowElement>;
-          headers: any[];
-        }) => (
-          <TableRow {...(headerGroup.getHeaderGroupProps() as any)}>
-            {headerGroup.headers.map((column) => {
+        (
+          headerGroup: {
+            getHeaderGroupProps: () => JSX.IntrinsicAttributes &
+              React.ClassAttributes<HTMLTableRowElement> &
+              React.HTMLAttributes<HTMLTableRowElement>;
+            headers: any[];
+          },
+          index
+        ) => (
+          <TableRow
+            key={`thead${index}`}
+            {...(headerGroup.getHeaderGroupProps() as any)}
+          >
+            {headerGroup.headers.map((column, columnIndex) => {
               if (!exceptColumn.includes(column.id)) {
                 return (
                   <TableCell
+                    key={`theadCell${columnIndex}`}
                     className="tableHeader"
                     {...column.getHeaderProps()}
                   >

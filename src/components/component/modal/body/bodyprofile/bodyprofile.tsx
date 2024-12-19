@@ -1,15 +1,13 @@
 import { Box } from "@mui/material";
 import { profileModal } from "../../../../../axios/interface/profileModal";
-import { modalValues } from "../../../../../axios/interface/modalvalues";
 import { HeaderTextBox, TextBox } from "./textbox";
 
 type Props = {
   cellValue: any;
   profile: profileModal;
-  modalList: modalValues;
 };
 
-export const BodyProfile = ({ cellValue, modalList, profile }: Props) => {
+export const BodyProfile = ({ cellValue, profile }: Props) => {
   const defaultInfo = () => {
     const marginLeft = 2;
     const paddingTop = 2;

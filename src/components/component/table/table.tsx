@@ -1,13 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   useGlobalFilter,
   useSortBy,
   usePagination,
   useTable,
-  Row,
   useRowSelect,
-  TableOptions,
-  TableState,
 } from "react-table";
 import { Search } from "../search/search";
 import { COLUMNS } from "../column/columns";
@@ -23,21 +20,11 @@ import {
 } from "../hooks/selectCheckboxHooks";
 import { Tbody } from "./tbody";
 import { Modal } from "../modal/modal";
-import {
-  cellActions,
-  pageActions,
-  profileActions,
-} from "../../createslice/createslices";
+import { cellActions, profileActions } from "../../createslice/createslices";
 import { getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
 import { historyLast } from "../../../axios/interface/history_last";
-import {
-  Button,
-  Table as MuiTable,
-  TableContainer,
-  TablePagination,
-  Typography,
-} from "@mui/material";
+import { Button, Table as MuiTable, TableContainer } from "@mui/material";
 
 export const Table = () => {
   const columns: any = useMemo(() => COLUMNS, []);
@@ -59,7 +46,6 @@ export const Table = () => {
     gotoPage,
     setPageSize,
     state,
-    selectedFlatRows,
   } = useTable(
     {
       columns: columns,
@@ -76,7 +62,7 @@ export const Table = () => {
   );
 
   const onClickToggleModal = async (
-    e: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
+    _e: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>,
     cell: any
   ) => {
     const row = cell?.row;
@@ -110,7 +96,7 @@ export const Table = () => {
             className="selectButton"
             variant="outlined"
             onClick={() => {
-              const test = selectedFlatRows.map((d) => d.original);
+              // const test = selectedFlatRows.map((d) => d.original);
             }}
           >
             옵션

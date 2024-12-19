@@ -1,5 +1,5 @@
-export interface userBpmType{
-    rest:boolean
-    activity:boolean
-    sleep:boolean
+export interface userBpmType {
+  rest: boolean;
+  activity: boolean;
+  sleep: boolean;
 }

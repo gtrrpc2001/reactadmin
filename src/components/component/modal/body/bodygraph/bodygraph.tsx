@@ -49,7 +49,6 @@ export const BodyGraph = ({ profile, eq, startTime }: Props) => {
       year: false,
     });
   const [gubunSettingNum, setSetting] = useState<number>(1);
-  const [dataChecking, setDataChecking] = useState<boolean>(false);
 
   const iconClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const id = e?.currentTarget?.id;

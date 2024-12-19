@@ -1,6 +1,4 @@
-import { Button, Grid } from "@mui/material";
-import { handleAnimateNext } from "../../../../func/func";
-import { useNavigate } from "react-router-dom";
+import { Button, Grid2 } from "@mui/material";
 
 type Props = {
   disabled: boolean;
@@ -8,9 +6,8 @@ type Props = {
 };
 
 export const KeepButton = ({ onClick, disabled }: Props) => {
-  const navigate = useNavigate();
   return (
-    <Grid className="GridRow-center">
+    <Grid2 className="GridRow-center">
       <Button
         className="submitEmailButton"
         variant="contained"
@@ -19,6 +16,6 @@ export const KeepButton = ({ onClick, disabled }: Props) => {
       >
         계속하기
       </Button>
-    </Grid>
+    </Grid2>
   );
 };

@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { email_regex } from "../login/login";
@@ -6,8 +6,6 @@ import { Login_TextFeild } from "../login/Login_components/login_textfield";
 import { findAccountChild } from "./FindEmail";
 import { KeepButton } from "./component/keepButton";
 import { motion } from "framer-motion";
-import { PrevNextButton } from "../signup/component/PrevNextButton";
-import { Link } from "@mui/icons-material";
 import { LastPage } from "./component/lastpage";
 
 export const FindPW = ({ setExitParams }: findAccountChild) => {
@@ -35,12 +33,12 @@ export const FindPW = ({ setExitParams }: findAccountChild) => {
   const pages: { [key: number]: JSX.Element } = {
     1: (
       <>
-        <Grid item xs={12} className="GridRow-center">
+        <Grid2 size={12} className="GridRow-center">
           <Typography className="FindPwInfoText">
             등록된 이메일 계정을 입력해주세요. 비밀번호 재설정 링크를
             보내드리겠습니다.
           </Typography>
-        </Grid>
+        </Grid2>
         <Login_TextFeild
           id="email"
           className="findPwEmailInput"

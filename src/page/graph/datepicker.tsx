@@ -14,7 +14,7 @@ export const GraphDatePicker = ({ onChange, width, today }: Props) => {
       <DatePicker
         label="날짜"
         defaultValue={today}
-        onChange={(value: any, context) => onChange(value)}
+        onChange={(value: any, _context) => onChange(value)}
         sx={{
           width: width,
           "& .MuiInputBase-root": {

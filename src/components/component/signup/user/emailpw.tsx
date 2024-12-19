@@ -1,5 +1,3 @@
-import { Button, Grid, TextField } from "@mui/material";
-import { motion } from "framer-motion";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { email_regex, pwd_regex } from "../../login/login";
 import { Login_TextFeild } from "../../login/Login_components/login_textfield";
@@ -24,11 +22,11 @@ export const SignUpEmailPw = (Props: signupPage1Props) => {
   const [pw1Error, setPw1Error] = useState<boolean>(false);
   const isPw1Valid = useRef<boolean>(false);
 
-  const [pw2HelperText, setPw2HelperText] = useState<string>("");
-  const [pw2Error, setPw2Error] = useState<boolean>(false);
+  const [pw2HelperText] = useState<string>("");
+  const [pw2Error] = useState<boolean>(false);
   const isPw2Equal = useRef<boolean>(false);
 
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
+  // const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 
   useEffect(() => {
     validateEmail(Props.email);
@@ -44,9 +42,9 @@ export const SignUpEmailPw = (Props: signupPage1Props) => {
 
   useEffect(() => {
     if (isEmailValid.current && isPw1Valid.current && isPw2Equal.current) {
-      setButtonDisabled(false);
+      // setButtonDisabled(false);
     } else {
-      setButtonDisabled(true);
+      // setButtonDisabled(true);
     }
   }, [isEmailValid.current, isPw1Valid.current, isPw2Equal.current]);
 

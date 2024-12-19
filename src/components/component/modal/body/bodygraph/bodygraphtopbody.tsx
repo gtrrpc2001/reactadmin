@@ -11,8 +11,8 @@ type Props = {
 };
 
 export const BodyGraphTopBody = ({ onClick, graphIcon }: Props) => {
-  const [defaultColor, setdefaultColor] = useState("transparent"); //#ef507b
-  const [selectColor, setSelectColor] = useState("#040a5c");
+  const [defaultColor] = useState("transparent"); //#ef507b
+  const [selectColor] = useState("#040a5c");
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const scrollLeft = () => {

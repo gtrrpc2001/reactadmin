@@ -1,6 +1,6 @@
 import "./footer.scss";
 import youtube from "../../../assets/image/YouTube_full-color_icon_(2017).svg";
-import { SvgIcon, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 type Props = {
   language: boolean;

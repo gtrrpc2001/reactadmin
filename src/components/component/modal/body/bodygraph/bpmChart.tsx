@@ -15,7 +15,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
 import { ButtonChartBpm } from "./ChartButton";

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import { GoogleProvider } from "../buttons/google_login_button";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,10 +46,10 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
   const [pwHelperText, setPwHelperText] = useState<ReactNode>(<></>);
   const pwValid = useRef<boolean>(false);
 
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
-  const admin = process.env.REACT_APP_ADMIN;
-  const business = process.env.REACT_APP_BUSINESS;
-  const business2 = process.env.REACT_APP_BUSINESS2;
+  // const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const admin = import.meta.env.VITE_API_ADMIN;
+  const business = import.meta.env.VITE_API_BUSINESS;
+  const business2 = import.meta.env.VITE_API_BUSINESS2;
 
   useEffect(() => {
     // 이메일 이펙트 실행
@@ -93,9 +93,9 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
     // 버튼 이펙트 실행
 
     if (emailValid.current && pwValid.current) {
-      setButtonDisabled(false);
+      // setButtonDisabled(false);
     } else {
-      setButtonDisabled(true);
+      // setButtonDisabled(true);
     }
   }, [emailValid.current, pwValid.current]);
 
@@ -127,12 +127,12 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
     return checkedEmailPw(password, pwd_regex);
   }
 
-  function handleButtonPress(e: React.FormEvent<HTMLFormElement>) {
-    console.log({
-      email: props.email,
-      pw: props.pw,
-      userType: props.userType,
-    });
+  function handleButtonPress(_e: React.FormEvent<HTMLFormElement>) {
+    // console.log({
+    //   email: props.email,
+    //   pw: props.pw,
+    //   userType: props.userType,
+    // });
   }
 
   async function handleLogin() {
@@ -144,7 +144,7 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
   }
 
   return (
-    <Grid container className="Grid-Container" sx={{ paddingTop: 3 }}>
+    <Grid2 container className="Grid-Container" sx={{ paddingTop: 3 }}>
       <form
         className="loginform"
         onSubmit={(e) => {
@@ -178,6 +178,6 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
           </>
         )}
       </form>
-    </Grid>
+    </Grid2>
   );
 };

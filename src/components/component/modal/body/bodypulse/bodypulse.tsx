@@ -5,9 +5,8 @@ import {
   calculTime,
   compareToWritetime,
   getDate,
-  getDayjs,
 } from "../../controller/modalController";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { PulseChart } from "./pulseChart";
 
 type Props = {
@@ -15,7 +14,7 @@ type Props = {
   startTime: string;
   koreaTime: string;
 };
-export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
+export const BodyPulse = ({ eq, startTime }: Props) => {
   const [writetime, setWritetime] = useState(getDate(startTime)); //startTime
   // const [gijunTime,setGijunTime] = useState(koreaTime)
   const [currentTime, setCurrentTime] = useState(startTime);
@@ -51,7 +50,7 @@ export const BodyPulse = ({ eq, startTime, koreaTime }: Props) => {
   };
 
   const listItemHandler = (id: string) => {
-    const { writetime } = writetimes?.find((value, index) => index + 1 == +id);
+    const { writetime } = writetimes?.find((_, index) => index + 1 == +id);
     setCurrentTime(writetime);
     setId(id);
   };

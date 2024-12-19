@@ -1,4 +1,4 @@
-import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Grid2, ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 type Props = {
   userType: "일반" | "보호자" | "기업";
@@ -7,11 +7,11 @@ type Props = {
 
 export const Login_Tab_Button = (props: Props) => {
   return (
-    <Grid item xs={12} className="GridRow-center">
+    <Grid2 size={12} className="GridRow-center">
       <ToggleButtonGroup
         value={props.userType}
         exclusive
-        onChange={(e, type) => props.handleUserType(type)}
+        onChange={(_e, type) => props.handleUserType(type)}
       >
         <ToggleButton className="UserTypeSelect" value={"일반"}>
           일반
@@ -20,6 +20,6 @@ export const Login_Tab_Button = (props: Props) => {
           보호자
         </ToggleButton>
       </ToggleButtonGroup>
-    </Grid>
+    </Grid2>
   );
 };

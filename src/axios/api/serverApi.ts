@@ -7,7 +7,7 @@ import { graphBpmHrvArr } from "../interface/graph";
 import { yesterdayArr } from "../interface/arr";
 
 const client: Axios = axios.create({
-  baseURL: `${process.env.REACT_APP_BASEURL}`,
+  baseURL: `${import.meta.env.VITE_API_BASEURL}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -38,7 +38,7 @@ export const getOnlyArr = async (
   }
 };
 
-export const getGraphBpmHrvArr = async <T>(
+export const getGraphBpmHrvArr = async (
   url: string,
   config?: AxiosRequestConfig
 ): Promise<graphBpmHrvArr[]> => {

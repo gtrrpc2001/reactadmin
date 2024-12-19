@@ -1,6 +1,6 @@
 import {
   FormControl,
-  Grid,
+  Grid2,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -11,7 +11,7 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface SignupPage2Props {
   firstName: string;
@@ -32,8 +32,8 @@ interface SignupPage2Props {
 
 export const SignUpUserInfo = (Props: SignupPage2Props) => {
   return (
-    <Grid container>
-      <Grid item xs={8} className="GridRow-center" sx={{ paddingRight: 2 }}>
+    <Grid2 container>
+      <Grid2 size={8} className="GridRow-center" sx={{ paddingRight: 2 }}>
         <TextField
           name="firstname"
           fullWidth={true}
@@ -44,9 +44,9 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
           value={Props.firstName}
           onChange={Props.handleFirstName}
         />
-      </Grid>
+      </Grid2>
 
-      <Grid item xs={4} className="GridRow-center">
+      <Grid2 size={4} className="GridRow-center">
         <TextField
           name="lastname"
           fullWidth={true}
@@ -57,22 +57,22 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
           value={Props.lastName}
           onChange={Props.handleLastName}
         />
-      </Grid>
-      <Grid item xs={8} className="GridRow-center">
+      </Grid2>
+      <Grid2 size={8} className="GridRow-center">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             className="BirthPicker"
             value={Props.birth}
             format="YYYY-MM-DD"
-            onChange={(value, e) => Props.handleBirth(value)}
+            onChange={(value: any, _: any) => Props.handleBirth(value)}
           />
         </LocalizationProvider>
-      </Grid>
-      <Grid item xs={4} className="GridRow-center">
+      </Grid2>
+      <Grid2 size={4} className="GridRow-center">
         <ToggleButtonGroup
           value={Props.sex}
           exclusive
-          onChange={(e, value) => Props.handleSex(value)}
+          onChange={(_, value) => Props.handleSex(value)}
         >
           <ToggleButton className="sexSelect" value={"남자"}>
             남
@@ -81,8 +81,8 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
             여
           </ToggleButton>
         </ToggleButtonGroup>
-      </Grid>
-      <Grid item xs={6} className="GridRow-center" sx={{ paddingRight: 2 }}>
+      </Grid2>
+      <Grid2 size={6} className="GridRow-center" sx={{ paddingRight: 2 }}>
         <FormControl variant="outlined">
           <InputLabel htmlFor="weight">키</InputLabel>
           <OutlinedInput
@@ -97,9 +97,9 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
             endAdornment={<InputAdornment position="end">cm</InputAdornment>}
           />
         </FormControl>
-      </Grid>
+      </Grid2>
 
-      <Grid item xs={6} className="GridRow-center">
+      <Grid2 size={6} className="GridRow-center">
         <FormControl variant="outlined">
           <InputLabel htmlFor="weight">몸무게</InputLabel>
           <OutlinedInput
@@ -114,7 +114,7 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
             endAdornment={<InputAdornment position="end">kg</InputAdornment>}
           />
         </FormControl>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };

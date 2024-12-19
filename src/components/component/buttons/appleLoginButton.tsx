@@ -1,9 +1,9 @@
-import { Button, Grid } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import AppleLogin from "react-apple-login";
 
 export const AppleLoginButton = () => {
   return (
-    <Grid item xs={12} className="GridRow-center">
+    <Grid2 size={12} className="GridRow-center">
       <div className="AppleLoginWraper">
         <div className="AppleLoginButton">
           <AppleLogin
@@ -17,6 +17,6 @@ export const AppleLoginButton = () => {
           />
         </div>
       </div>
-    </Grid>
+    </Grid2>
   );
 };

@@ -8,8 +8,8 @@ type Props = {
 };
 
 export const DayGubunButton = ({ onClick, dayClick }: Props) => {
-  const [defaultColor, setdefaultColor] = useState("#bbb8b9");
-  const [selectColor, setSelectColor] = useState("#040a5c");
+  const [defaultColor] = useState("#bbb8b9");
+  const [selectColor] = useState("#040a5c");
 
   const day = dayClick.day ? selectColor : defaultColor;
   const week = dayClick.week ? selectColor : defaultColor;

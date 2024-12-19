@@ -22,7 +22,7 @@ export const getBpm = async (
     const data = await getStress(
       `/mslecgstress/ecgStressData?eq=${eq}&startDate=${startDate}&endDate=${endDate}`
     );
-    data.forEach((value, index) => {
+    data.forEach((value, _index) => {
       const { pns_percent, sns_percent, writetime } = value
       result.push({ stress: { sns: sns_percent, pns: pns_percent }, bpm: 0, hrv: 0, writetime: writetime })
     })

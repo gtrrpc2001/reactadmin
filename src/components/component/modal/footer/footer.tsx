@@ -12,8 +12,8 @@ type Props = {
 };
 
 export const Footer = ({ onClick, footerClick }: Props) => {
-  const [defaultColor, setdefaultColor] = useState("#8b8a8a"); //#ef507b
-  const [selectColor, setSelectColor] = useState("#ef507b");
+  const [defaultColor] = useState("#8b8a8a"); //#ef507b
+  const [selectColor] = useState("#ef507b");
   const buttom = 15;
   const home = footerClick.home ? selectColor : defaultColor;
   const graph = footerClick.graph ? selectColor : defaultColor;

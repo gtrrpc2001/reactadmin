@@ -115,9 +115,9 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
   }, [ecgTime]);
 
   const selectUserHandler = (
-    event: React.SyntheticEvent,
+    _event: React.SyntheticEvent,
     value: { eq: string; eqname: string } | null,
-    reason: string
+    _reason: string
   ) => {
     setId(value ? value.eq : "");
     setName(value ? value.eqname : "");
@@ -144,7 +144,7 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
 
   const getEcgFileDownload = () => {
     if (
-      loginSelector == process.env.REACT_APP_ADMIN &&
+      loginSelector == import.meta.env.VITE_API_ADMIN &&
       name.length != 0 &&
       ecgTime
     ) {

@@ -1,5 +1,5 @@
-import { Box, List, ListItem, ListItemText } from "@mui/material";
-import { FunctionComponent } from "react";
+import { Box, List, ListItemButton, ListItemText } from "@mui/material";
+// import { FunctionComponent } from "react";
 import "./userMenuList.scss";
 import { useLocation } from "react-router-dom";
 
@@ -7,7 +7,7 @@ type userMenuListProps = {
   userMenuList: {
     name: string;
     func: () => void;
-    Icon: FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    Icon: string;
     path: string;
   }[];
 };
@@ -20,9 +20,8 @@ export const UserMenuList = ({ userMenuList }: userMenuListProps) => {
       <List className="appBarListWrapper">
         {userMenuList.map((element) => {
           return (
-            <ListItem
+            <ListItemButton
               key={element.name}
-              button
               onClick={element.func}
               className="appBarListItem"
               sx={{
@@ -36,10 +35,13 @@ export const UserMenuList = ({ userMenuList }: userMenuListProps) => {
                     : "none",
               }}
             >
-              <element.Icon
-                fill={
-                  location.pathname === element.path ? "#33afe4" : "#262626"
-                }
+              <img
+                src={element.Icon}
+                alt="Table Icon"
+                style={{
+                  fill:
+                    location.pathname === element.path ? "#33afe4" : "#262626",
+                }}
               />
               <ListItemText
                 primary={element.name}
@@ -47,7 +49,7 @@ export const UserMenuList = ({ userMenuList }: userMenuListProps) => {
                   location.pathname === element.path ? "selected" : ""
                 }`}
               />
-            </ListItem>
+            </ListItemButton>
           );
         })}
       </List>

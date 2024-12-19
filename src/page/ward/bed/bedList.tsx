@@ -84,7 +84,7 @@ export const BedListUI = ({
 
   useEffect(() => {
     const updateNotifications = () => {
-      bedList.forEach((b, index) => {
+      bedList.forEach((_b, index) => {
         let data;
         if (memoData.length >= 1) {
           data = memoData[index];

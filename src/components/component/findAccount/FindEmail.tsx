@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Login_TextFeild } from "../login/Login_components/login_textfield";
 import { KeepButton } from "./component/keepButton";
@@ -50,11 +50,11 @@ export const FindEmail = ({ setExitParams }: findAccountChild) => {
   const pages: { [key: number]: JSX.Element } = {
     1: (
       <>
-        <Grid xs={12} className="GridRow-center">
+        <Grid2 size={12} className="GridRow-center">
           <Typography className="FindPwInfoText">
             등록된 계정의 정보를 입력해 주십시오.
           </Typography>
-        </Grid>
+        </Grid2>
         <Login_TextFeild
           id="name"
           className="findPwEmailInput"

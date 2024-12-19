@@ -7,7 +7,7 @@ import {
   writetimeButtonModal,
 } from "../../../../../axios/interface/graphModal";
 import { RootState } from "../../../../../store/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { ProgressBar } from "./progressBar";
 import { profileModal } from "../../../../../axios/interface/profileModal";
@@ -29,7 +29,6 @@ export const BodyGraphBpmBottom = ({ clickWritetimeButton, id }: Props) => {
   const data: graphBpm[] = useSelector<RootState, any>(
     (state) => state.bpmGraphValue
   );
-  const lineChartDataCalDispatch = useDispatch();
   const [max, setMax] = useState<number>(0);
   const [min, setMin] = useState<number>(0);
   const [aver, setAver] = useState<number>(0);

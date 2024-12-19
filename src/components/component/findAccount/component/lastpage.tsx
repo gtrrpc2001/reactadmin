@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { PrevNextButton } from "../../signup/component/PrevNextButton";
 
@@ -16,10 +16,10 @@ export const LastPage = ({ onClick, text, className }: Props) => {
       exit={{ opacity: 0, x: 100 }}
       transition={{ duration: 0.5 }}
     >
-      <Grid xs={12} className="GridRow-center">
+      <Grid2 size={12} className="GridRow-center">
         <Typography className={className}>{text}</Typography>
-      </Grid>
-      <Grid xs={12} className="GridRow-center"></Grid>
+      </Grid2>
+      <Grid2 size={12} className="GridRow-center"></Grid2>
       <PrevNextButton
         onClick={onClick}
         text={"돌아가기"}

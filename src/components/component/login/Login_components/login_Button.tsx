@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid2 } from "@mui/material";
 
 type Props = {
   disabled: boolean;
@@ -7,7 +7,7 @@ type Props = {
 
 export const Login_Button = ({ disabled, page }: Props) => {
   return (
-    <Grid item xs={12} className="GridRow-center">
+    <Grid2 size={12} className="GridRow-center">
       <div className={page == 1 ? "loginButtonWraper" : "CorpButtonWraper"}>
         <Button
           variant="contained"
@@ -18,6 +18,6 @@ export const Login_Button = ({ disabled, page }: Props) => {
           로그인
         </Button>
       </div>
-    </Grid>
+    </Grid2>
   );
 };

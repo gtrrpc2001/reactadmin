@@ -9,51 +9,57 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import { ClockNumberClassKey } from "@mui/x-date-pickers";
 
 type Porps = {
   open_close: boolean;
   bpm: number;
   eq: string;
   time: string;
-  width:number;
-  height:number;
-  Ywidth:number 
+  width: number;
+  height: number;
+  Ywidth: number;
 };
 
-export const ModalRealTimeGraph = ({ open_close, bpm, eq, time ,width,height,Ywidth}: Porps) => {
+export const ModalRealTimeGraph = ({
+  open_close,
+  eq,
+  time,
+  width,
+  height,
+  Ywidth,
+}: Porps) => {
   const [open, setOpen] = useState<boolean>(true);
   // let [dataArr] = useState<{ ecg: number }[]>([]);
-  const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]); 
+  const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
 
-  const EcgData = async (result: number[]) => {    
+  const EcgData = async (result: number[]) => {
     // console.log(dataArr.length , result.length)
     if (open && dataArr?.length < 500) {
       let newData: { ecg: number }[] = [];
       if (result.length > 1000) {
-        newData = result.slice(0, 999).map((d) => ({ ecg: d }));        
+        newData = result.slice(0, 999).map((d) => ({ ecg: d }));
       } else {
-        newData = result.map((d) => ({ ecg: d }));        
+        newData = result.map((d) => ({ ecg: d }));
       }
-      setDataArr((dataArr) => [...dataArr, ...newData]);      
+      setDataArr((dataArr) => [...dataArr, ...newData]);
       if (dataArr?.length >= 420) {
         setOpen(false);
       }
-    } else {      
-      for(const d of result){
+    } else {
+      for (const d of result) {
         dataArr.shift();
-        dataArr.push({ ecg: d });  
-      }      
+        dataArr.push({ ecg: d });
+      }
     }
-    
   };
 
   const getEcgData = async () => {
     try {
-      const result = await getEcg(`/mslecgbyte/Ecg?eq=${eq}&startDate=${time}`);      
-      if (result?.length != 1 && result?.length < 500) {
-        await EcgData(result);
-      } else {
+      const result = await getEcg(`/mslecgbyte/Ecg?eq=${eq}&startDate=${time}`);
+      if (result) {
+        if (result?.length != 1 && result?.length < 500) {
+          await EcgData(result);
+        }
       }
     } catch (E) {
       console.log(E);
@@ -64,8 +70,8 @@ export const ModalRealTimeGraph = ({ open_close, bpm, eq, time ,width,height,Ywi
     if (open_close) {
       getEcgData();
     } else {
-      setDataArr([])
-    };
+      setDataArr([]);
+    }
   }, [time]);
 
   return (
@@ -80,7 +86,7 @@ export const ModalRealTimeGraph = ({ open_close, bpm, eq, time ,width,height,Ywi
             width={0}
             height={0}
           />
-          <YAxis yAxisId="left" domain={[0, 1000]} width={Ywidth}/>
+          <YAxis yAxisId="left" domain={[0, 1000]} width={Ywidth} />
           <Tooltip active={true} />
           <Line
             yAxisId="left"

@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { handleAnimateNext } from "../../../../func/func";
 
@@ -36,8 +36,8 @@ export const Login_Info_Button = ({ type, text, setExitAnimation }: Props) => {
   };
 
   return (
-    <Grid item xs={12} className="GridRow-link">
+    <Grid2 size={12} className="GridRow-link">
       <Button onClick={() => clickHandler()}>{text}</Button>
-    </Grid>
+    </Grid2>
   );
 };

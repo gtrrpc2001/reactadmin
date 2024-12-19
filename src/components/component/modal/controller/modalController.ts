@@ -76,7 +76,6 @@ export const getDecimal = (value: number): number => {
 };
 
 export const getClickFooter = (id: string): footerIcon => {
-  const home = "home";
   const graph = "graph";
   const pulse = "pulse";
   const profile = "profile";
@@ -99,7 +98,6 @@ export const getClickFooter = (id: string): footerIcon => {
 };
 
 export const getClickGraph = (id: string): graphModal => {
-  const bpm = "bpm";
   const pulse = "pulse";
   const stress = "stress";
   const hrv = "hrv";
@@ -130,7 +128,6 @@ export const getClickGraph = (id: string): graphModal => {
 };
 
 export const getClickWriteimteButton = (id: string): writetimeButtonModal => {
-  const today = "today";
   const days2 = "days2";
   const days3 = "days3";
   let iconClick: writetimeButtonModal = {
@@ -149,7 +146,6 @@ export const getClickWriteimteButton = (id: string): writetimeButtonModal => {
 };
 
 export const getClickDayGubunButton = (id: string): dayGubunButtonModal => {
-  const day = "day";
   const week = "week";
   const month = "month";
   const year = "year";
@@ -172,7 +168,6 @@ export const getClickDayGubunButton = (id: string): dayGubunButtonModal => {
 };
 
 export const getClickGraphKindButton = (id: string): graphKindButton => {
-  const bpm_hrv_arr = "bpm_hrv_arr";
   const cal_step = "cal_step";
   const ecg = "ecg";
   let iconClick: graphKindButton = {
@@ -482,7 +477,7 @@ export const progressBarValue = (
 
 export const getPulseEcgDataConverter = (result: string[]) => {
   let dataList: any[] = [];
-  const getData = result?.map((value: any) => {
+  result?.forEach((value: any) => {
     const { ecgpacket } = value;
     if (ecgpacket?.length != 0) {
       const arr: string[] = ecgpacket?.split(",");

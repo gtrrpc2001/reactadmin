@@ -1,9 +1,9 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid2 } from "@mui/material";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import googleImage from "../../../assets/image/g-logo.png";
 
-const clientId = "ClientID";
+// const clientId = "ClientID";
 
 export const GoogleLoginButton = () => {
   const googleLogin = useGoogleLogin({
@@ -45,12 +45,12 @@ export const GoogleLoginButton = () => {
 
 export const GoogleProvider = () => {
   return (
-    <Grid item xs={12} className="GridRow-center">
+    <Grid2 size={12} className="GridRow-center">
       <div className="googleLoginWraper">
         <GoogleOAuthProvider clientId="213123">
           <GoogleLoginButton />
         </GoogleOAuthProvider>
       </div>
-    </Grid>
+    </Grid2>
   );
 };

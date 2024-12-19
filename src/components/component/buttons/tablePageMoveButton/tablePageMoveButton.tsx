@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { TableState } from "react-table";
 import "./tablePageMoveButton.scss";
 import { TablePagination } from "@mui/material";
@@ -16,13 +16,7 @@ export const TablePageMoveButton = ({
   dataCount,
   state,
 }: Props) => {
-  const { pageIndex } = state;
-  const [inputValue, setInputValue] = useState(pageIndex + 1);
-  useEffect(() => {
-    setInputValue(pageIndex + 1);
-  }, [pageIndex]);
-
-  const handlePageChane = (e: unknown, newPage: number) => {
+  const handlePageChane = (_e: unknown, newPage: number) => {
     gotoPage(newPage);
   };
 
@@ -38,7 +32,7 @@ export const TablePageMoveButton = ({
       component="div"
       count={dataCount}
       rowsPerPage={state.pageSize}
-      page={pageIndex}
+      page={state.pageIndex}
       onPageChange={handlePageChane}
       onRowsPerPageChange={handleRowsPerPage}
       labelRowsPerPage="행 / 페이지 :"
