@@ -7,7 +7,7 @@ type userMenuListProps = {
   userMenuList: {
     name: string;
     func: () => void;
-    Icon: string;
+    Icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
     path: string;
   }[];
 };
@@ -35,13 +35,10 @@ export const UserMenuList = ({ userMenuList }: userMenuListProps) => {
                     : "none",
               }}
             >
-              <img
-                src={element.Icon}
-                alt="Table Icon"
-                style={{
-                  fill:
-                    location.pathname === element.path ? "#33afe4" : "#262626",
-                }}
+              <element.Icon
+                fill={
+                  location.pathname === element.path ? "#33afe4" : "#262626"
+                }
               />
               <ListItemText
                 primary={element.name}

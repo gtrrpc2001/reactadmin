@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./header.scss";
-import TableIcon from "../../../assets/image/iconmonstr-small-thumbnail-lined.svg";
-import GraphIcon from "../../../assets/image/iconmonstr-medical-7.svg";
-import WardIcon from "../../../assets/image/iconmonstr-medical-1.svg";
+import TableIcon from "../../../assets/image/iconmonstr-small-thumbnail-lined.svg?react";
+import GraphIcon from "../../../assets/image/iconmonstr-medical-7.svg?react";
+import WardIcon from "../../../assets/image/iconmonstr-medical-1.svg?react";
 import { Box, Button, Drawer, IconButton, Typography } from "@mui/material";
 import { saveLog } from "../../../data/login";
 import { useDispatch, useSelector } from "react-redux";
