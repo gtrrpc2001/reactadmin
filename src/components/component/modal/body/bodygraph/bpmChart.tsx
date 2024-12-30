@@ -369,7 +369,7 @@ export const BpmChart = ({
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis dataKey="xAxis" allowDataOverflow={true} domain={[0, 1000]} />
         <YAxis yAxisId="left" domain={[0, yHeight]} width={30} />
-        <Tooltip active={true} />
+        <Tooltip />
         {getLine()}
       </LineChart>
       <Box

@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Loading } from "../../components/component/loading/loading";
 import { HomeBody } from "./body/body";
 import { historyLast } from "../../axios/interface/history_last";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -17,7 +18,13 @@ export default function Home() {
   const loginSelector = useSelector<RootState, boolean>((state) => state.check);
   const InfoDispatch = useDispatch<AppDispatch>();
   const [loading, setLoding] = useState(true);
-  const [data, setData] = useState<historyLast[]>([]);
+
+  const { data } = useQuery<historyLast[], Error>({
+    queryKey: ["historyData", eqSelector],
+    queryFn: async () => getHistory(`/mslLast/webTable?eq=${eqSelector}`),
+    enabled: loginSelector,
+    refetchInterval: loginSelector ? 1000 : false,
+  });
 
   useEffect(() => {
     if (!loginSelector) navigate("/");
@@ -26,17 +33,13 @@ export default function Home() {
   useEffect(() => {
     async function getInfoList() {
       try {
-        const getData: historyLast[] = await getHistory(
-          `/mslLast/webTable?eq=${eqSelector}`
-        );
-        if (loading) setLoding(false);
-
-        if (getData?.length !== 0 && !String(getData).includes("result")) {
-          setData(getData);
-          const names = getData.map((d: any) => {
+        if (data && data?.length > 0 && !String(data).includes("result")) {
+          if (loading) setLoding(false);
+          const names = data.map((d: any) => {
             return { eq: d.eq, eqname: d.eqname };
           });
           InfoDispatch(nameActions.value(names));
+          InfoDispatch(listActions.listHistory(data));
         }
       } catch (E) {
         console.log(E);
@@ -44,20 +47,7 @@ export default function Home() {
       }
     }
 
-    const timer = setInterval(async () => {
-      if (loginSelector) await getInfoList();
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [loginSelector, InfoDispatch, eqSelector, loading]);
-
-  useEffect(() => {
-    const table_modalData = () => {
-      InfoDispatch(listActions.listHistory(data));
-    };
-    table_modalData();
+    getInfoList();
   }, [data, InfoDispatch]);
 
   return <>{loading ? <Loading /> : <HomeBody />}</>;
