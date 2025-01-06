@@ -39,6 +39,7 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
   const [ecgTime, setEcgTime] = useState<string>("");
   const prevEcgTime = useRef<string>("");
   const loginSelector = useSelector<RootState, string>((state) => state.eq);
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
 
   async function getData(
     id: string,
@@ -56,7 +57,7 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
             setEcgTime("");
             break;
           case kindButton.cal_step:
-            result = await getCalStep(id, time, calTime[1], 13);
+            result = await getCalStep(id, time, calTime[1], 13, url);
             v = result?.map((d) => {
               return {
                 step: d.step,
@@ -68,7 +69,7 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
             });
             break;
           default:
-            result = await getGraphBpmHrvArrData(id, time, calTime);
+            result = await getGraphBpmHrvArrData(id, time, calTime, url);
             v = result?.map((d) => {
               return {
                 bpm: getCheckMaxValue(d.bpm),
@@ -101,7 +102,7 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
           "YYYY-MM-DD HH:mm",
           "minute"
         )[1];
-        const result = await getGraphEcgValue(id, startTime, endTime);
+        const result = await getGraphEcgValue(id, startTime, endTime, url);
         const ecgList: SetStateAction<any[]> = [];
         result.forEach((d) => {
           d.ecg.forEach((e) => {

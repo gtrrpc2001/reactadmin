@@ -4,7 +4,6 @@ import "./Room.scss";
 // import { BedInfo } from "../modal/bedModal";
 import { useEffect, useRef, useState } from "react";
 import { historyLast } from "../../../axios/interface/history_last";
-import { getHistory, getProfile } from "../../../axios/api/serverApi";
 import React from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { PatientDroppable } from "../patient/patientDroppable";
@@ -18,6 +17,7 @@ import {
   listActions,
   profileActions,
 } from "../../../components/createslice/createslices";
+import { GetHistory, GetProfile } from "../../../data/room";
 
 type Props = {
   setRoomVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,6 +55,7 @@ export const Room = ({ setRoomVisible }: Props) => {
   const newPatientList = useRef<string[]>([]);
   const firstData = useRef<historyLast[]>([]);
   const Dispatch = useDispatch();
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
 
   const [assignedPatients, setAssignedPatients] = useState<string[]>(
     Array(bedList.length).fill(null)
@@ -79,9 +80,8 @@ export const Room = ({ setRoomVisible }: Props) => {
           battery,
         };
         const times = calculTime(startDate, -1, 1, "YYYY-MM-DD", "days");
-        const Profile = await getProfile(
-          `/mslecgarr/arrCnt?eq=${oneUser.eq}&startDate=${startDate}&endDate=${times[1]}`
-        );
+
+        const Profile = await GetProfile(oneUser.eq, startDate, times[1], url);
         Dispatch(profileActions.profile(Profile));
         Dispatch(cellActions.cellValues(cellVlaue));
         setBedClickEq(eq);
@@ -128,9 +128,7 @@ export const Room = ({ setRoomVisible }: Props) => {
   useEffect(() => {
     async function getInfoList() {
       try {
-        const getData: historyLast[] = await getHistory(
-          `/mslLast/webTable?eq=${eqSelector}`
-        );
+        const getData: historyLast[] = await GetHistory(eqSelector, url);
 
         if (getData?.length != 0 && !String(getData).includes("result")) {
           setData(getData);
@@ -170,9 +168,7 @@ export const Room = ({ setRoomVisible }: Props) => {
   useEffect(() => {
     async function getInfoList() {
       try {
-        const getData: historyLast[] = await getHistory(
-          `/mslLast/webTable?eq=${bedClickEq}`
-        );
+        const getData: historyLast[] = await GetHistory(bedClickEq, url);
 
         if (getData?.length != 0 && !String(getData).includes("result")) {
           return getData;

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useGlobalFilter,
   useSortBy,
@@ -21,10 +21,11 @@ import {
 import { Tbody } from "./tbody";
 import { Modal } from "../modal/modal";
 import { cellActions, profileActions } from "../../createslice/createslices";
-import { getProfile } from "../../../axios/api/serverApi";
 import { calculTime } from "../modal/controller/modalController";
 import { historyLast } from "../../../axios/interface/history_last";
 import { Button, Table as MuiTable, TableContainer } from "@mui/material";
+import { GetProfile } from "../../../data/table";
+import { Combobox } from "../combobox/combobox";
 
 export const Table = () => {
   const columns: any = useMemo(() => COLUMNS, []);
@@ -33,6 +34,11 @@ export const Table = () => {
   const profileDispach = useDispatch();
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const dict = useRef<{ value: any; using: boolean; count: number }[]>([]);
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
+
+  useEffect(() => {
+    dict.current = [];
+  }, [url]);
   const arrangedData = useTableDataMemo(data, dict.current);
 
   const {
@@ -78,9 +84,7 @@ export const Table = () => {
     const times = calculTime(startDate, -1, 1, "YYYY-MM-DD", "days");
     if (column?.id != "selection") {
       if (!row?.isSelected) {
-        const Profile = await getProfile(
-          `/mslecgarr/arrCnt?eq=${eq}&startDate=${startDate}&endDate=${times[1]}`
-        );
+        const Profile = await GetProfile(eq, startDate, times[1], url);
         profileDispach(profileActions.profile(Profile));
         cellDispatch(cellActions.cellValues(cellVlaue));
         setOpenModal(!isOpenModal);
@@ -101,6 +105,7 @@ export const Table = () => {
           >
             옵션
           </Button>
+          <Combobox />
           <Search onSubmit={setGlobalFilter} />
         </div>
       </div>

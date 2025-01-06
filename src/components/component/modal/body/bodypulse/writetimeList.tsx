@@ -34,7 +34,7 @@ export const WritetimeList = React.memo(function WritetimeList({
   const todayArrCountSelector = useSelector<RootState, number>(
     (state) => state.todayArrCount
   );
-
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   const today = useRef<string>(writetime);
   const calDate = useRef<string[]>(
     calculTime(writetime, 0, 1, "YYYY-MM-DD", "days")
@@ -44,11 +44,14 @@ export const WritetimeList = React.memo(function WritetimeList({
 
   useEffect(() => {
     const getList = async () => {
-      const result = await getWritetimeList(eq, writetime, calDate.current[1]);
-      if(!result.includes('result'))
-        setList(result);
-      else
-        setList([]);      
+      const result = await getWritetimeList(
+        eq,
+        writetime,
+        calDate.current[1],
+        url
+      );
+      if (!result.includes("result")) setList(result);
+      else setList([]);
     };
 
     if (today.current != writetime) {
@@ -60,27 +63,32 @@ export const WritetimeList = React.memo(function WritetimeList({
   }, [writetime]);
 
   useEffect(() => {
-    const addResult = async (writetime: string,newCheck:boolean = false) => {
-      const result = await getWritetimeList(eq, writetime, calDate.current[1]);            
+    const addResult = async (writetime: string, newCheck: boolean = false) => {
+      const result = await getWritetimeList(
+        eq,
+        writetime,
+        calDate.current[1],
+        url
+      );
       if (!result.includes("result")) {
-        if(!newCheck){
+        if (!newCheck) {
           setList((prevList) => {
-            return [...prevList,...result];
+            return [...prevList, ...result];
           });
-        }else{
-          setList(result)
+        } else {
+          setList(result);
         }
       }
     };
 
-    const addNewArrWritetime = async () => {      
+    const addNewArrWritetime = async () => {
       const lastItem = list?.length > 0 ? list[list.length - 1] : today.current;
       if (lastItem) {
         if (list.length > 0) {
-          const { writetime } = lastItem;          
+          const { writetime } = lastItem;
           await addResult(writetime);
         } else {
-          await addResult(lastItem,true);
+          await addResult(lastItem, true);
         }
       }
     };

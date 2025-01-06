@@ -24,11 +24,12 @@ import {
   writetimeGraphActions,
 } from "../../../createslice/createslices";
 import { getArr, getBpm, getCalStep } from "../data/data";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Calendar } from "../component/calendar";
 import { getCalendarTime } from "../../../../func/func";
 import { PickerSelectionState } from "@mui/x-date-pickers/internals";
+import { RootState } from "../../../../store/store";
 
 type Props = {
   iconSelect: graphModal;
@@ -51,7 +52,7 @@ export const Writetime = ({
   const GraphValue = useDispatch();
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [calendarPosition, setCalendarPosition] = useState<number>(204);
-
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   useEffect(() => {
     switch (true) {
       case iconSelect.cal || iconSelect.step || iconSelect.pulse:
@@ -158,7 +159,7 @@ export const Writetime = ({
     const timeOne = calculTime(writetime, 0, 1, "YYYY-MM-DD", "day");
     GraphValue(
       bpmGraphActions.value(
-        await getBpm(eq, timeOne[0], timeOne[1], stressCheck)
+        await getBpm(eq, timeOne[0], timeOne[1], url, stressCheck)
       )
     );
     setText(writetime);
@@ -176,7 +177,7 @@ export const Writetime = ({
           const time = calculTime(writetime, -1, 1, "YYYY-MM-DD", "day");
           GraphValue(
             bpmGraphActions.value(
-              await getBpm(eq, time[0], time[1], stressCheck)
+              await getBpm(eq, time[0], time[1], url, stressCheck)
             )
           );
           setText(getWritetimeButtomValue(writetime, 1));
@@ -186,7 +187,7 @@ export const Writetime = ({
           const times = calculTime(writetime, -2, 1, "YYYY-MM-DD", "day");
           GraphValue(
             bpmGraphActions.value(
-              await getBpm(eq, times[0], times[1], stressCheck)
+              await getBpm(eq, times[0], times[1], url, stressCheck)
             )
           );
           setText(getWritetimeButtomValue(writetime, 2));
@@ -218,11 +219,13 @@ export const Writetime = ({
     switch (true) {
       case iconSelect.pulse:
         return GraphValue(
-          barGraphActions.value(await getArr(eq, startDate, endDate, len))
+          barGraphActions.value(await getArr(eq, startDate, endDate, len, url))
         );
       default:
         return GraphValue(
-          barGraphActions.value(await getCalStep(eq, startDate, endDate, len))
+          barGraphActions.value(
+            await getCalStep(eq, startDate, endDate, len, url)
+          )
         );
     }
   };

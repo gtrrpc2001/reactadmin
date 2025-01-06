@@ -5,23 +5,24 @@ import {
 } from "../../components/createslice/createslices";
 import { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getHistory } from "../../axios/api/serverApi";
 import { useEffect, useState } from "react";
 import { Loading } from "../../components/component/loading/loading";
 import { HomeBody } from "./body/body";
 import { historyLast } from "../../axios/interface/history_last";
 import { useQuery } from "@tanstack/react-query";
+import { GetHistory } from "../../data/home";
 
 export default function Home() {
   const navigate = useNavigate();
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
   const loginSelector = useSelector<RootState, boolean>((state) => state.check);
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   const InfoDispatch = useDispatch<AppDispatch>();
   const [loading, setLoding] = useState(true);
 
   const { data } = useQuery<historyLast[], Error>({
-    queryKey: ["historyData", eqSelector],
-    queryFn: async () => getHistory(`/mslLast/webTable?eq=${eqSelector}`),
+    queryKey: ["historyData", eqSelector, url],
+    queryFn: async () => GetHistory(eqSelector, url),
     enabled: loginSelector,
     refetchInterval: loginSelector ? 1000 : false,
   });

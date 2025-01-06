@@ -63,7 +63,7 @@ const GraphOption = (
       itemGap: 32,
       emphasis: {
         iconStyle: {
-          color: "#4D9FC9", // 마우스 오버 시 색상
+          color: "#4D9FC9",
           borderColor: "#4D9FC9",
           borderWidth: 1,
           borderType: "solid",

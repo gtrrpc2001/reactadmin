@@ -14,6 +14,7 @@ import {
     todayArrCountSlice,
     pageSlice,
     exceptColumnIdSlice,
+    comboBoxSlice,
 } from "../components/createslice/createslices";
 import { persistStore } from "redux-persist";
 import { persistReducer } from "redux-persist";
@@ -34,13 +35,14 @@ const rootReducer = combineReducers({
     todayArrCount: todayArrCountSlice.reducer,
     tablePage: pageSlice.reducer,
     exceptColumn: exceptColumnIdSlice.reducer,
+    comboBoxSelected: comboBoxSlice.reducer,
 
 });
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["eq", "check", "names"], // 지속하고 싶은 상태의 key 목록
+    whitelist: ["eq", "check", "names", "comboBoxSelected"], // 지속하고 싶은 상태의 key 목록
     // blacklist: [] // 지속하지 않을 상태의 key 목록도 설정
 };
 

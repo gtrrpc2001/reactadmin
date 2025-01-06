@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { calculTime } from "../../components/component/modal/controller/modalController";
 import { getGraphEcgTime } from "../../data/graph";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 type Props = {
   width: number;
@@ -22,11 +24,11 @@ export const EcgTimePicker = ({
 }: Props) => {
   const [data, setData] = useState<any[]>([]);
   const [isTimeListOpen, setTimeListOpen] = useState(false);
-
+  const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   useEffect(() => {
     async function getData() {
       const times = calculTime(time, -1, 1, "YYYY-MM-DD", "days");
-      const result = await getGraphEcgTime(eq, time, times);
+      const result = await getGraphEcgTime(eq, time, times, url);
 
       setData(result.map((item) => `${item.writetime}0`));
     }
