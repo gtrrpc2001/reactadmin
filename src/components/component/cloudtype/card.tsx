@@ -22,6 +22,13 @@ interface ProjectCardProps {
   onConnect: () => void;
 }
 
+const Status = {
+  RUNNING: "running",
+  STARTING: "starting",
+  BUILDING: "building",
+  STOPPED: "stopped",
+};
+
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   projectName,
   title,
@@ -29,79 +36,70 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   status,
   onConnect,
 }) => {
-  const statusToIconButtonStop = () => {
-    switch (status) {
-      case "running":
-        return true;
-      case "starting":
-        return true;
-      case "building":
-        return true;
-      case "stopped":
-        return false;
-      default:
-        return true;
-    }
-  };
-  const statusToIconButtonStart = () => {
-    switch (status) {
-      case "running":
-        return false;
-      case "starting":
-        return false;
-      case "building":
-        return false;
-      case "stopped":
-        return true;
-      default:
-        return false;
-    }
-  };
+  const getStatusProperties = () => {
+    const properties = {
+      iconButtonStop: true,
+      iconButtonStart: false,
+      text: "",
+      color: "",
+    };
 
-  const statusToText = () => {
     switch (status) {
-      case "running":
-        return "실행 중";
-      case "starting":
-        return "시작 중";
-      case "building":
-        return "빌드 중";
-      case "stopped":
-        return "중지 됨";
+      case Status.RUNNING:
+        properties.iconButtonStop = true;
+        properties.iconButtonStart = false;
+        properties.text = "실행 중";
+        properties.color = "#2496f1";
+        break;
+      case Status.STARTING:
+        properties.iconButtonStop = true;
+        properties.iconButtonStart = false;
+        properties.text = "시작 중";
+        properties.color = "#5ab75c";
+        break;
+      case Status.BUILDING:
+        properties.iconButtonStop = true;
+        properties.iconButtonStart = false;
+        properties.text = "빌드 중";
+        properties.color = "#5ab75c";
+        break;
+      case Status.STOPPED:
+        properties.iconButtonStop = false;
+        properties.iconButtonStart = true;
+        properties.text = "중지 됨";
+        properties.color = "#f75f46";
+        break;
+      default:
+        properties.iconButtonStop = true;
+        properties.iconButtonStart = true;
+        properties.text = "알 수 없음";
+        properties.color = "#000000";
+        break;
     }
-  };
 
-  const statusToColor = () => {
-    switch (status) {
-      case "running":
-        return "#2496f1";
-      case "starting":
-        return "#5ab75c";
-      case "building":
-        return "#5ab75c";
-      case "stopped":
-        return "#f75f46";
-    }
+    return properties;
   };
 
   const [startStat, setStartStat] = useState<boolean>(
-    statusToIconButtonStart()
+    getStatusProperties().iconButtonStart
   );
-  const [stopStat, setStopStat] = useState<boolean>(statusToIconButtonStop());
+  const [stopStat, setStopStat] = useState<boolean>(
+    getStatusProperties().iconButtonStop
+  );
 
   useEffect(() => {
-    setStartStat(statusToIconButtonStart());
-    setStopStat(statusToIconButtonStop());
+    setStartStat(getStatusProperties().iconButtonStart);
+    setStopStat(getStatusProperties().iconButtonStop);
   }, [status]);
 
   const StatusDot = styled("span")<{ status: string }>(({ theme }) => ({
     width: "10px",
     height: "10px",
     borderRadius: "50%",
-    backgroundColor: statusToColor(),
+    backgroundColor: getStatusProperties().color,
     display: "inline-block",
     marginRight: theme.spacing(1),
-    boxShadow: `0 0 6px ${statusToColor()}`,
+    boxShadow: `0 0 6px ${getStatusProperties().color}`,
     opacity: 0.8,
   }));
 
@@ -146,9 +144,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               <StatusDot status={status} />
               <Typography
                 variant="body2"
-                sx={{ marginRight: 0.5, color: statusToColor() }}
+                sx={{ marginRight: 0.5, color: getStatusProperties().color }}
               >
-                {statusToText()}
+                {getStatusProperties().text}
               </Typography>
             </Box>
           </Box>
