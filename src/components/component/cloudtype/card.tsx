@@ -131,7 +131,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   return (
-    <Card variant="outlined" sx={{ maxWidth: 300, margin: 2 }}>
+    <Card variant="outlined" sx={{ maxWidth: 300, margin: 2, borderRadius: 3 }}>
       <CardContent>
         <Box display="flex" alignItems="center">
           {TitleIcon()}
