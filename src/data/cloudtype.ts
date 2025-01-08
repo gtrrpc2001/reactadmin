@@ -4,6 +4,7 @@ import { decrypt, encrypt } from "../func/crypto";
 
 export const getCloudTypeData = async (): Promise<CloudTypeData[]> => {
     const data = await postData<string>('/CloudType/stat');
+    console.log('data: ', data)
     const decryptData = decrypt<CloudTypeData[]>(data);
     return decryptData;
 };
