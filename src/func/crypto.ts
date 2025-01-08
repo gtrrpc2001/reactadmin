@@ -10,8 +10,9 @@ export const decrypt = <T>(encrypted: string): T => {
     const encryptedData = parts[1];
     try {
         const decrypted = CryptoJS.AES.decrypt(encryptedData, getKeyBuffer(SECRET_KEY), { iv: iv });
+        console.log(decrypted)
         const data = decrypted.toString(CryptoJS.enc.Utf8);
-
+        console.log(data)
         return JSON.parse(data) as T;
     } catch (error) {
         console.error('Decryption error:', error);
