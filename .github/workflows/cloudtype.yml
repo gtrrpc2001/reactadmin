@@ -32,15 +32,15 @@ jobs:
               install: npm install -g pnpm; pnpm install;
               buildenv:
                 - name: VITE_API_BASEURL
-                  value: https://port-0-webbackend-2rrqq2blmpy5nvs.sel5.cloudtype.app
+                  value: ${{ secrets.VITE_API_BASEURL }}
                 - name: VITE_API_DEPLOY
-                  value: "1"
+                  value: ${{ secrets.VITE_API_DEPLOY }}
                 - name: VITE_API_ADMIN
-                  value: admin
+                  value: ${{ secrets.VITE_API_ADMIN }}
                 - name: VITE_API_BUSINESS
-                  value: hospital
+                  value: ${{ secrets.VITE_API_BUSINESS }}
                 - name: VITE_API_BUSINESS2
-                  value: hospital2
+                  value: ${{ secrets.VITE_API_BUSINESS2 }}
               rewrites: []
             context:
               git:
