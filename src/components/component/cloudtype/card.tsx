@@ -35,6 +35,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         return true;
       case "starting":
         return true;
+      case "building":
+        return true;
       case "stopped":
         return false;
       default:
@@ -46,6 +48,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       case "running":
         return false;
       case "starting":
+        return false;
+      case "building":
         return false;
       case "stopped":
         return true;
@@ -60,6 +64,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         return "실행 중";
       case "starting":
         return "시작 중";
+      case "building":
+        return "빌드 중";
       case "stopped":
         return "중지 됨";
     }
@@ -70,6 +76,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       case "running":
         return "#2496f1";
       case "starting":
+        return "#5ab75c";
+      case "building":
         return "#5ab75c";
       case "stopped":
         return "#f75f46";
