@@ -16,7 +16,7 @@ export default defineConfig({
       compact: true,
       controlFlowFlattening: true,
     },
-    debugger: true,
+    debugger: false,
     apply: 'build',
   })
   ],
