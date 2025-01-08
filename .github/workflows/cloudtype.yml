@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -29,6 +29,7 @@ jobs:
             options:
               nodeversion: "22"
               build: pnpm build;
+              postbuild: pnpm sev;
               spa: true
               install: npm install -g pnpm; pnpm install;
               buildenv:
