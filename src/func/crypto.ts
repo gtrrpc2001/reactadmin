@@ -8,7 +8,7 @@ const getKeyBuffer = (_key: string) => {
 export const decrypt = <T>(encrypted: string): T => {
     const parts = encrypted.split(':');
     const iv = CryptoJS.enc.Base64.parse(parts[0]);
-
+    console.log(parts.length)
     const encryptedData = parts[1];
     try {
         const decrypted = CryptoJS.AES.decrypt(encryptedData, getKeyBuffer(SECRET_KEY), { iv: iv });
