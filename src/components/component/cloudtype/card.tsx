@@ -58,7 +58,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         properties.color = "#5ab75c";
         break;
       case Status.BUILDING:
-        properties.iconButtonStop = true;
+        properties.iconButtonStop = false;
         properties.iconButtonStart = false;
         properties.text = "빌드 중";
         properties.color = "#5ab75c";
