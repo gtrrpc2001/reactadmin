@@ -36,6 +36,10 @@ export const Header = ({ children }: PropsWithChildren) => {
     navigation("/home/ward");
   };
 
+  const serverClick = () => {
+    navigation("/cloud");
+  };
+
   const HandleLogout = async () => {
     const loginBool = await saveLog(eqSelector, "로그아웃");
     useCheckDispatch(loginActions.loginCheck(!loginBool));
@@ -51,6 +55,7 @@ export const Header = ({ children }: PropsWithChildren) => {
     { name: "사용자 현황", func: titleClick, Icon: TableIcon, path: "/home" },
     { name: "그래프", func: graphClick, Icon: GraphIcon, path: "/home/graph" },
     { name: "병동", func: wardClick, Icon: WardIcon, path: "/home/ward" },
+    { name: "서버", func: serverClick, Icon: WardIcon, path: "/cloud" },
   ];
 
   const adminMenuList = [

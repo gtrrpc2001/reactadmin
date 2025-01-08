@@ -13,6 +13,7 @@ import { HeaderFooter } from "./page/Header_Footer/HeaderFooter";
 import { MainFrame } from "./components/component/login/main_frame";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { CloudType } from "./page/cloudtype/cloudtype";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App: React.FC = () => {
             </Route>
             <Route element={<HeaderFooter />}>
               <Route path="/home" element={<Home />} />,
+              <Route path="/cloud" element={<CloudType />} />,
               <Route path="/home/graph" element={<Graph />} />,
               <Route path="/home/ward" element={<Ward />} />,
             </Route>

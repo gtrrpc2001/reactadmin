@@ -178,9 +178,9 @@ export const postData = async <T>(
   url: string,
   data?: any,
   config?: AxiosRequestConfig
-): Promise<APIResponse<T>> => {
+): Promise<T> => {
   try {
-    const response = await client.post<APIResponse<T>>(url, data, config);
+    const response = await client.post<T>(url, data, config);
     return response.data;
   } catch (error: any) {
     throw new Error(error.message);
