@@ -41,6 +41,8 @@ jobs:
                   value: ${{ secrets.VITE_API_BUSINESS }}
                 - name: VITE_API_BUSINESS2
                   value: ${{ secrets.VITE_API_BUSINESS2 }}
+                - name: VITE_API_BUSINESS2
+                  value: ${{ secrets.VITE_API_DATA_SECRET_KEY }}                  
               rewrites: []
             context:
               git:
