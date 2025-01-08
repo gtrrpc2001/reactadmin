@@ -5,8 +5,8 @@ import javascriptObfuscator from 'vite-plugin-javascript-obfuscator';
 
 export default defineConfig({
   build: {
-    sourcemap: false,
-    minify: 'terser'
+    // sourcemap: false,
+    // minify: 'terser'
   },
   plugins: [react(), svgr(),
   javascriptObfuscator({
