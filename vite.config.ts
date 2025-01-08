@@ -9,16 +9,16 @@ export default defineConfig({
     // minify: 'terser'
   },
   plugins: [react(), svgr(),
-  javascriptObfuscator({
-    include: [/\.jsx?$/, /\.tsx?$/],
-    exclude: [/node_modules/, /\.nuxt/],
-    options: {
-      compact: true,
-      controlFlowFlattening: true,
-    },
-    debugger: false,
-    apply: 'build',
-  })
+    // javascriptObfuscator({
+    //   include: [/\.jsx?$/, /\.tsx?$/],
+    //   exclude: [/node_modules/, /\.nuxt/],
+    //   options: {
+    //     compact: true,
+    //     controlFlowFlattening: true,
+    //   },
+    //   debugger: false,
+    //   apply: 'build',
+    // })
   ],
   server: {
     open: true,
