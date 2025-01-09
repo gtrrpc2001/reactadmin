@@ -22,5 +22,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/global.d.ts"]
+  "include": ["src", "src/svg.d.ts"]
 }

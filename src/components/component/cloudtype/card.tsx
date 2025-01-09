@@ -58,7 +58,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         properties.color = "#5ab75c";
         break;
       case Status.BUILDING:
-        properties.iconButtonStop = false;
+        properties.iconButtonStop = true;
         properties.iconButtonStart = false;
         properties.text = "빌드 중";
         properties.color = "#5ab75c";
@@ -136,13 +136,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <Box display="flex" alignItems="center">
           {TitleIcon()}
           <Box>
-            <Typography variant="h6">{title}</Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography className="text" variant="h6">
+              {title}
+            </Typography>
+            <Typography className="text" variant="body2" color="textSecondary">
               {type}
             </Typography>
             <Box display="flex" alignItems="center">
               <StatusDot status={status} />
               <Typography
+                className="text"
                 variant="body2"
                 sx={{ marginRight: 0.5, color: getStatusProperties().color }}
               >
