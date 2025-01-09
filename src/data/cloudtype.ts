@@ -3,7 +3,6 @@ import { CloudTypeData } from "../axios/interface/cloudtype";
 
 export const getCloudTypeData = async (): Promise<CloudTypeData[]> => {
     const data = await postData<CloudTypeData[]>('/CloudType/stat');
-    // const decryptData = decrypt<CloudTypeData[]>(data);
     return data;
 };
 

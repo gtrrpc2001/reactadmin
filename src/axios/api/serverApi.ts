@@ -10,6 +10,7 @@ const client: Axios = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASEURL}`,
   headers: {
     "Content-Type": "application/json",
+    "cloud-type": `${import.meta.env.VITE_API_DATA_SECRET_KEY}`
   },
 });
 
