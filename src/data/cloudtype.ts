@@ -8,10 +8,10 @@ export const getCloudTypeData = async (): Promise<CloudTypeData[]> => {
     return statData;
 };
 
-export const setCloudTypeStart = async (body: any): Promise<void> => {
-    await postData<void>('/CloudType/start', { data: encrypt(body) });
+export const setCloudTypeStart = async (body: any): Promise<boolean> => {
+    return await postData<boolean>('/CloudType/start', { data: encrypt(body) });
 };
 
-export const setCloudTypeStop = async (body: any): Promise<void> => {
-    await postData<void>('/CloudType/stop', { data: encrypt(body) });
+export const setCloudTypeStop = async (body: any): Promise<boolean> => {
+    return await postData<boolean>('/CloudType/stop', { data: encrypt(body) });
 };
