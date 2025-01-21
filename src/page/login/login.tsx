@@ -5,13 +5,12 @@ import { setInitialParams } from "../../func/func";
 import { motion } from "framer-motion";
 import { Tab, Tabs } from "@mui/material";
 import { Login } from "../../components/component/login/login";
+import { LoginProvider } from "../../components/component/hooks/context/login_context";
 
 const LoginPage = () => {
   const location = useLocation();
   const pageStatus = location.state?.pageStatus || "init";
   const [userType, setUserType] = useState<"일반" | "보호자" | "기업">("일반");
-  const [email, setEmail] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
   const [selectedTab, setSelectedTab] = useState(1);
   const [exitParams, setExitParams] = useState({ opacity: 0, x: 100 });
 
@@ -19,14 +18,6 @@ const LoginPage = () => {
     if (type !== null) {
       setUserType(type);
     }
-  }
-
-  function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(e.target.value);
-  }
-
-  function handlePw(e: React.ChangeEvent<HTMLInputElement>) {
-    setPw(e.target.value);
   }
 
   function handleSelectedTab(_e: SyntheticEvent, value: any) {
@@ -54,17 +45,17 @@ const LoginPage = () => {
           />
           <Tab label="기업" value={2} onClick={() => handleUserType("기업")} />
         </Tabs>
-
-        <Login
-          userType={userType}
-          email={email}
-          pw={pw}
-          setExitAnimation={setExitParams}
-          handleUserType={handleUserType}
-          handleEmail={handleEmail}
-          handlePw={handlePw}
-          page={selectedTab}
-        />
+        <LoginProvider
+          values={{
+            userType,
+            handleUserType,
+            setExitParams,
+            handlePage: handleSelectedTab,
+            page: selectedTab,
+          }}
+        >
+          <Login />
+        </LoginProvider>
       </div>
     </motion.div>
   );

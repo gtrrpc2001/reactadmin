@@ -1,28 +1,20 @@
 import { Login_Info_Button } from "./login_Info_Button";
+import { useLoginContext } from "../../hooks/context/login_context";
 
-type Props = {
-  userType: "일반" | "보호자" | "기업";
-  setExitAnimation: React.Dispatch<
-    React.SetStateAction<{
-      opacity: number;
-      x: number;
-    }>
-  >;
-};
-
-export const Login_Info = ({ userType, setExitAnimation }: Props) => {
+export const Login_Info = () => {
+  const { userType, setExitParams } = useLoginContext();
   return (
     <div className="linkWraper">
       <Login_Info_Button
         type={userType}
         text="회원가입"
-        setExitAnimation={setExitAnimation}
+        setExitAnimation={setExitParams}
       />
 
       <Login_Info_Button
         type={userType}
         text="이메일 및 비밀번호 찾기"
-        setExitAnimation={setExitAnimation}
+        setExitAnimation={setExitParams}
       />
     </div>
   );

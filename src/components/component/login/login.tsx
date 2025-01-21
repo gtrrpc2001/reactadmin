@@ -11,37 +11,19 @@ import { useDispatch } from "react-redux";
 import { Login_Tab } from "./Login_components/login_tab";
 import { Login_Info } from "./Login_components/login_Info";
 import { Login_Button } from "./Login_components/login_Button";
-
-export interface UserLoginProps {
-  email: string;
-  pw: string;
-  userType: "일반" | "보호자" | "기업";
-  handleUserType: (type: "일반" | "보호자" | "기업") => void;
-  handleEmail: React.ChangeEventHandler<HTMLInputElement>;
-  handlePw: React.ChangeEventHandler<HTMLInputElement>;
-  page: number;
-}
-
-interface UserLoginPropsWithAnimation extends UserLoginProps {
-  setExitAnimation: React.Dispatch<
-    React.SetStateAction<{
-      opacity: number;
-      x: number;
-    }>
-  >;
-}
+import { useLoginContext } from "../hooks/context/login_context";
 
 export const email_regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const pwd_regex =
   /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-export const Login = (props: UserLoginPropsWithAnimation) => {
+export const Login = () => {
   const navigate = useNavigate();
   const AppDispatch = useDispatch<AppDispatch>();
   const [isEmailError, setIsEmailError] = useState<boolean>(false);
   const [emailHelperText, setEmailHelperText] = useState<ReactNode>(<></>);
   const emailValid = useRef<boolean>(false);
-
+  const { email, pw, page } = useLoginContext();
   const [isPwError, setIsPwError] = useState<boolean>(false);
   const [pwHelperText, setPwHelperText] = useState<ReactNode>(<></>);
   const pwValid = useRef<boolean>(false);
@@ -53,8 +35,8 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
 
   useEffect(() => {
     // 이메일 이펙트 실행
-    if (props.email.length != 0) {
-      if (isEmailValid(props.email)) {
+    if (email.length != 0) {
+      if (isEmailValid(email)) {
         setIsEmailError(false);
         setEmailHelperText(<></>);
         emailValid.current = true;
@@ -68,12 +50,12 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
       setEmailHelperText(<></>);
       emailValid.current = false;
     }
-  }, [props.email]);
+  }, [email]);
 
   useEffect(() => {
     // 패스워드 이펙트 실행
-    if (props.pw.length != 0) {
-      if (isPwValid(props.pw)) {
+    if (pw.length != 0) {
+      if (isPwValid(pw)) {
         setIsPwError(false);
         setPwHelperText(<></>);
         pwValid.current = true;
@@ -87,7 +69,7 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
       setPwHelperText(<></>);
       pwValid.current = false;
     }
-  }, [props.pw]);
+  }, [pw]);
 
   useEffect(() => {
     // 버튼 이펙트 실행
@@ -100,11 +82,11 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
   }, [emailValid.current, pwValid.current]);
 
   const SuccessLogin = async (loginBool: boolean) => {
-    AppDispatch(eqActions.eq(props.email));
+    AppDispatch(eqActions.eq(email));
     AppDispatch(loginActions.loginCheck(loginBool));
     let logBool = false;
 
-    if (loginBool) logBool = await saveLog(props.email, "로그인");
+    if (loginBool) logBool = await saveLog(email, "로그인");
 
     if (logBool) {
       navigate("/home");
@@ -137,8 +119,8 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
 
   async function handleLogin() {
     let loginBool = false;
-    if (props.page == 1) {
-      loginBool = await tryLogin(props.email, props.pw);
+    if (page == 1) {
+      loginBool = await tryLogin(email, pw);
     }
     await SuccessLogin(loginBool);
   }
@@ -154,24 +136,14 @@ export const Login = (props: UserLoginPropsWithAnimation) => {
         }}
       >
         <Login_Tab
-          page={props.page}
-          userType={props.userType}
-          handleUserType={props.handleUserType}
-          email={props.email}
-          handleEmail={props.handleEmail}
-          pw={props.pw}
-          handlePw={props.handlePw}
           isPwError={isPwError}
           isEmailError={isEmailError}
           emailHelperText={emailHelperText}
           pwHelperText={pwHelperText}
         />
-        <Login_Info
-          userType={props.userType}
-          setExitAnimation={props.setExitAnimation}
-        />
-        <Login_Button disabled={false} page={props.page} />
-        {props.page == 1 && (
+        <Login_Info />
+        <Login_Button disabled={false} />
+        {page == 1 && (
           <>
             <GoogleProvider />
             <AppleLoginButton />

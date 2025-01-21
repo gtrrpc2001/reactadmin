@@ -1,19 +1,9 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { email_regex, pwd_regex } from "../../login/login";
 import { Login_TextFeild } from "../../login/Login_components/login_textfield";
+import { useSignUpContext } from "../../hooks/context/signup_context";
 
-interface signupPage1Props {
-  email: string;
-  pw1: string;
-  pw2: string;
-  handleEmail: React.ChangeEventHandler<HTMLInputElement>;
-  handlePassword1: React.ChangeEventHandler<HTMLInputElement>;
-  handlePassword2: React.ChangeEventHandler<HTMLInputElement>;
-  handlePrevButton: React.MouseEventHandler<HTMLButtonElement>;
-  handleNextButton: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export const SignUpEmailPw = (Props: signupPage1Props) => {
+export const SignUpEmailPw = () => {
   const [emailHelperText, setEmailHelperText] = useState<ReactNode>("");
   const [emailError, setEmailError] = useState<boolean>(false);
   const isEmailValid = useRef<boolean>(false);
@@ -26,19 +16,21 @@ export const SignUpEmailPw = (Props: signupPage1Props) => {
   const [pw2Error] = useState<boolean>(false);
   const isPw2Equal = useRef<boolean>(false);
 
+  const { email, pw1, pw2, setEmail, setPw1, setPw2 } = useSignUpContext();
+
   // const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
 
   useEffect(() => {
-    validateEmail(Props.email);
-  }, [Props.email]);
+    validateEmail(email);
+  }, [email]);
 
   useEffect(() => {
-    validatePassword(Props.pw1);
-  }, [Props.pw1]);
+    validatePassword(pw1);
+  }, [pw1]);
 
   useEffect(() => {
-    isPasswordEqual(Props.pw1, Props.pw2);
-  }, [Props.pw2]);
+    isPasswordEqual(pw1, pw2);
+  }, [pw2]);
 
   useEffect(() => {
     if (isEmailValid.current && isPw1Valid.current && isPw2Equal.current) {
@@ -130,8 +122,10 @@ export const SignUpEmailPw = (Props: signupPage1Props) => {
         className="signupInput"
         type=""
         label="이메일"
-        value={Props.email}
-        onChange={Props.handleEmail}
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
         error={emailError}
         helperText={emailHelperText}
         placeholder=""
@@ -143,8 +137,10 @@ export const SignUpEmailPw = (Props: signupPage1Props) => {
         className="signupInput"
         type="password"
         label="비밀번호"
-        value={Props.pw1}
-        onChange={Props.handlePassword1}
+        value={pw1}
+        onChange={(e) => {
+          setPw1(e.target.value);
+        }}
         error={pw1Error}
         helperText={pw1HelperText}
         placeholder=""
@@ -156,8 +152,10 @@ export const SignUpEmailPw = (Props: signupPage1Props) => {
         className="signupInput"
         type="password"
         label="비밀번호 확인"
-        value={Props.pw2}
-        onChange={Props.handlePassword2}
+        value={pw2}
+        onChange={(e) => {
+          setPw2(e.target.value);
+        }}
         error={pw2Error}
         helperText={pw2HelperText}
         placeholder=""

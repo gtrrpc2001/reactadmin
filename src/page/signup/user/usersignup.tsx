@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Grid2 } from "@mui/material";
 import "./usersignup.scss";
 // import axios from "axios";
@@ -10,94 +10,15 @@ import { SignupPages } from "../../../components/component/signup/user/userSignu
 import { SignUpEmailPw } from "../../../components/component/signup/user/emailpw";
 import { SignUpUserInfo } from "../../../components/component/signup/user/signup_info";
 import { BackButton } from "../../../components/component/findAccount/component/backButton";
+import { SignUpProvider } from "../../../components/component/hooks/context/signup_context";
 
 export const UserSignUp = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const pageStatus = location.state?.pageStatus || "init";
-  /////////////////////////////////////////////////////////////////////////
-  //                                                                     //
-  // 회원가입 페이지 1                                                    //
-  //                                                                     //
-  /////////////////////////////////////////////////////////////////////////
-  const [email, setEmail] = useState<string>("");
-  const [pw1, setPw1] = useState<string>("");
-  const [pw2, setPw2] = useState<string>("");
   const initialParams = setInitialParams(pageStatus);
   const [exitParams, setExitParams] = useState({ opacity: 0, x: 100 });
-
-  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePassword1 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPw1(e.target.value);
-  };
-
-  const handlePassword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPw2(e.target.value);
-  };
-
-  // const handleButton = (_e: React.MouseEvent<HTMLButtonElement>) => {
-  //   axios
-  //     .post("/msl/api_getdata", {
-  //       kind: "checkReg",
-  //       eq: email,
-  //       email: email,
-  //       password1: pw1,
-  //       // eqname: 사용자 이름,
-  //       // phone: 핸드폰번호,
-  //       // sex: 성별,
-  //       // weight: 몸무게,
-  //       // height: 키,
-  //       // age: 나이
-  //       // birth: 생년월일
-  //     })
-  //     .then((resp) => {
-  //       console.log(resp);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  /////////////////////////////////////////////////////////////////////////
-  //                                                                     //
-  // 회원가입 페이지 2                                                    //
-  //                                                                     //
-  /////////////////////////////////////////////////////////////////////////
-
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [sex, setSex] = useState<string>("");
-  const [birth, setBirth] = useState<string | null>("");
-  const [weight, setWeight] = useState<string>("");
-  const [height, setHeight] = useState<string>("");
-
-  function handleFirstName(e: React.ChangeEvent<HTMLInputElement>) {
-    setFirstName(e.target.value);
-  }
-
-  function handleLastName(e: React.ChangeEvent<HTMLInputElement>) {
-    setLastName(e.target.value);
-  }
-
-  function handleSex(value: string) {
-    setSex(value);
-  }
-
-  function handleBirth(value: string | null) {
-    setBirth(value);
-  }
-
-  function handleWeight(e: React.ChangeEvent<HTMLInputElement>) {
-    setWeight(e.target.value);
-  }
-
-  function handleHeight(e: React.ChangeEvent<HTMLInputElement>) {
-    setHeight(e.target.value);
-  }
-  const [pageNumber, setPageNumber] = useState<number>(1); // 페이지 번호
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const maxPageNumber = 5;
 
   function handlePageNumberUp() {
@@ -109,16 +30,26 @@ export const UserSignUp = () => {
   }
 
   function handleUserSubmit() {
-    console.log({
-      email: email,
-      pw: pw1,
-      firstName: firstName,
-      lastName: lastName,
-      birth: birth,
-      sex: sex,
-      height: height,
-      weight: weight,
-    });
+    //   axios
+    //     .post("/msl/api_getdata", {
+    //       kind: "checkReg",
+    //       eq: email,
+    //       email: email,
+    //       password1: pw1,
+    //       // eqname: 사용자 이름,
+    //       // phone: 핸드폰번호,
+    //       // sex: 성별,
+    //       // weight: 몸무게,
+    //       // height: 키,
+    //       // age: 나이
+    //       // birth: 생년월일
+    //     })
+    //     .then((resp) => {
+    //       console.log(resp);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
   }
 
   const renderPageHandler: { [key: number]: JSX.Element } = {
@@ -127,36 +58,8 @@ export const UserSignUp = () => {
         <Typography>{"사용자 이용 약관"}</Typography>
       </div>
     ),
-    2: (
-      <SignUpEmailPw
-        email={email}
-        pw1={pw1}
-        pw2={pw2}
-        handleEmail={handleEmail}
-        handlePassword1={handlePassword1}
-        handlePassword2={handlePassword2}
-        handlePrevButton={handlePageNumberDown}
-        handleNextButton={handlePageNumberUp}
-      />
-    ),
-    3: (
-      <SignUpUserInfo
-        firstName={firstName}
-        lastName={lastName}
-        sex={sex}
-        birth={birth}
-        weight={weight}
-        height={height}
-        handleFirstName={handleFirstName}
-        handleLastName={handleLastName}
-        handleSex={handleSex}
-        handleBirth={handleBirth}
-        handleWeight={handleWeight}
-        handleHeight={handleHeight}
-        handlePrevButton={handlePageNumberDown}
-        handleNextButton={handlePageNumberUp}
-      />
-    ),
+    2: <SignUpEmailPw />,
+    3: <SignUpUserInfo />,
     4: <></>,
     5: (
       <Grid2 size={12} className="GridRow-center">
@@ -204,14 +107,17 @@ export const UserSignUp = () => {
           </Grid2>
           <Grid2 size={4} className="GridItem-center"></Grid2>
         </Grid2>
-
         <form>
           <SignupPages
             pageNumber={pageNumber}
             handlePrevButton={PrevButtonHandler[pageNumber]}
             handleNextButton={NextButtonHandler[pageNumber]}
           >
-            {renderPageHandler[pageNumber]}
+            <SignUpProvider
+              values={{ handlePageNumberUp, handlePageNumberDown }}
+            >
+              {renderPageHandler[pageNumber]}
+            </SignUpProvider>
           </SignupPages>
         </form>
       </motion.div>

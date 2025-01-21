@@ -1,9 +1,9 @@
-import { UserLoginProps } from "../login";
 import { Login_TextFeild } from "./login_textfield";
 import { Login_Tab_Button } from "./login_tab_button";
 import { ReactNode } from "react";
+import { useLoginContext } from "../../hooks/context/login_context";
 
-export interface Login_tabProps extends UserLoginProps {
+export interface Login_tabProps {
   emailHelperText: ReactNode;
   pwHelperText: ReactNode;
   isEmailError: boolean;
@@ -11,22 +11,18 @@ export interface Login_tabProps extends UserLoginProps {
 }
 
 export const Login_Tab = (props: Login_tabProps) => {
+  const { email, pw, handleEmail, handlePw, page } = useLoginContext();
   return (
     <>
-      {props.page == 1 && (
-        <Login_Tab_Button
-          userType={props.userType}
-          handleUserType={props.handleUserType}
-        />
-      )}
+      {page == 1 && <Login_Tab_Button />}
       <Login_TextFeild
         id="email"
         className="logininput"
         error={props.isEmailError}
-        value={props.email}
+        value={email}
         type="text"
         placeholder="youremail@domain.com"
-        onChange={props.handleEmail}
+        onChange={handleEmail}
         label="이메일"
         helperText={props.emailHelperText}
         autoComplete="username"
@@ -35,10 +31,10 @@ export const Login_Tab = (props: Login_tabProps) => {
         id="password"
         className="logininput"
         error={props.isPwError}
-        value={props.pw}
+        value={pw}
         type="password"
         placeholder="영문, 숫자, 특수문자 포함 8자 이상"
-        onChange={props.handlePw}
+        onChange={handlePw}
         label="비밀번호"
         helperText={props.pwHelperText}
         autoComplete="current-password"

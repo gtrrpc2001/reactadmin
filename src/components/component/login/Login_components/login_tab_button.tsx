@@ -1,17 +1,14 @@
 import { Grid2, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useLoginContext } from "../../hooks/context/login_context";
 
-type Props = {
-  userType: "일반" | "보호자" | "기업";
-  handleUserType: (type: "일반" | "보호자" | "기업") => void;
-};
-
-export const Login_Tab_Button = (props: Props) => {
+export const Login_Tab_Button = () => {
+  const { userType, handleUserType } = useLoginContext();
   return (
     <Grid2 size={12} className="GridRow-center">
       <ToggleButtonGroup
-        value={props.userType}
+        value={userType}
         exclusive
-        onChange={(_e, type) => props.handleUserType(type)}
+        onChange={(_e, type) => handleUserType(type)}
       >
         <ToggleButton className="UserTypeSelect" value={"일반"}>
           일반

@@ -10,27 +10,24 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useSignUpContext } from "../../hooks/context/signup_context";
 
-import React from "react";
+export const SignUpUserInfo = () => {
+  const {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    sex,
+    setSex,
+    birth,
+    setBirth,
+    weight,
+    setWeight,
+    height,
+    setHeight,
+  } = useSignUpContext();
 
-interface SignupPage2Props {
-  firstName: string;
-  lastName: string;
-  sex: string;
-  birth: string | null;
-  weight: string;
-  height: string;
-  handleFirstName: React.ChangeEventHandler<HTMLInputElement>;
-  handleLastName: React.ChangeEventHandler<HTMLInputElement>;
-  handleBirth: (value: string | null) => void;
-  handleSex: (value: string) => void;
-  handleWeight: React.ChangeEventHandler<HTMLInputElement>;
-  handleHeight: React.ChangeEventHandler<HTMLInputElement>;
-  handleNextButton: React.MouseEventHandler<HTMLButtonElement>;
-  handlePrevButton: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export const SignUpUserInfo = (Props: SignupPage2Props) => {
   return (
     <Grid2 container>
       <Grid2 size={8} className="GridRow-center" sx={{ paddingRight: 2 }}>
@@ -41,8 +38,8 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
           type=""
           variant="outlined"
           label="이름"
-          value={Props.firstName}
-          onChange={Props.handleFirstName}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
         />
       </Grid2>
 
@@ -54,25 +51,25 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
           type=""
           variant="outlined"
           label="성"
-          value={Props.lastName}
-          onChange={Props.handleLastName}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
         />
       </Grid2>
       <Grid2 size={8} className="GridRow-center">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             className="BirthPicker"
-            value={Props.birth}
+            value={birth}
             format="YYYY-MM-DD"
-            onChange={(value: any, _: any) => Props.handleBirth(value)}
+            onChange={(value: any, _: any) => setBirth(value)}
           />
         </LocalizationProvider>
       </Grid2>
       <Grid2 size={4} className="GridRow-center">
         <ToggleButtonGroup
-          value={Props.sex}
+          value={sex}
           exclusive
-          onChange={(_, value) => Props.handleSex(value)}
+          onChange={(_, value) => setSex(value)}
         >
           <ToggleButton className="sexSelect" value={"남자"}>
             남
@@ -92,8 +89,8 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
             id="weight"
             className="signupInput"
             type="number"
-            value={Props.height}
-            onChange={Props.handleHeight}
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
             endAdornment={<InputAdornment position="end">cm</InputAdornment>}
           />
         </FormControl>
@@ -109,8 +106,8 @@ export const SignUpUserInfo = (Props: SignupPage2Props) => {
             id="weight"
             className="signupInput"
             type="number"
-            value={Props.weight}
-            onChange={Props.handleWeight}
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
             endAdornment={<InputAdornment position="end">kg</InputAdornment>}
           />
         </FormControl>

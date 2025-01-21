@@ -118,21 +118,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const startClickHandler = async () => {
     if (startStat) {
-      const result = await setCloudTypeStart({
-        projectName: projectName,
-        name: title,
-      });
-      iconClickStat(!result, result);
+      iconClickStat(false, true);
+      await setCloudTypeStart({ projectName: projectName, name: title });
     }
   };
 
   const stopClickHandler = async () => {
     if (stopStat) {
-      const result = await setCloudTypeStop({
-        projectName: projectName,
-        name: title,
-      });
-      iconClickStat(result, !result);
+      iconClickStat(true, false);
+      await setCloudTypeStop({ projectName: projectName, name: title });
     }
   };
 
