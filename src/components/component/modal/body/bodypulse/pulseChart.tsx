@@ -20,6 +20,8 @@ type Props = {
 
 export const PulseChart = ({ eq, time }: Props) => {
   const [data, setData] = useState<any[]>([]);
+  const [tooltipShow, setTooltipShow] = useState<boolean>(false);
+
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   useEffect(() => {
     const getData = async () => {
@@ -34,7 +36,13 @@ export const PulseChart = ({ eq, time }: Props) => {
 
   return (
     <Box sx={{ height: 310, marginTop: 2 }}>
-      <LineChart width={330} height={310} data={data}>
+      <LineChart
+        width={330}
+        height={310}
+        data={data}
+        onMouseEnter={() => setTooltipShow(true)}
+        onMouseLeave={() => setTooltipShow(false)}
+      >
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis
           dataKey="xAxis"
@@ -44,7 +52,7 @@ export const PulseChart = ({ eq, time }: Props) => {
           height={0}
         />
         <YAxis yAxisId="left" domain={[0, 1000]} width={30} />
-        <Tooltip active={true} />
+        <Tooltip active={tooltipShow} />
         <Line
           yAxisId="left"
           type="monotone"
