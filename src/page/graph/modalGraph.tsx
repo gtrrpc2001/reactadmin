@@ -33,6 +33,8 @@ export const ModalRealTimeGraph = ({
   const [open, setOpen] = useState<boolean>(true);
   // let [dataArr] = useState<{ ecg: number }[]>([]);
   const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
+  const [tooltipShow, setTooltipShow] = useState<boolean>(false);
+
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   const EcgData = async (result: number[]) => {
     if (open && dataArr?.length < 500) {
@@ -78,7 +80,13 @@ export const ModalRealTimeGraph = ({
   return (
     <>
       {open == false ? (
-        <LineChart data={dataArr} width={width} height={height}>
+        <LineChart
+          data={dataArr}
+          width={width}
+          height={height}
+          onMouseEnter={() => setTooltipShow(true)}
+          onMouseLeave={() => setTooltipShow(false)}
+        >
           <CartesianGrid stroke="#f5f5f5" />
           <XAxis
             dataKey="xAxis"
@@ -88,7 +96,7 @@ export const ModalRealTimeGraph = ({
             height={0}
           />
           <YAxis yAxisId="left" domain={[0, 1000]} width={Ywidth} />
-          <Tooltip active={true} />
+          <Tooltip active={tooltipShow} />
           <Line
             yAxisId="left"
             type="monotone"
