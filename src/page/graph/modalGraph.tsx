@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import { GetEcg } from "../../data/graph";
+import { GetEcg, GetEcgIdx, GetEcgTemp } from "../../data/graph";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
@@ -30,28 +30,14 @@ export const ModalRealTimeGraph = ({
   height,
   Ywidth,
 }: Porps) => {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
+  const [startIdx, setStartIdx] = useState<number>(0);
 
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   const EcgData = async (result: number[]) => {
-    if (open && dataArr?.length < 500) {
-      let newData: { ecg: number }[] = [];
-      if (result.length > 1000) {
-        newData = result.slice(0, 999).map((d) => ({ ecg: d }));
-      } else {
-        newData = result.map((d) => ({ ecg: d }));
-      }
-      setDataArr((dataArr) => [...dataArr, ...newData]);
-      if (dataArr?.length >= 420) {
-        setOpen(false);
-      }
-    } else {
-      for (const d of result) {
-        dataArr.shift();
-        dataArr.push({ ecg: d });
-      }
-    }
+    const newData = result.map((data) => ({ ecg: data }));
+    setDataArr([...dataArr, ...newData].slice(-700));
   };
 
   const getEcgData = async () => {
@@ -67,9 +53,38 @@ export const ModalRealTimeGraph = ({
     }
   };
 
+  const getEcgTempData = async () => {
+    try {
+      const rows = await GetEcgTemp(eq, startIdx, url);
+      let newDataArr = [...dataArr];
+      if (rows) {
+        setStartIdx(rows[rows.length - 1].idx);
+        rows.map((row) => {
+          const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
+          newDataArr = [...newDataArr, ...ecgList];
+        });
+
+        setDataArr(newDataArr.slice(-700));
+      }
+    } catch (E) {
+      console.log(E);
+    }
+  };
+
+  useEffect(() => {
+    const getEcgIdx = async (eq: string, url: string) => {
+      const result = await GetEcgIdx(eq, url);
+      setStartIdx(result);
+    };
+
+    getEcgIdx(eq, url);
+  }, []);
+
   useEffect(() => {
     if (open_close) {
-      getEcgData();
+      if (startIdx) {
+        getEcgTempData();
+      }
     } else {
       setDataArr([]);
     }
@@ -95,6 +110,7 @@ export const ModalRealTimeGraph = ({
             dataKey="ecg"
             stroke="#8884d8"
             dot={false}
+            animationDuration={0}
           />
         </LineChart>
       ) : (

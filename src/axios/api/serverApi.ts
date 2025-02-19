@@ -147,6 +147,31 @@ export const getEcg = async (
   }
 };
 
+export const getEcgTemp = async (
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<{ idx: number, ecgpacket: number[] }[]> => {
+  try {
+    const response = await client.get<{ idx: number, ecgpacket: number[] }[]>(url, config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+
+export const getEcgIdx = async (
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<number> => {
+  try {
+    const response = await client.get<number>(url, config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
 export const getGraphEcg = async (
   url: string,
   config?: AxiosRequestConfig
