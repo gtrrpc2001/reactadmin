@@ -1,6 +1,8 @@
 import {
   getData,
   getEcg,
+  getEcgIdx,
+  getEcgTemp,
   getEcgTime,
   getGraphBpmHrvArr,
   getGraphEcg,
@@ -59,3 +61,12 @@ export const GetEcg = async (eq: string, startDate: string, url: string) => {
   return result
 }
 
+export const GetEcgTemp = async (eq: string, startIdx: number, url: string) => {
+  const result = await getEcgTemp(`/mslecgbyte/EcgTemp?eq=${eq}&startIdx=${startIdx}&name=${url}`);
+  return result
+}
+
+export const GetEcgIdx = async (eq: string, url: string) => {
+  const result = await getEcgIdx(`/mslecgbyte/EcgIdx?eq=${eq}&name=${url}`)
+  return result
+}
