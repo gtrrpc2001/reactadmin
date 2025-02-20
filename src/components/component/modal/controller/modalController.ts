@@ -170,16 +170,20 @@ export const getClickDayGubunButton = (id: string): dayGubunButtonModal => {
 export const getClickGraphKindButton = (id: string): graphKindButton => {
   const cal_step = "cal_step";
   const ecg = "ecg";
+  const stress = "stress";
   let iconClick: graphKindButton = {
     bpm_hrv_arr: true,
     cal_step: false,
+    stress: false,
     ecg: false,
   };
   switch (true) {
     case id == ecg:
-      return { bpm_hrv_arr: false, cal_step: false, ecg: true };
+      return { bpm_hrv_arr: false, cal_step: false, stress: false, ecg: true };
     case id == cal_step:
-      return { bpm_hrv_arr: false, cal_step: true, ecg: false };
+      return { bpm_hrv_arr: false, cal_step: true, stress: false, ecg: false };
+    case id == stress:
+      return { bpm_hrv_arr: false, cal_step: false, stress: true, ecg: false }
     default:
       return iconClick;
   }

@@ -6,15 +6,16 @@ import HeartCheckIcon from "../../assets/image/heart_check.svg?raw";
 import RunningIcon from "../../assets/image/directions_run.svg?raw";
 import SignalIcon from "../../assets/image/vital_signs.svg?raw";
 import DownloadIcon from "../../assets/image/download.svg?raw";
+import StressIcon from "../../assets/image/sentiment_stressed.svg?raw";
 
 const GraphOption = (
   kind: graphKindButton,
   zoomInside: boolean,
   kindButtonHandler: (id: string) => void,
-  downloadECG: () => void
+  downloadFunc: () => void
 ) => {
   const loginSelector = useSelector<RootState, string>((state) => state.eq);
-  const ecgDownloadShow =
+  const downloadShow =
     loginSelector == import.meta.env.VITE_API_ADMIN ? true : false;
   const setIconColor = () => {
     return {
@@ -60,7 +61,7 @@ const GraphOption = (
       left: "auto",
       top: "middle",
       itemSize: 30,
-      itemGap: 32,
+      itemGap: 16,
       emphasis: {
         iconStyle: {
           color: "#4D9FC9",
@@ -90,6 +91,16 @@ const GraphOption = (
             kindButtonHandler("cal_step");
           },
         },
+        myStressData: {
+          show: true,
+          title: "스트레스",
+          icon: extractPathData(StressIcon), // 수정 영역
+          iconStyle: kind.stress ? setIconColor() : {},
+          onclick: () => {
+            kindButtonHandler("stress");
+          },
+        },
+
         myEcgData: {
           show: true,
           title: "ECG",
@@ -100,11 +111,14 @@ const GraphOption = (
           },
         },
         myEcgDownload: {
-          show: kind.ecg && ecgDownloadShow ? true : false,
+          show:
+            (kind.ecg || kind.bpm_hrv_arr || kind.stress) && downloadShow
+              ? true
+              : false,
           title: "다운로드",
           icon: extractPathData(DownloadIcon), // 수정 영역
           onclick: () => {
-            downloadECG();
+            downloadFunc();
           },
         },
       },
@@ -142,10 +156,10 @@ export const EcgGraphOption = (
   zoomInside: boolean,
   xaxisFormatter: (item: string, index: number) => void,
   kindButtonHandler: (id: string) => void,
-  downloadECG: () => void
+  downloadFunc: () => void
 ) => {
   return {
-    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadECG),
+    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
     xAxis: {
       axisTick: {
         show: false,
@@ -181,10 +195,10 @@ export const HrvGraphOption = (
   zoomInside: boolean,
   xaxisFormatter: (item: string, index: number) => void,
   kindButtonHandler: (id: string) => void,
-  downloadECG: () => void
+  downloadFunc: () => void
 ) => {
   return {
-    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadECG),
+    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
     color: ["#5C7BD9", "#9FE080", "#ff0000"],
     xAxis: {
       axisTick: {
@@ -253,16 +267,72 @@ export const HrvGraphOption = (
   };
 };
 
+export const StressGraphOption = (
+  kind: graphKindButton,
+  data: any[],
+  zoomInside: boolean,
+  xaxisFormatter: (item: string, index: number) => void,
+  kindButtonHandler: (id: string) => void,
+  downloadFunc: () => void
+) => {
+  return {
+    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
+    color: ["#ff0000", "#0000ff"],
+    xAxis: {
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        formatter: (value: string, index: number) =>
+          xaxisFormatter(value, index),
+        interval: 0,
+        rotate: 45,
+      },
+      type: "category",
+      data: data.map((item) => item.writetime),
+    },
+    yAxis: {
+      type: "value",
+      min: 0,
+      max: 100,
+    },
+    series: [
+      {
+        name: "SNS",
+        data: data.map((item) => item.sns_percent),
+        type: "line",
+        smooth: false,
+        symbol: "none",
+      },
+      {
+        name: "PNS",
+        data: data.map((item) => item.pns_percent),
+        type: "line",
+        smooth: false,
+        symbol: "none",
+      },
+    ],
+
+    legend: {
+      show: true,
+      bottom: 0,
+      right: 40,
+      orient: "horizontal",
+      icon: "rect",
+    },
+  };
+};
+
 export const LivingGraphOption = (
   kind: graphKindButton,
   data: any[],
   zoomInside: boolean,
   xaxisFormatter: (item: string, index: number) => void,
   kindButtonHandler: (id: string) => void,
-  downloadECG: () => void
+  downloadFunc: () => void
 ) => {
   return {
-    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadECG),
+    ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
 
     xAxis: {
       axisTick: {

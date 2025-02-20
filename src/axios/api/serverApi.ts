@@ -75,6 +75,19 @@ export const getGraphCalStep = async (
   }
 };
 
+export const getStress = async (
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<StressData[]> => {
+  try {
+    const response = await client.get<StressData[]>(url, config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
+
+
 export const getGraphArr = async (
   url: string,
   config?: AxiosRequestConfig
@@ -93,18 +106,6 @@ export const getGraphBpm = async (
 ): Promise<graphBpm[]> => {
   try {
     const response = await client.get<graphBpm[]>(url, config);
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
-
-export const getStress = async (
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<StressData[]> => {
-  try {
-    const response = await client.get<StressData[]>(url, config);
     return response.data;
   } catch (error: any) {
     throw new Error(error.message);

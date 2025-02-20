@@ -5,6 +5,7 @@ import {
   EcgGraphOption,
   HrvGraphOption,
   LivingGraphOption,
+  StressGraphOption,
 } from "./graphOption";
 import { Box } from "@mui/material";
 
@@ -14,6 +15,8 @@ type Props = {
   writetime: string;
   kind: graphKindButton;
   kindButtonHandler: (id: string) => void;
+  downloadHRV: () => void;
+  downloadStress: () => void;
   downloadECG: () => void;
 };
 
@@ -23,6 +26,8 @@ export const Graphs = ({
   id,
   writetime,
   kindButtonHandler,
+  downloadHRV,
+  downloadStress,
   downloadECG,
 }: Props) => {
   const x = useRef<string>("");
@@ -59,6 +64,15 @@ export const Graphs = ({
         kindButtonHandler,
         downloadECG
       );
+    } else if (kind.stress) {
+      return StressGraphOption(
+        kind,
+        data,
+        id && writetime ? true : false,
+        formatXAxis,
+        kindButtonHandler,
+        downloadStress
+      );
     } else {
       return HrvGraphOption(
         kind,
@@ -66,7 +80,7 @@ export const Graphs = ({
         id && writetime ? true : false,
         formatXAxis,
         kindButtonHandler,
-        downloadECG
+        downloadHRV
       );
     }
   }, [kind, data, formatXAxis, kindButtonHandler]);
