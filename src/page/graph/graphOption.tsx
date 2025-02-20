@@ -312,7 +312,6 @@ export const StressGraphOption = (
         symbol: "none",
       },
     ],
-
     legend: {
       show: true,
       bottom: 0,
@@ -320,6 +319,19 @@ export const StressGraphOption = (
       orient: "horizontal",
       icon: "rect",
     },
+    dataZoom: [
+      {
+        type: "slider",
+        start: 0,
+        end: 100,
+        bottom: 30,
+        brushSelect: false,
+        handleSize: "0%",
+      },
+      {
+        type: "inside",
+      },
+    ],
   };
 };
 
