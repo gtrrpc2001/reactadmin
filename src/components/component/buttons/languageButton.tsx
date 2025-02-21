@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageIcon from "../../../assets/image/language.svg?react";
 
