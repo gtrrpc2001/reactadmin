@@ -35,7 +35,7 @@ export const LanguageButton = () => {
     setSelectedLanguage(
       option.filter((item) => item.value == i18n.language)[0].text
     );
-  });
+  }, []);
 
   return (
     <div>
