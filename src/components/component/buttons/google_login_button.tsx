@@ -2,10 +2,12 @@ import { Button, Grid2 } from "@mui/material";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import googleImage from "../../../assets/image/g-logo.png";
+import { useTranslation } from "react-i18next";
 
 // const clientId = "ClientID";
 
 export const GoogleLoginButton = () => {
+  const [t, _i18n] = useTranslation();
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -28,6 +30,7 @@ export const GoogleLoginButton = () => {
       onClick={() => googleLogin()}
       variant="outlined"
       className="GoogleLoginButton"
+      sx={{ textTransform: "none" }}
     >
       <img
         src={googleImage}
@@ -38,7 +41,7 @@ export const GoogleLoginButton = () => {
           verticalAlign: "middle",
         }}
       />
-      구글 계정으로 로그인
+      {t("Sign in With Google")}
     </Button>
   );
 };

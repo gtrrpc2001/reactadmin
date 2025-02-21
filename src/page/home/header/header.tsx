@@ -16,8 +16,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { AdminMenuList } from "../../../components/component/menu/adminMenuList";
 import { UserMenuList } from "../../../components/component/menu/userMenuList";
+import { useTranslation } from "react-i18next";
 
 export const Header = ({ children }: PropsWithChildren) => {
+  const [t, _i18n] = useTranslation();
   const navigation = useNavigate();
   const eqSelector = useSelector<RootState, string>((state) => state.eq);
   const useCheckDispatch = useDispatch<AppDispatch>();
@@ -53,20 +55,30 @@ export const Header = ({ children }: PropsWithChildren) => {
   };
 
   const appBarList = [
-    { name: "사용자 현황", func: titleClick, Icon: TableIcon, path: "/home" },
-    { name: "그래프", func: graphClick, Icon: GraphIcon, path: "/home/graph" },
-    { name: "병동", func: wardClick, Icon: WardIcon, path: "/home/ward" },
-    { name: "서버", func: serverClick, Icon: Server, path: "/cloud" },
+    { name: t("User Info"), func: titleClick, Icon: TableIcon, path: "/home" },
+    {
+      name: t("Graph"),
+      func: graphClick,
+      Icon: GraphIcon,
+      path: "/home/graph",
+    },
+    {
+      name: t("Hospital"),
+      func: wardClick,
+      Icon: WardIcon,
+      path: "/home/ward",
+    },
+    { name: t("Server"), func: serverClick, Icon: Server, path: "/cloud" },
   ];
 
   const adminMenuList = [
     {
-      name: "제품",
+      name: t("Product"),
       Icon: LocalMallIcon,
       contents: [
-        { name: "현황", func: () => {}, path: "#" },
-        { name: "등록", func: () => {}, path: "#" },
-        { name: "수정", func: () => {}, path: "#" },
+        { name: t("Product Current"), func: () => {}, path: "#" },
+        { name: t("Product Regist"), func: () => {}, path: "#" },
+        { name: t("Product Edit"), func: () => {}, path: "#" },
       ],
     },
   ];
@@ -102,7 +114,9 @@ export const Header = ({ children }: PropsWithChildren) => {
               variant="outlined"
             >
               <LogoutIcon />
-              <Typography className="logOutText">로그아웃</Typography>
+              <Typography sx={{ textTransform: "none" }} className="logOutText">
+                {t("Sign Out")}
+              </Typography>
             </Button>
           </div>
         </Drawer>

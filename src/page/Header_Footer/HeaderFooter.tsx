@@ -4,6 +4,7 @@ import { Header } from "../home/header/header";
 import "../home/home.scss";
 import "./HeaderFooter.scss";
 import { Outlet } from "react-router-dom";
+import { LanguageButton } from "../../components/component/buttons/languageButton";
 
 export const HeaderFooter = () => {
   const [scale, setScale] = useState(1);
@@ -49,11 +50,12 @@ export const HeaderFooter = () => {
         <Header>
           <div className="body" style={isHomeBody ? scaled : {}}>
             <div className="mainBody">
+              <LanguageButton />
               <Outlet />
             </div>
           </div>
           <div className="footer">
-            <Footer language={true} />
+            <Footer />
           </div>
         </Header>
       </div>

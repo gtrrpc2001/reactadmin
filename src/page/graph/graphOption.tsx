@@ -7,6 +7,7 @@ import RunningIcon from "../../assets/image/directions_run.svg?raw";
 import SignalIcon from "../../assets/image/vital_signs.svg?raw";
 import DownloadIcon from "../../assets/image/download.svg?raw";
 import StressIcon from "../../assets/image/sentiment_stressed.svg?raw";
+import { useTranslation } from "react-i18next";
 
 const GraphOption = (
   kind: graphKindButton,
@@ -14,6 +15,7 @@ const GraphOption = (
   kindButtonHandler: (id: string) => void,
   downloadFunc: () => void
 ) => {
+  const [t, _i18n] = useTranslation();
   const loginSelector = useSelector<RootState, string>((state) => state.eq);
   const downloadShow =
     loginSelector == import.meta.env.VITE_API_ADMIN ? true : false;
@@ -58,7 +60,7 @@ const GraphOption = (
     toolbox: {
       show: true,
       orient: "vertical",
-      left: "auto",
+      left: "5",
       top: "middle",
       itemSize: 30,
       itemGap: 16,
@@ -75,8 +77,8 @@ const GraphOption = (
       feature: {
         myHrvData: {
           show: true,
-          title: "진단",
-          icon: extractPathData(HeartCheckIcon), // 수정 영역
+          title: t("Diagnosis"),
+          icon: extractPathData(HeartCheckIcon),
           iconStyle: kind.bpm_hrv_arr ? setIconColor() : {},
           onclick: () => {
             kindButtonHandler("bpm_hrv_arr");
@@ -84,8 +86,8 @@ const GraphOption = (
         },
         myLivingData: {
           show: true,
-          title: "생활",
-          icon: extractPathData(RunningIcon, 1), // 수정 영역
+          title: t("Daily"),
+          icon: extractPathData(RunningIcon, 1),
           iconStyle: kind.cal_step ? setIconColor() : {},
           onclick: () => {
             kindButtonHandler("cal_step");
@@ -93,8 +95,8 @@ const GraphOption = (
         },
         myStressData: {
           show: true,
-          title: "스트레스",
-          icon: extractPathData(StressIcon), // 수정 영역
+          title: t("Stress"),
+          icon: extractPathData(StressIcon),
           iconStyle: kind.stress ? setIconColor() : {},
           onclick: () => {
             kindButtonHandler("stress");
@@ -104,7 +106,7 @@ const GraphOption = (
         myEcgData: {
           show: true,
           title: "ECG",
-          icon: extractPathData(SignalIcon), // 수정 영역
+          icon: extractPathData(SignalIcon),
           iconStyle: kind.ecg ? setIconColor() : {},
           onclick: () => {
             kindButtonHandler("ecg");
@@ -115,8 +117,8 @@ const GraphOption = (
             (kind.ecg || kind.bpm_hrv_arr || kind.stress) && downloadShow
               ? true
               : false,
-          title: "다운로드",
-          icon: extractPathData(DownloadIcon), // 수정 영역
+          title: t("Download"),
+          icon: extractPathData(DownloadIcon),
           onclick: () => {
             downloadFunc();
           },
@@ -127,7 +129,7 @@ const GraphOption = (
     grid: {
       top: 30,
       bottom: 70,
-      left: 50,
+      left: 60,
       right: 20,
       containLabel: true,
     },
@@ -158,6 +160,7 @@ export const EcgGraphOption = (
   kindButtonHandler: (id: string) => void,
   downloadFunc: () => void
 ) => {
+  const [_t, _i18n] = useTranslation();
   return {
     ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
     xAxis: {
@@ -197,6 +200,7 @@ export const HrvGraphOption = (
   kindButtonHandler: (id: string) => void,
   downloadFunc: () => void
 ) => {
+  const [t, _i18n] = useTranslation();
   return {
     ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
     color: ["#5C7BD9", "#9FE080", "#ff0000"],
@@ -220,21 +224,21 @@ export const HrvGraphOption = (
     },
     series: [
       {
-        name: "심박 변화율",
+        name: t("HRV"),
         data: data.map((item) => item.hrv),
         type: "line",
         smooth: false,
         symbol: "none",
       },
       {
-        name: "심박수",
+        name: t("BPM"),
         data: data.map((item) => item.bpm),
         type: "line",
         smooth: false,
         symbol: "none",
       },
       {
-        name: "비정상맥박 지점",
+        name: t("I.H.R Moment"),
         type: "line",
         markLine: {
           silent: true,
@@ -275,6 +279,7 @@ export const StressGraphOption = (
   kindButtonHandler: (id: string) => void,
   downloadFunc: () => void
 ) => {
+  const [_t, _i18n] = useTranslation();
   return {
     ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
     color: ["#ff0000", "#0000ff"],
@@ -343,6 +348,7 @@ export const LivingGraphOption = (
   kindButtonHandler: (id: string) => void,
   downloadFunc: () => void
 ) => {
+  const [t, _i18n] = useTranslation();
   return {
     ...GraphOption(kind, zoomInside, kindButtonHandler, downloadFunc),
 
@@ -364,28 +370,28 @@ export const LivingGraphOption = (
     },
     series: [
       {
-        name: "걸음",
+        name: t("Steps"),
         data: data.map((item) => item.step),
         type: "bar",
         smooth: false,
         symbol: "none",
       },
       {
-        name: "걸음거리",
+        name: t("Distance"),
         data: data.map((item) => item.distanceKM),
         type: "bar",
         smooth: false,
         symbol: "none",
       },
       {
-        name: "칼로리",
+        name: t("Calories"),
         data: data.map((item) => item.cal),
         type: "bar",
         smooth: false,
         symbol: "none",
       },
       {
-        name: "활동칼로리",
+        name: t("Exe Calories"),
         data: data.map((item) => item.calexe),
         type: "bar",
         smooth: false,

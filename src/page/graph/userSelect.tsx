@@ -5,6 +5,7 @@ import { UserProfileBox } from "./userProfileBox";
 import { GetProfile } from "../../data/graph";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useTranslation } from "react-i18next";
 
 type User = {
   eq: string;
@@ -25,6 +26,7 @@ type UserSelectProps = {
 };
 
 export const UserSelect = ({ userList, onChange }: UserSelectProps) => {
+  const [t, _i18n] = useTranslation();
   const [selectedUser, setSelecedUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
@@ -86,7 +88,7 @@ export const UserSelect = ({ userList, onChange }: UserSelectProps) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="사용자"
+            label={t("Graph User")}
             InputLabelProps={{ shrink: true }}
             sx={{
               "& .MuiInputBase-root": {

@@ -9,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import { Cell, Row, TableBodyPropGetter, TableBodyProps } from "react-table";
 import { RootState } from "../../../store/store";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   BodyProps: (
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export const Tbody = ({ BodyProps, page, prepareRow, cellClick }: Props) => {
+  const [t, _i18n] = useTranslation();
   const exceptColumn = useSelector<RootState, String[]>(
     (state) => state.exceptColumn
   );
@@ -84,14 +86,14 @@ export const Tbody = ({ BodyProps, page, prepareRow, cellClick }: Props) => {
         return (
           <Box className="userStatusCell">
             <Box className="userStatus using" />
-            <Typography className="userStatusLabel">사용</Typography>
+            <Typography className="userStatusLabel">{t("Active")}</Typography>
           </Box>
         );
       } else {
         return (
           <Box className="userStatusCell">
             <Box className="userStatus notUsing" />
-            <Typography className="userStatusLabel">미사용</Typography>
+            <Typography className="userStatusLabel">{t("Inactive")}</Typography>
           </Box>
         );
       }

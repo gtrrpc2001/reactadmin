@@ -2,9 +2,11 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { comboBoxAction } from "../../createslice/createslices";
 import { RootState } from "../../../store/store";
+import { useTranslation } from "react-i18next";
 
 export const Combobox = () => {
   const dispatch = useDispatch();
+  const [t, _i18n] = useTranslation();
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
   const handleUrlChange = (newValue: string | null) => {
     dispatch(comboBoxAction.value(newValue || "deploy"));
@@ -29,7 +31,7 @@ export const Combobox = () => {
         <TextField
           {...params}
           sx={{ cursor: "pointer" }}
-          label="URL 선택"
+          label={t("URL Select")}
           onKeyDown={(event) => {
             if (event.key === "Backspace") {
               event.preventDefault();

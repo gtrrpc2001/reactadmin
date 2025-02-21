@@ -65,11 +65,7 @@ export const GraphList = ({ names }: Props) => {
   return (
     <div className="graphListBox">
       {graphUsers.map((item) => (
-        <Box
-          key={item.id}
-          flexGrow={1}
-          padding={`graph${graphUsers?.length}` !== item.id ? "3%" : ""}
-        >
+        <Box key={item.id} flexGrow={1}>
           {item.node}
         </Box>
       ))}

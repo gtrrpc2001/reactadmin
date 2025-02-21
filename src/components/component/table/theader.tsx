@@ -2,12 +2,14 @@ import { TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { HeaderGroup } from "react-table";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   headerGroups: HeaderGroup<object>[];
 };
 
 export const Theader = ({ headerGroups }: Props) => {
+  const [t, _i18n] = useTranslation();
   const exceptColumn = useSelector<RootState, String[]>(
     (state) => state.exceptColumn
   );
@@ -37,7 +39,10 @@ export const Theader = ({ headerGroups }: Props) => {
                     {...column.getHeaderProps()}
                   >
                     <Typography align="left" className="tableHeaderCell">
-                      {column.render("Header")}
+                      {column.id != "selection"
+                        ? t(column.render("Header"))
+                        : ""}
+                      {/* {column.render("Header")} */}
                     </Typography>
                   </TableCell>
                 );

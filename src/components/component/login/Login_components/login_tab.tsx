@@ -2,6 +2,7 @@ import { Login_TextFeild } from "./login_textfield";
 import { Login_Tab_Button } from "./login_tab_button";
 import { ReactNode } from "react";
 import { useLoginContext } from "../../hooks/context/login_context";
+import { useTranslation } from "react-i18next";
 
 export interface Login_tabProps {
   emailHelperText: ReactNode;
@@ -11,6 +12,7 @@ export interface Login_tabProps {
 }
 
 export const Login_Tab = (props: Login_tabProps) => {
+  const [t, _i18n] = useTranslation();
   const { email, pw, handleEmail, handlePw, page } = useLoginContext();
   return (
     <>
@@ -23,7 +25,7 @@ export const Login_Tab = (props: Login_tabProps) => {
         type="text"
         placeholder="youremail@domain.com"
         onChange={handleEmail}
-        label="이메일"
+        label={t("Email")}
         helperText={props.emailHelperText}
         autoComplete="username"
       />
@@ -35,7 +37,7 @@ export const Login_Tab = (props: Login_tabProps) => {
         type="password"
         placeholder="영문, 숫자, 특수문자 포함 8자 이상"
         onChange={handlePw}
-        label="비밀번호"
+        label={t("Password")}
         helperText={props.pwHelperText}
         autoComplete="current-password"
       />

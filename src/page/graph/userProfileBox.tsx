@@ -1,5 +1,6 @@
 import { Theme } from "@emotion/react";
 import { Box, Divider, SxProps, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type props = {
   User: {
@@ -21,6 +22,7 @@ type props = {
 };
 
 export const UserProfileBox = ({ User }: props) => {
+  const [t, _i18n] = useTranslation();
   const labelSx: SxProps<Theme> = {
     fontSize: "0.85rem",
     color: "gray",
@@ -64,33 +66,33 @@ export const UserProfileBox = ({ User }: props) => {
       >
         <Box>
           <Box>
-            <Typography sx={{ ...labelSx }}>성별</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Sex")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.sex}</Typography>
           </Box>
           <Box paddingTop={"10px"}>
-            <Typography sx={{ ...labelSx }}>목표 심박</Typography>
+            <Typography sx={{ ...labelSx }}>{t("BPM Goal")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.bpm} bpm</Typography>
           </Box>
         </Box>
 
         <Box>
           <Box>
-            <Typography sx={{ ...labelSx }}>신장</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Height")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.height} cm</Typography>
           </Box>
           <Box paddingTop={"10px"}>
-            <Typography sx={{ ...labelSx }}>수면 시간</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Sleep Hour")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.sleeptime} 시</Typography>
           </Box>
         </Box>
 
         <Box>
           <Box>
-            <Typography sx={{ ...labelSx }}>체중</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Weight")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.weight} Kg</Typography>
           </Box>
           <Box paddingTop={"10px"}>
-            <Typography sx={{ ...labelSx }}>기상 시간</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Wake Up Hour")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.uptime} 시</Typography>
           </Box>
         </Box>
@@ -99,22 +101,24 @@ export const UserProfileBox = ({ User }: props) => {
       <Box display={"flex"} paddingTop={"10px"} justifyContent={"space-around"}>
         <Box display={"flex"} flexDirection={"column"}>
           <Box>
-            <Typography sx={{ ...labelSx }}>목표 걸음</Typography>
-            <Typography sx={{ ...valueSx }}>{User.step} 보</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Steps Goal")}</Typography>
+            <Typography sx={{ ...valueSx }}>
+              {User.step} {t("Steps")}
+            </Typography>
           </Box>
           <Box paddingTop={"10px"}>
-            <Typography sx={{ ...labelSx }}>활동 칼로리 </Typography>
+            <Typography sx={{ ...labelSx }}>{t("Exe Calories")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.calexe} kcal</Typography>
           </Box>
         </Box>
 
         <Box display={"flex"} flexDirection={"column"} paddingLeft={"10px"}>
           <Box>
-            <Typography sx={{ ...labelSx }}>목표 거리</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Distance Goal")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.distanceKM} Km</Typography>
           </Box>
           <Box paddingTop={"10px"}>
-            <Typography sx={{ ...labelSx }}>소비 칼로리</Typography>
+            <Typography sx={{ ...labelSx }}>{t("Calories")}</Typography>
             <Typography sx={{ ...valueSx }}>{User.cal} kcal</Typography>
           </Box>
         </Box>

@@ -14,6 +14,7 @@ import { MainFrame } from "./components/component/login/main_frame";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { CloudType } from "./page/cloudtype/cloudtype";
+import "./i18n";
 
 const queryClient = new QueryClient();
 

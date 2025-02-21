@@ -6,6 +6,7 @@ import { calculTime } from "../../components/component/modal/controller/modalCon
 import { getGraphEcgTime } from "../../data/graph";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   width: number;
@@ -22,6 +23,7 @@ export const EcgTimePicker = ({
   time,
   handleTime,
 }: Props) => {
+  const [t, _i18n] = useTranslation();
   const [data, setData] = useState<any[]>([]);
   const [isTimeListOpen, setTimeListOpen] = useState(false);
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
@@ -38,7 +40,7 @@ export const EcgTimePicker = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <TimePicker
-        label="측정 시간"
+        label={t("Measure Time")}
         disabled={disabled}
         ampm={false}
         minutesStep={10}

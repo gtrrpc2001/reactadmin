@@ -12,6 +12,7 @@ import { Login_Tab } from "./Login_components/login_tab";
 import { Login_Info } from "./Login_components/login_Info";
 import { Login_Button } from "./Login_components/login_Button";
 import { useLoginContext } from "../hooks/context/login_context";
+import { LanguageButton } from "../buttons/languageButton";
 
 export const email_regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const pwd_regex =
@@ -135,6 +136,7 @@ export const Login = () => {
           handleLogin();
         }}
       >
+        <LanguageButton />
         <Login_Tab
           isPwError={isPwError}
           isEmailError={isEmailError}

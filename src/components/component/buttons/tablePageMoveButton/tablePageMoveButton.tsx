@@ -2,6 +2,7 @@ import React from "react";
 import { TableState } from "react-table";
 import "./tablePageMoveButton.scss";
 import { TablePagination } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   gotoPage: (updater: number | ((pageIndex: number) => number)) => void;
@@ -16,6 +17,7 @@ export const TablePageMoveButton = ({
   dataCount,
   state,
 }: Props) => {
+  const [t, _i18n] = useTranslation();
   const handlePageChane = (_e: unknown, newPage: number) => {
     gotoPage(newPage);
   };
@@ -35,7 +37,7 @@ export const TablePageMoveButton = ({
       page={state.pageIndex}
       onPageChange={handlePageChane}
       onRowsPerPageChange={handleRowsPerPage}
-      labelRowsPerPage="행 / 페이지 :"
+      labelRowsPerPage={`${t("Rows / Page")} :`}
     />
   );
 };
