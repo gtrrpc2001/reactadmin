@@ -16,7 +16,7 @@ export const LanguageButton = () => {
       text: "KO",
     },
   ];
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("AUTO");
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
@@ -30,12 +30,6 @@ export const LanguageButton = () => {
     i18n.changeLanguage(option.value);
     handleClose();
   };
-
-  useEffect(() => {
-    setSelectedLanguage(
-      option.filter((item) => item.value == i18n.language)[0].text
-    );
-  }, []);
 
   return (
     <div>
