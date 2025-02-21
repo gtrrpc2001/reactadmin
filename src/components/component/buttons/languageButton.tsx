@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageIcon from "../../../assets/image/language.svg?react";
 
@@ -16,9 +16,7 @@ export const LanguageButton = () => {
       text: "KO",
     },
   ];
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(
-    option.filter((item) => item.value == i18n.language)[0].text
-  );
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
@@ -32,6 +30,13 @@ export const LanguageButton = () => {
     i18n.changeLanguage(option.value);
     handleClose();
   };
+
+  useEffect(() => {
+    setSelectedLanguage(
+      option.filter((item) => item.value == i18n.language)[0].text
+    );
+  });
+
   return (
     <div>
       <Button
