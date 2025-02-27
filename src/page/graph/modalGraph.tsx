@@ -23,49 +23,27 @@ type Porps = {
   Ywidth: number;
 };
 
-export const ModalRealTimeGraph = ({
-  open_close,
-  eq,
-  time,
-  width,
-  height,
-  Ywidth,
-}: Porps) => {
+export const ModalRealTimeGraph = ({ eq, width, height, Ywidth }: Porps) => {
   // const [open, setOpen] = useState<boolean>(false);
   const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
   const [startIdx, setStartIdx] = useState<number>(0);
 
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
-  // const EcgData = async (result: number[]) => {
-  //   const newData = result.map((data) => ({ ecg: data }));
-  //   setDataArr([...dataArr, ...newData].slice(-700));
-  // };
-
-  // const getEcgData = async () => {
-  //   try {
-  //     const result = await GetEcg(eq, time, url);
-  //     if (result) {
-  //       if (result?.length != 1 && result?.length < 500) {
-  //         await EcgData(result);
-  //       }
-  //     }
-  //   } catch (E) {
-  //     console.log(E);
-  //   }
-  // };
 
   const getEcgTempData = async () => {
     try {
-      const rows = await GetEcgTemp(eq, startIdx, url);
-      let newDataArr = [...dataArr];
-      if (rows.length) {
-        setStartIdx(rows[rows.length - 1].idx);
-        rows.map((row) => {
-          const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
-          newDataArr = [...newDataArr, ...ecgList];
-        });
+      if (startIdx != 0) {
+        const rows = await GetEcgTemp(eq, startIdx, url);
+        let newDataArr = [...dataArr];
+        if (rows.length != 0) {
+          setStartIdx(rows[rows.length - 1].idx);
+          rows.map((row) => {
+            const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
+            newDataArr = [...newDataArr, ...ecgList];
+          });
 
-        setDataArr(newDataArr.slice(-700));
+          setDataArr(newDataArr.slice(-700));
+        }
       }
     } catch (E) {
       console.log(E);
@@ -78,29 +56,24 @@ export const ModalRealTimeGraph = ({
       setStartIdx(result);
     };
 
-    const handleVisibilityChange = () => {
+    const handleVisibilityChange = async () => {
       if (!document.hidden) {
-        getEcgIdx(eq, url);
+        await getEcgIdx(eq, url);
       }
     };
+
+    const intervalFunc = setInterval(() => {
+      getEcgTempData();
+    }, 400);
 
     getEcgIdx(eq, url);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      clearInterval(intervalFunc);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
-
-  useEffect(() => {
-    if (open_close) {
-      if (startIdx) {
-        getEcgTempData();
-      }
-    } else {
-      setDataArr([]);
-    }
-  }, [time]);
+  }, [startIdx]);
 
   return (
     <>
@@ -124,40 +97,6 @@ export const ModalRealTimeGraph = ({
           animationDuration={0}
         />
       </LineChart>
-      {/* {open == false ? (
-        <LineChart data={dataArr} width={width} height={height}>
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis
-            dataKey="xAxis"
-            allowDataOverflow={true}
-            domain={[0, 700]}
-            width={0}
-            height={0}
-          />
-          <YAxis yAxisId="left" domain={[0, 1000]} width={Ywidth} />
-          <Tooltip />
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="ecg"
-            stroke="#8884d8"
-            dot={false}
-            animationDuration={0}
-          />
-        </LineChart>
-      ) : (
-        <Box
-          sx={{
-            width: 335,
-            height: 280,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress color="primary" />
-        </Box>
-      )} */}
     </>
   );
 };
