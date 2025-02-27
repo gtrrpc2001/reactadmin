@@ -23,14 +23,7 @@ type Porps = {
   Ywidth: number;
 };
 
-export const ModalRealTimeGraph = ({
-  open_close,
-  eq,
-  time,
-  width,
-  height,
-  Ywidth,
-}: Porps) => {
+export const ModalRealTimeGraph = ({ eq, width, height, Ywidth }: Porps) => {
   // const [open, setOpen] = useState<boolean>(false);
   const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
   const [startIdx, setStartIdx] = useState<number>(0);
@@ -56,16 +49,18 @@ export const ModalRealTimeGraph = ({
 
   const getEcgTempData = async () => {
     try {
-      const rows = await GetEcgTemp(eq, startIdx, url);
-      let newDataArr = [...dataArr];
-      if (rows.length) {
-        setStartIdx(rows[rows.length - 1].idx);
-        rows.map((row) => {
-          const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
-          newDataArr = [...newDataArr, ...ecgList];
-        });
+      if (startIdx != 0) {
+        const rows = await GetEcgTemp(eq, startIdx, url);
+        let newDataArr = [...dataArr];
+        if (rows.length != 0) {
+          setStartIdx(rows[rows.length - 1].idx);
+          rows.map((row) => {
+            const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
+            newDataArr = [...newDataArr, ...ecgList];
+          });
 
-        setDataArr(newDataArr.slice(-700));
+          setDataArr(newDataArr.slice(-700));
+        }
       }
     } catch (E) {
       console.log(E);
@@ -78,29 +73,24 @@ export const ModalRealTimeGraph = ({
       setStartIdx(result);
     };
 
-    const handleVisibilityChange = () => {
+    const handleVisibilityChange = async () => {
       if (!document.hidden) {
-        getEcgIdx(eq, url);
+        await getEcgIdx(eq, url);
       }
     };
+
+    const intervalFunc = setInterval(() => {
+      getEcgTempData();
+    }, 400);
 
     getEcgIdx(eq, url);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      clearInterval(intervalFunc);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
-
-  useEffect(() => {
-    if (open_close) {
-      if (startIdx) {
-        getEcgTempData();
-      }
-    } else {
-      setDataArr([]);
-    }
-  }, [time]);
+  }, [startIdx]);
 
   return (
     <>
