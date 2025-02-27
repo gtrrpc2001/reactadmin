@@ -29,23 +29,6 @@ export const ModalRealTimeGraph = ({ eq, width, height, Ywidth }: Porps) => {
   const [startIdx, setStartIdx] = useState<number>(0);
 
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
-  // const EcgData = async (result: number[]) => {
-  //   const newData = result.map((data) => ({ ecg: data }));
-  //   setDataArr([...dataArr, ...newData].slice(-700));
-  // };
-
-  // const getEcgData = async () => {
-  //   try {
-  //     const result = await GetEcg(eq, time, url);
-  //     if (result) {
-  //       if (result?.length != 1 && result?.length < 500) {
-  //         await EcgData(result);
-  //       }
-  //     }
-  //   } catch (E) {
-  //     console.log(E);
-  //   }
-  // };
 
   const getEcgTempData = async () => {
     try {
@@ -114,40 +97,6 @@ export const ModalRealTimeGraph = ({ eq, width, height, Ywidth }: Porps) => {
           animationDuration={0}
         />
       </LineChart>
-      {/* {open == false ? (
-        <LineChart data={dataArr} width={width} height={height}>
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis
-            dataKey="xAxis"
-            allowDataOverflow={true}
-            domain={[0, 700]}
-            width={0}
-            height={0}
-          />
-          <YAxis yAxisId="left" domain={[0, 1000]} width={Ywidth} />
-          <Tooltip />
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="ecg"
-            stroke="#8884d8"
-            dot={false}
-            animationDuration={0}
-          />
-        </LineChart>
-      ) : (
-        <Box
-          sx={{
-            width: 335,
-            height: 280,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress color="primary" />
-        </Box>
-      )} */}
     </>
   );
 };
