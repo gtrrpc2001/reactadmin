@@ -25,9 +25,10 @@ type Porps = {
 
 export const ModalRealTimeGraph = ({ eq, width, height, Ywidth }: Porps) => {
   // const [open, setOpen] = useState<boolean>(false);
-  const [dataArr, setDataArr] = useState<{ ecg: number }[]>([]);
+  const [dataArr, setDataArr] = useState<{ ecg: number }[]>(
+    new Array(700).fill({ ecg: 500 })
+  );
   const [startIdx, setStartIdx] = useState<number>(0);
-
   const url = useSelector<RootState, string>((state) => state.comboBoxSelected);
 
   const getEcgTempData = async () => {
@@ -64,7 +65,7 @@ export const ModalRealTimeGraph = ({ eq, width, height, Ywidth }: Porps) => {
 
     const intervalFunc = setInterval(() => {
       getEcgTempData();
-    }, 400);
+    }, 300);
 
     getEcgIdx(eq, url);
     document.addEventListener("visibilitychange", handleVisibilityChange);
