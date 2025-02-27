@@ -84,6 +84,7 @@ export const ModalRealTimeGraph = ({
       }
     };
 
+    getEcgIdx(eq, url);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
