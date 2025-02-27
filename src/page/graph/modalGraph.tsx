@@ -58,7 +58,7 @@ export const ModalRealTimeGraph = ({
     try {
       const rows = await GetEcgTemp(eq, startIdx, url);
       let newDataArr = [...dataArr];
-      if (rows) {
+      if (rows.length) {
         setStartIdx(rows[rows.length - 1].idx);
         rows.map((row) => {
           const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
@@ -78,7 +78,17 @@ export const ModalRealTimeGraph = ({
       setStartIdx(result);
     };
 
-    getEcgIdx(eq, url);
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        getEcgIdx(eq, url);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
