@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslations from './locales/en.json';
 import koTranslations from './locales/ko.json';
+import ptTranslations from './locales/pt.json';
 
 i18n
     .use(LanguageDetector)
@@ -17,6 +18,9 @@ i18n
             },
             ko: {
                 translation: koTranslations,
+            },
+            pt: {
+                translation: ptTranslations,
             },
         },
         fallbackLng: 'en',

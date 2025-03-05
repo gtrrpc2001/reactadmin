@@ -2,20 +2,11 @@ import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageIcon from "../../../assets/image/language.svg?react";
+import { option } from "../../../axios/interface/language";
 
 export const LanguageButton = () => {
   const [_t, i18n] = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const option = [
-    {
-      value: "en",
-      text: "EN",
-    },
-    {
-      value: "ko",
-      text: "KO",
-    },
-  ];
   const [selectedLanguage, setSelectedLanguage] = useState<string>("AUTO");
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
