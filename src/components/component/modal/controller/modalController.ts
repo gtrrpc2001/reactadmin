@@ -215,6 +215,25 @@ export const getDayjs = (
   return result;
 };
 
+export const getDayjsTest = (
+  date: string,
+): string => {
+  extendDayjs();
+  const localTimezone = dayjs.tz.guess();
+  const result = dayjs.utc(date).tz(localTimezone).format("YYYY-MM-DD HH:mm:ss");
+  return result;
+};
+
+export const getDayjs_SDate_EDate = () => {
+  extendDayjs();
+  const localTimezone = dayjs.tz.guess();
+  const targetDate = dayjs.utc().tz(localTimezone).format("YYYY-MM-DD HH:mm:ss");
+  const SDate = dayjs.tz(`${targetDate} 00:00:00`, localTimezone).utc();
+  const EDate = dayjs.tz(`${targetDate} 23:59:59`, localTimezone).utc();
+
+  return { SDate: SDate, EDate: EDate };
+}
+
 export const getToday = (): string => {
   const tz = "Asia/Seoul";
   extendDayjs();
