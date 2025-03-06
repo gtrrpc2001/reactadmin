@@ -72,12 +72,12 @@ export const ModalRealTimeGraph = ({
     }
   };
 
-  useEffect(() => {
-    const getEcgIdx = async (eq: string, url: string) => {
-      const result = await GetEcgIdx(eq, url);
-      setStartIdx(result);
-    };
+  const getEcgIdx = async (eq: string, url: string) => {
+    const result = await GetEcgIdx(eq, url);
+    setStartIdx(result);
+  };
 
+  useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         getEcgIdx(eq, url);
@@ -95,6 +95,8 @@ export const ModalRealTimeGraph = ({
     if (open_close) {
       if (startIdx) {
         getEcgTempData();
+      } else if (startIdx === 0) {
+        getEcgIdx(eq, url);
       }
     } else {
       setDataArr([]);
