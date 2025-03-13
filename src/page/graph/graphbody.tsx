@@ -88,6 +88,7 @@ export const GraphBody = ({ names, graphId, onDelete }: Props) => {
               return {
                 bpm: getCheckMaxValue(d.bpm),
                 hrv: getCheckMaxValue(d.hrv),
+                breathe: d.breathe,
                 arr: d.count,
                 writetime: getWritetimeSelectHour_Min(d.writetime),
               };

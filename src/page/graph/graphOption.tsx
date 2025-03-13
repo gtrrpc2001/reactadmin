@@ -259,7 +259,28 @@ export const HrvGraphOption = (
         },
         symbol: "none",
       },
+      {
+        name: "호흡수",
+        symbolSize: 10,
+        data: data.reduce((acc, item, index) => {
+          if (item.breathe > 0) {
+            acc.push([index, item.breathe]);
+          }
+          return acc;
+        }, []),
+        type: "scatter",
+        itemStyle: {
+          color: "RGB(0, 191, 255)",
+        },
+      },
     ],
+
+    tooltip: {
+      trigger: "item",
+      formatter: (params: any) => {
+        return `<b style="font-size: 20px;">호흡수: ${params.value[1]}</b>`;
+      },
+    },
 
     legend: {
       show: true,

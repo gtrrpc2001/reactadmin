@@ -60,7 +60,7 @@ export const ModalRealTimeGraph = ({
       let newDataArr = [...dataArr];
       if (rows.length) {
         setStartIdx(rows[rows.length - 1].idx);
-        rows.map((row) => {
+        rows.forEach((row) => {
           const ecgList = row.ecgpacket.map((d) => ({ ecg: d }));
           newDataArr = [...newDataArr, ...ecgList];
         });
